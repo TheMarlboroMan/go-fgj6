@@ -18,6 +18,7 @@ class Jugador:
 
 					Jugador();
 	void				recibir_input(const Bloque_input&);
+	void				establecer_inicio(Espaciable::tpunto, int);
 	void				turno(float);
 	void				colisionar(bool);
 	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;

@@ -1,19 +1,20 @@
-#ifndef WIDGET_EDITOR_PROPIEDADES_MAPA_H
-#define WIDGET_EDITOR_PROPIEDADES_MAPA_H
+#ifndef WIDGET_EDITOR_PROPIEDADES_INICIO_H
+#define WIDGET_EDITOR_PROPIEDADES_INICIO_H
 
 #include <class/compositor_vista.h>
 
+#include "inicio.h"
 #include "widget_editor_interface.h"
 
 namespace App
 {
 
-class Widget_editor_propiedades_mapa: 
+class Widget_editor_propiedades_inicio: 
 	public Widget_editor_interface
 {
 	public:
 
-	Widget_editor_propiedades_mapa(const DLibV::Fuente_TTF&, int&, int&, int&, int&, int&);
+	Widget_editor_propiedades_inicio(const DLibV::Fuente_TTF&, Inicio&);
 	
 	virtual void 	dibujar(DLibV::Pantalla&);
 	virtual void	inicializar(DFramework::Input&);
@@ -30,17 +31,15 @@ class Widget_editor_propiedades_mapa:
 	int		valor_por_indice(int indice) const;
 
 	Herramientas_proyecto::Compositor_vista		layout;
-	int&		id,
-			minx,
-			maxx,
-			miny,
-			maxy;
+	Inicio&		ref;
+	int		id,
+			angulo;
 	bool		cerrar;
 
 	int		indice_actual;
 
 	static const int	min_indice=0;
-	static const int 	max_indice=4;
+	static const int 	max_indice=1;
 };
 
 }

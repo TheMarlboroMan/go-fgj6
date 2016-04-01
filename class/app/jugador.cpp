@@ -48,10 +48,12 @@ void Jugador::cambiar_velocidad(int dir)
 {
 	int indice=indice_velocidad+dir;
 	if(indice < 0) indice=0;
-	else if(indice >= (int) velocidades.size()) indice=velocidades.size();
+	else if(indice >= (int) velocidades.size()) indice=velocidades.size()-1;
 
 	indice_velocidad=indice;
 	velocidad=velocidades[indice_velocidad];	//TODO: Not really!!!!.
+
+std::cout<<indice_velocidad<<" "<<velocidad<<std::endl;
 
 /*	velocidad+=dir > 0 ? delta * factor_aceleracion : delta * factor_freno;
 
@@ -82,3 +84,9 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 	//TODO...
 	r.dibujar_poligono(pantalla, poligono, {255, 255, 255, 255}, camara);
 }
+
+void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)
+{
+	angulo=an;
+	establecer_posicion(pt.x, pt.y);
+} 

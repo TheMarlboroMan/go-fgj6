@@ -60,21 +60,37 @@ $(DIR_CLASES_APP)logica_juego.cpp
 $(DIR_O)mapa.o:\
 $(DIR_O)decoracion.o\
 $(DIR_O)obstaculo.o\
+$(DIR_O)inicio.o\
+$(DIR_O)pieza.o\
+$(DIR_O)puerta.o\
+$(DIR_O)mejora_velocidad.o\
+$(DIR_O)salida.o\
+$(DIR_O)interruptor.o\
 $(DIR_O)representable.o\
 $(DIR_CLASES_APP)mapa.h \
 $(DIR_CLASES_APP)mapa.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)mapa.cpp -o $(DIR_O)mapa.o
 
+$(DIR_O)salida.o:\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)salida.h \
+$(DIR_CLASES_APP)salida.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)salida.cpp -o $(DIR_O)salida.o
+
+$(DIR_O)inicio.o:\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)inicio.h \
+$(DIR_CLASES_APP)inicio.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)inicio.cpp -o $(DIR_O)inicio.o
+
 $(DIR_O)importador.o:\
-$(DIR_O)obstaculo.o\
-$(DIR_O)decoracion.o\
+$(DIR_O)mapa.o\
 $(DIR_CLASES_APP)importador.h \
 $(DIR_CLASES_APP)importador.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)importador.cpp -o $(DIR_O)importador.o
 
 $(DIR_O)exportador.o:\
-$(DIR_O)obstaculo.o\
-$(DIR_O)decoracion.o\
+$(DIR_O)mapa.o\
 $(DIR_CLASES_APP)exportador.h \
 $(DIR_CLASES_APP)exportador.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)exportador.cpp -o $(DIR_O)exportador.o
@@ -87,11 +103,35 @@ $(DIR_CLASES_APP)decoracion.h \
 $(DIR_CLASES_APP)decoracion.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)decoracion.cpp -o $(DIR_O)decoracion.o
 
+$(DIR_O)interruptor.o:\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)interruptor.h \
+$(DIR_CLASES_APP)interruptor.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)interruptor.cpp -o $(DIR_O)interruptor.o
+
+$(DIR_O)mejora_velocidad.o:\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)mejora_velocidad.h \
+$(DIR_CLASES_APP)mejora_velocidad.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)mejora_velocidad.cpp -o $(DIR_O)mejora_velocidad.o
+
+$(DIR_O)pieza.o:\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)pieza.h \
+$(DIR_CLASES_APP)pieza.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)pieza.cpp -o $(DIR_O)pieza.o
+
 $(DIR_O)obstaculo.o:\
 $(DIR_O)espaciable.o\
 $(DIR_CLASES_APP)obstaculo.h \
 $(DIR_CLASES_APP)obstaculo.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)obstaculo.cpp -o $(DIR_O)obstaculo.o
+
+$(DIR_O)puerta.o:\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)puerta.h \
+$(DIR_CLASES_APP)puerta.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)puerta.cpp -o $(DIR_O)puerta.o
 
 $(DIR_O)representador.o:\
 $(DIR_CLASES_APP)color.h \
@@ -103,6 +143,42 @@ $(DIR_O)espaciable.o:\
 $(DIR_CLASES_APP)espaciable.h \
 $(DIR_CLASES_APP)espaciable.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)espaciable.cpp -o $(DIR_O)espaciable.o
+
+$(DIR_O)widget_editor_propiedades_mejora_velocidad.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_mejora_velocidad.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_mejora_velocidad.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_mejora_velocidad.cpp -o $(DIR_O)widget_editor_propiedades_mejora_velocidad.o
+
+$(DIR_O)widget_editor_propiedades_puerta.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_puerta.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_puerta.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_puerta.cpp -o $(DIR_O)widget_editor_propiedades_puerta.o
+
+$(DIR_O)widget_editor_propiedades_interruptor.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_interruptor.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_interruptor.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_interruptor.cpp -o $(DIR_O)widget_editor_propiedades_interruptor.o
+
+$(DIR_O)widget_editor_propiedades_pieza.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_pieza.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_pieza.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_pieza.cpp -o $(DIR_O)widget_editor_propiedades_pieza.o
+
+$(DIR_O)widget_editor_propiedades_salida.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_salida.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_salida.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_salida.cpp -o $(DIR_O)widget_editor_propiedades_salida.o
+
+$(DIR_O)widget_editor_propiedades_inicio.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_inicio.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_inicio.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_inicio.cpp -o $(DIR_O)widget_editor_propiedades_inicio.o
 
 $(DIR_O)widget_editor_propiedades_mapa.o:\
 $(DIR_CLASES_APP)widget_editor_interface.h \

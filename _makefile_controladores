@@ -33,10 +33,17 @@ $(DIR_O)mapa.o\
 $(DIR_O)mensajes.o\
 $(DIR_O)representador.o\
 $(DIR_O)fuentes.o\
+$(DIR_O)inicio.o\
 $(DIR_O)widget_editor_propiedades_mapa.o\
 $(DIR_O)widget_editor_color.o\
 $(DIR_O)widget_editor_decoracion.o\
 $(DIR_O)widget_editor_obstaculo.o\
+$(DIR_O)widget_editor_propiedades_inicio.o\
+$(DIR_O)widget_editor_propiedades_salida.o\
+$(DIR_O)widget_editor_propiedades_pieza.o\
+$(DIR_O)widget_editor_propiedades_interruptor.o\
+$(DIR_O)widget_editor_propiedades_puerta.o\
+$(DIR_O)widget_editor_propiedades_mejora_velocidad.o\
 $(DIR_HEADERS_APP)logica_editor_objetos.h\
 $(DIR_HEADERS_IMPL)input.h\
 $(DIR_CONTROLADORES)estados_controladores.h \
@@ -47,6 +54,7 @@ $(DIR_CONTROLADORES)editor.cpp
 $(DIR_O)controlador_principal.o :\
 $(DIR_O)fuentes.o\
 $(DIR_O)mapa.o\
+$(DIR_O)inicio.o\
 $(DIR_O)jugador.o\
 $(DIR_O)representador.o\
 $(DIR_O)importador.o\

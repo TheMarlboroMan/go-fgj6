@@ -69,6 +69,9 @@ void  Controlador_principal::despertar()
 {
 	log<<"Inicializando mapa..."<<std::endl;
 	mapa.inicializar();
+
+	info_mapa.inicio_actual=mapa.inicios[0];
+	jugador.establecer_inicio(info_mapa.inicio_actual.acc_punto(), info_mapa.inicio_actual.acc_angulo());
 }
 
 void  Controlador_principal::dormir()
@@ -83,21 +86,15 @@ bool Controlador_principal::es_posible_abandonar_estado() const
 
 ////////////////
 
-Bloque_input Controlador_principal::obtener_bloque_input(DFramework::Input& input, const Traduccion_input& traduccion) const
+Bloque_input Controlador_principal::obtener_bloque_input(DFramework::Input& input) const
 {
 	Bloque_input res{0, 0, false};
 
-	if(input.es_input_pulsado(traduccion.arriba)) res.aceleracion=1;
-	else if(input.es_input_pulsado(traduccion.abajo)) res.aceleracion=-1;
+	if(input.es_input_down(Input::arriba)) res.aceleracion=1;
+	else if(input.es_input_down(Input::abajo)) res.aceleracion=-1;
 
-	if(input.es_input_pulsado(traduccion.izquierda)) res.giro=1;
-	else if(input.es_input_pulsado(traduccion.derecha)) res.giro=-1;
-
-	if(input.es_input_down(traduccion.disparo)) res.disparo=true;
-	if(input.es_input_pulsado(traduccion.habilidad)) res.activar_habilidad=true;
-	if(input.es_input_down(traduccion.arriba)) res.habilidad_velocidad=true;
-	if(input.es_input_down(traduccion.abajo)) res.habilidad_escudo=true;
-
+	if(input.es_input_pulsado(Input::izquierda)) res.giro=1;
+	else if(input.es_input_pulsado(Input::derecha)) res.giro=-1;
 
 	return res;
 }
@@ -182,12 +179,20 @@ TODO
 
 void Controlador_principal::procesar_jugador(DFramework::Input& input, float delta, Jugador &j)
 {
-	//TODO...
-//	auto bl=obtener_bloque_input(input, info_jugadores[indice].acc_traduccion_input());
-//	j.recibir_input(bl);
+	auto bl=obtener_bloque_input(input);
+	j.recibir_input(bl);
 	j.turno(delta);
 
 	bool colision=false;
+
+	for(const auto& s : mapa.salidas)
+	{
+		if(j.en_colision_con(s))
+		{
+			jugador_en_salida(s);
+			return;
+		}
+	}
 
 	for(const auto& o : mapa.obstaculos)
 	{
@@ -207,4 +212,9 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		//TODO...
 	}
+}
+
+void Controlador_principal::jugador_en_salida(const Salida& s)
+{
+	//
 }

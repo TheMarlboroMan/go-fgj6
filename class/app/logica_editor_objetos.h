@@ -26,6 +26,12 @@ class Objeto_editor
 	static const tcolor	color_obstaculo;
 	static const tcolor	color_obstaculo_inocuo;
 	static const tcolor	color_borde_obstaculo;
+	static const tcolor	color_punto_inicio_editor;
+	static const tcolor	color_salida_editor;
+	static const tcolor	color_pieza_editor;
+	static const tcolor	color_interruptor_editor;
+	static const tcolor	color_puerta_editor;
+	static const tcolor	color_mejora_velocidad_editor;
 
 	protected:
 
@@ -100,22 +106,23 @@ class Decoracion_editor:
 		dibujar_poligono(r, pantalla, elemento.acc_poligono(), elemento.acc_color(), elemento.acc_color_linea(), camara, seleccionado);
 	}	
 };
-/*
-class Punto_inicio_editor:
+
+class Inicio_editor:
 	public Objeto_editor
 {
 	public:
 
-	Punto_inicio_editor(const Espaciable::tpunto& pi)
-		:elemento(pi), poligono(cuadrado(pi.x, pi.y, 6))
+	Inicio_editor(const Inicio& i)
+		:elemento(i), poligono(cuadrado(i.acc_punto().x, i.acc_punto().y, 6))
 	{
+
 	}
 
-	Espaciable::tpunto	elemento;
+	Inicio	elemento;
 	virtual void		mover(double x, double y) 
 	{
-		elemento.x+=x; elemento.y+=y;
-		poligono=cuadrado(elemento.x, elemento.y, 6);
+		elemento.mut_punto(elemento.acc_punto()+Espaciable::tpunto{x, y});
+		poligono=cuadrado(elemento.acc_punto().x, elemento.acc_punto().y, 6);
 	}
 	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(poligono, pt);}
 	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
@@ -127,7 +134,101 @@ class Punto_inicio_editor:
 
 	Espaciable::tpoligono	poligono;
 };
-*/
+
+class Pieza_editor:
+	public Objeto_editor
+{
+	public:
+
+	Pieza_editor(const Pieza& i)
+		:elemento(i)
+	{
+
+	}
+
+	Pieza	elemento;
+	virtual void		mover(double x, double y) {elemento.mover(x, y);}
+	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(elemento.acc_poligono(), pt);}
+	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
+	{
+		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_pieza_editor, color_pieza_editor, camara, seleccionado);
+	}
+};
+
+class Interruptor_editor:
+	public Objeto_editor
+{
+	public:
+
+	Interruptor_editor(const Interruptor& i)
+		:elemento(i)
+	{
+
+	}
+
+	Interruptor	elemento;
+	virtual void		mover(double x, double y) {elemento.mover(x, y);}
+	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(elemento.acc_poligono(), pt);}
+	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
+	{
+		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_interruptor_editor, color_interruptor_editor, camara, seleccionado);
+	}
+};
+
+class Salida_editor:
+	public Objeto_editor
+{
+	public:
+
+	Salida_editor(const Salida& o):elemento(o) {}
+
+	Salida			elemento;
+	virtual void		mover(double x, double y) {elemento.mover(x, y);}
+	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(elemento.acc_poligono(), pt);}	
+	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
+	{
+		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_salida_editor, color_salida_editor, camara, seleccionado);
+	}
+	
+};
+
+class Puerta_editor:
+	public Objeto_editor
+{
+	public:
+
+	Puerta_editor(const Puerta& o):elemento(o) {}
+
+	Puerta			elemento;
+	virtual void		mover(double x, double y) {elemento.mover(x, y);}
+	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(elemento.acc_poligono(), pt);}	
+	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
+	{
+		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_puerta_editor, color_salida_editor, camara, seleccionado);
+	}
+	
+};
+
+class Mejora_velocidad_editor:
+	public Objeto_editor
+{
+	public:
+
+	Mejora_velocidad_editor(const Mejora_velocidad& i)
+		:elemento(i)
+	{
+
+	}
+
+	Mejora_velocidad	elemento;
+	virtual void		mover(double x, double y) {elemento.mover(x, y);}
+	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(elemento.acc_poligono(), pt);}
+	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
+	{
+		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_mejora_velocidad_editor, color_mejora_velocidad_editor, camara, seleccionado);
+	}
+};
+
 }
 
 #endif

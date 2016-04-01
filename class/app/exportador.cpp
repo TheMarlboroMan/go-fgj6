@@ -2,6 +2,57 @@
 
 using namespace App;
 
+std::string Exportador::serializar(Mapa& mapa)
+{
+	using namespace Herramientas_proyecto;
+
+	Dnot_token::t_vector vobstaculos;
+	for(const auto& o : mapa.obstaculos) vobstaculos.push_back(serializar(o));
+
+	Dnot_token::t_vector vdecoraciones;
+	for(const auto& o : mapa.decoraciones) vdecoraciones.push_back(serializar(o));
+
+	Dnot_token::t_vector vinicios;
+	for(const auto& o : mapa.inicios) vinicios.push_back(serializar(o));
+
+	Dnot_token::t_vector vsalidas;
+	for(const auto& o : mapa.salidas) vsalidas.push_back(serializar(o));
+
+	Dnot_token::t_vector vpiezas;
+	for(const auto& o : mapa.piezas) vpiezas.push_back(serializar(o));
+
+	Dnot_token::t_vector vinterruptores;
+	for(const auto& o : mapa.interruptores) vinterruptores.push_back(serializar(o));
+
+	Dnot_token::t_vector vpuertas;
+	for(const auto& o : mapa.puertas) vpuertas.push_back(serializar(o));
+
+	Dnot_token::t_vector vmejoras_velocidad;
+	for(const auto& o : mapa.mejoras_velocidad) vmejoras_velocidad.push_back(serializar(o));
+
+	Dnot_token tok_obstaculos(vobstaculos);
+	Dnot_token tok_decoraciones(vdecoraciones);
+	Dnot_token tok_inicios(vinicios);
+	Dnot_token tok_salidas(vsalidas);
+	Dnot_token tok_piezas(vpiezas);
+	Dnot_token tok_interruptores(vinterruptores);
+	Dnot_token tok_puertas(vpuertas);
+	Dnot_token tok_mejoras_velocidad(vmejoras_velocidad);
+
+	Dnot_token::t_mapa mapa_final;
+	mapa_final["geometria"]=tok_obstaculos;
+	mapa_final["decoracion"]=tok_decoraciones;
+	mapa_final["inicios"]=tok_inicios;
+	mapa_final["salidas"]=tok_salidas;
+	mapa_final["piezas"]=tok_piezas;
+	mapa_final["interruptores"]=tok_interruptores;
+	mapa_final["puertas"]=tok_puertas;
+	mapa_final["mejoras_velocidad"]=tok_mejoras_velocidad;
+	
+	Dnot_token base(mapa_final);
+	return base.serializar();
+}
+
 Herramientas_proyecto::Dnot_token::t_vector Exportador::generar_punto(double x, double y)
 {
 	using namespace Herramientas_proyecto;
@@ -22,7 +73,7 @@ Herramientas_proyecto::Dnot_token::t_vector Exportador::generar_color(int r, int
 	return arr;
 }
 
-Herramientas_proyecto::Dnot_token Exportador::serializar_obstaculo(const Obstaculo& o)
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Obstaculo& o)
 {
 	using namespace Herramientas_proyecto;
 
@@ -51,7 +102,21 @@ Herramientas_proyecto::Dnot_token Exportador::serializar_obstaculo(const Obstacu
 	return Dnot_token(mapa_objeto);
 }
 
-Herramientas_proyecto::Dnot_token Exportador::serializar_decoracion(const Decoracion& o)
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Inicio& o)
+{
+	using namespace Herramientas_proyecto;
+
+	auto pt=o.acc_punto();
+	
+	Dnot_token::t_mapa mapa_objeto;
+	mapa_objeto["pos"].asignar(generar_punto(pt.x, pt.y));
+	mapa_objeto["id"].asignar(o.acc_id());
+	mapa_objeto["angulo"].asignar(o.acc_angulo());
+
+	return Dnot_token(mapa_objeto);
+}
+
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Decoracion& o)
 {
 	using namespace Herramientas_proyecto;
 
@@ -84,35 +149,77 @@ Herramientas_proyecto::Dnot_token Exportador::serializar_decoracion(const Decora
 	return Dnot_token(mapa_polig);
 }
 
-Herramientas_proyecto::Dnot_token Exportador::serializar_punto(DLibH::Punto_2d<double> pt)
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Salida& o)
 {
 	using namespace Herramientas_proyecto;
 
 	Dnot_token::t_vector puntos;
-	puntos.push_back(Dnot_token(pt.x));
-	puntos.push_back(Dnot_token(pt.y));
+	for(const auto& v : o.acc_poligono().acc_vertices())
+		puntos.push_back(Dnot_token(generar_punto(v.x, v.y)));
 
-	return Dnot_token(puntos);
+	Dnot_token::t_mapa mapa_objeto;
+	mapa_objeto["p"].asignar(puntos);
+	mapa_objeto["idm"].asignar(o.acc_id_mapa());
+	mapa_objeto["idi"].asignar(o.acc_id_inicio());
+
+	return Dnot_token(mapa_objeto);
 }
 
-std::string Exportador::serializar(const std::vector<Obstaculo>& obs,
-		const std::vector<Decoracion>& decs)
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Pieza& o)
 {
 	using namespace Herramientas_proyecto;
 
-	Dnot_token::t_vector vobstaculos;
-	for(const auto& o : obs) vobstaculos.push_back(serializar_obstaculo(o));
+	Dnot_token::t_mapa mapa_objeto;
 
-	Dnot_token::t_vector vdecoraciones;
-	for(const auto& d : decs) vdecoraciones.push_back(serializar_decoracion(d));
-
-	Dnot_token tok_obstaculos(vobstaculos);
-	Dnot_token tok_decoraciones(vdecoraciones);
-
-	Dnot_token::t_mapa mapa_final;
-	mapa_final["geometria"]=tok_obstaculos;
-	mapa_final["decoracion"]=tok_decoraciones;
+	auto centro=o.acc_poligono().acc_centro();
 	
-	Dnot_token base(mapa_final);
-	return base.serializar();
+	mapa_objeto["pos"].asignar(generar_punto(centro.x, centro.y));
+	mapa_objeto["i"].asignar(o.acc_indice());
+
+	return Dnot_token(mapa_objeto);
+}
+
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Interruptor& o)
+{
+	using namespace Herramientas_proyecto;
+
+	Dnot_token::t_mapa mapa_objeto;
+
+	auto centro=o.acc_poligono().acc_centro();
+	
+	mapa_objeto["pos"].asignar(generar_punto(centro.x, centro.y));
+	mapa_objeto["n"].asignar(o.acc_nivel());
+	mapa_objeto["idp"].asignar(o.acc_id_puerta());
+	mapa_objeto["idg"].asignar(o.acc_id_grupo());
+	mapa_objeto["tgr"].asignar(o.acc_tiempo_grupo());
+
+	return Dnot_token(mapa_objeto);
+}
+
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Puerta& o)
+{
+	using namespace Herramientas_proyecto;
+
+	Dnot_token::t_vector puntos;
+	for(const auto& v : o.acc_poligono().acc_vertices())
+		puntos.push_back(Dnot_token(generar_punto(v.x, v.y)));
+
+	Dnot_token::t_mapa mapa_objeto;
+	mapa_objeto["p"].asignar(puntos);
+	mapa_objeto["id"].asignar(o.acc_id());
+
+	return Dnot_token(mapa_objeto);
+}
+
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Mejora_velocidad& o)
+{
+	using namespace Herramientas_proyecto;
+
+	Dnot_token::t_mapa mapa_objeto;
+
+	auto centro=o.acc_poligono().acc_centro();
+	mapa_objeto["pos"].asignar(generar_punto(centro.x, centro.y));
+	mapa_objeto["n"].asignar(o.acc_nivel());
+
+	return Dnot_token(mapa_objeto);
 }

@@ -40,7 +40,8 @@ class Controlador_principal:
 
 	void					ajustar_camara();
 	void					procesar_jugador(DFramework::Input&, float, Jugador&);
-	Bloque_input				obtener_bloque_input(DFramework::Input& input, const Traduccion_input&) const;
+	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
+	void					jugador_en_salida(const Salida&); 
 
 	DLibH::Log_base&			log;
 	const DLibV::Fuente_TTF&		fuente_akashi;
@@ -48,6 +49,11 @@ class Controlador_principal:
 	DLibV::Camara				camara;
 	Mapa					mapa;
 	Jugador					jugador;
+
+	struct
+	{
+		Inicio				inicio_actual;
+	}info_mapa{Inicio(Espaciable::tpunto{0.0,0.0}, 0, 0)};
 };
 
 }

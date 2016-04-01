@@ -8,6 +8,12 @@ void Mapa::limpiar()
 {
 	obstaculos.clear();
 	decoraciones.clear();
+	inicios.clear();
+	salidas.clear();
+	piezas.clear();
+	interruptores.clear();
+	puertas.clear();
+	mejoras_velocidad.clear();
 	decoraciones_fondo.clear();
 	decoraciones_frente.clear();
 }

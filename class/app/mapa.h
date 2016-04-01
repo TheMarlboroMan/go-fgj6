@@ -5,6 +5,12 @@
 
 #include "decoracion.h"
 #include "obstaculo.h"
+#include "inicio.h"
+#include "salida.h"
+#include "pieza.h"
+#include "interruptor.h"
+#include "puerta.h"
+#include "mejora_velocidad.h"
 
 namespace App
 {
@@ -20,6 +26,12 @@ class Mapa
 
 	std::vector<Obstaculo>			obstaculos;
 	std::vector<Decoracion>			decoraciones;
+	std::vector<Inicio>			inicios;
+	std::vector<Salida>			salidas;
+	std::vector<Pieza>			piezas;
+	std::vector<Interruptor>		interruptores;
+	std::vector<Puerta>			puertas;
+	std::vector<Mejora_velocidad>		mejoras_velocidad;
 	std::vector<const Decoracion *>		decoraciones_frente;
 	std::vector<const Decoracion *>		decoraciones_fondo;
 

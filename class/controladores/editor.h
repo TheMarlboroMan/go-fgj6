@@ -65,6 +65,10 @@ class Controlador_editor:
 	void					cambiar_grid(int);
 	DLibH::Punto_2d<double>			punto_desde_pos_pantalla(int x, int y, bool=true);
 	void					nuevo_punto(DLibH::Punto_2d<double>);
+	void					nuevo_inicio(DLibH::Punto_2d<double>);
+	void					nueva_pieza(DLibH::Punto_2d<double>);
+	void					nueva_mejora_velocidad(DLibH::Punto_2d<double>);
+	void					nuevo_interruptor(DLibH::Punto_2d<double>);
 	void					cerrar_poligono();
 	void					localizar_elementos_bajo_cursor();
 	template<typename T, typename TV>	
@@ -95,6 +99,12 @@ class Controlador_editor:
 	std::unique_ptr<Widget_editor_interface>	widget;
 	std::vector<Obstaculo_editor>		obstaculos;
 	std::vector<Decoracion_editor>		decoraciones;
+	std::vector<Inicio_editor>		inicios;
+	std::vector<Salida_editor>		salidas;
+	std::vector<Pieza_editor>		piezas;
+	std::vector<Interruptor_editor>		interruptores;
+	std::vector<Puerta_editor>		puertas;
+	std::vector<Mejora_velocidad_editor>	mejoras_velocidad;
 
 	DFramework::Input::Posicion_raton	pos_raton;
 	Espaciable::tpoligono			poligono_construccion;
@@ -103,7 +113,7 @@ class Controlador_editor:
 	int					grid;
 	enum flags_ver{fvdeco_frente=1, fvdeco_fondo=2, fvobstaculos=4};
 	int					ver_flags;
-	enum class tobjetocreado		{obstaculo, decoracion, inicio, salida, palanca, pieza, bonus, arbol} tobjeto;
+	enum class tobjetocreado		{obstaculo, decoracion, inicio, salida, pieza, interruptor, puerta, mejora_velocidad/*, bonus, arbol*/} tobjeto;
 
 	std::vector<Objeto_editor *>		objetos_cursor;
 	std::vector<Objeto_editor *>		objetos_seleccionados;
