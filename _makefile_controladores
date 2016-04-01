@@ -1,0 +1,57 @@
+################################################################################
+#Definiciones...
+
+DIR_CONTROLADORES=./class/controladores/
+DIR_HEADERS_APP=./class/app/
+DIR_HEADERS_IMPL=./class/app/framework_impl/
+DIR_FRAMEWORK=./class/framework/
+DIR_CLASES_EVENTOS=./class/app/eventos/
+
+################################################################################
+#Controladores...
+################################################################################
+
+$(DIR_O)director_estados.o :\
+$(DIR_O)controlador_principal.o \
+$(DIR_O)controlador_editor.o \
+$(DIR_CONTROLADORES)director_estados.h \
+$(DIR_CONTROLADORES)director_estados.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)director_estados.cpp -o $(DIR_O)director_estados.o 
+
+$(DIR_O)controlador_ayuda_editor.o :\
+$(DIR_O)fuentes.o\
+$(DIR_HEADERS_IMPL)input.h\
+$(DIR_CONTROLADORES)estados_controladores.h \
+$(DIR_CONTROLADORES)ayuda_editor.h \
+$(DIR_CONTROLADORES)ayuda_editor.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)ayuda_editor.cpp -o $(DIR_O)controlador_ayuda_editor.o 
+
+$(DIR_O)controlador_editor.o :\
+$(DIR_O)exportador.o\
+$(DIR_O)importador.o\
+$(DIR_O)mapa.o\
+$(DIR_O)mensajes.o\
+$(DIR_O)representador.o\
+$(DIR_O)fuentes.o\
+$(DIR_O)widget_editor_propiedades_mapa.o\
+$(DIR_O)widget_editor_color.o\
+$(DIR_O)widget_editor_decoracion.o\
+$(DIR_O)widget_editor_obstaculo.o\
+$(DIR_HEADERS_APP)logica_editor_objetos.h\
+$(DIR_HEADERS_IMPL)input.h\
+$(DIR_CONTROLADORES)estados_controladores.h \
+$(DIR_CONTROLADORES)editor.h \
+$(DIR_CONTROLADORES)editor.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)editor.cpp -o $(DIR_O)controlador_editor.o 
+
+$(DIR_O)controlador_principal.o :\
+$(DIR_O)fuentes.o\
+$(DIR_O)mapa.o\
+$(DIR_O)jugador.o\
+$(DIR_O)representador.o\
+$(DIR_O)importador.o\
+$(DIR_HEADERS_APP)bloque_input.h\
+$(DIR_HEADERS_IMPL)input.h\
+$(DIR_CONTROLADORES)principal.h \
+$(DIR_CONTROLADORES)principal.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)principal.cpp -o $(DIR_O)controlador_principal.o 

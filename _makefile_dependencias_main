@@ -1,0 +1,50 @@
+DEP_HERRAMIENTAS_PROYECTO=\
+$(DIR_O_HERRAMIENTAS_PROYECTO)lector_txt.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)fichero_pares.o\
+$(DIR_O_HERRAMIENTAS_PROYECTO)controlador_argumentos.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)string_utilidades.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)ficheros_utilidades.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)dnot_parser.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)dnot_token.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)localizador_base.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)compositor_vista.o \
+$(DIR_O_HERRAMIENTAS_PROYECTO)listado_vertical.o\
+$(DIR_O_HERRAMIENTAS_PROYECTO)estructura_paginacion.o\
+#$(DIR_O_HERRAMIENTAS_PROYECTO)generador_numeros.o \
+
+DEP_CLASES_APP=\
+$(DIR_O)kernel_config.o\
+$(DIR_O)app_config.o\
+$(DIR_O)representador.o\
+$(DIR_O)espaciable.o\
+$(DIR_O)fuentes.o\
+$(DIR_O)mensajes.o\
+$(DIR_O)jugador.o\
+$(DIR_O)obstaculo.o\
+$(DIR_O)decoracion.o\
+$(DIR_O)exportador.o\
+$(DIR_O)importador.o\
+$(DIR_O)mapa.o\
+$(DIR_O)representable.o\
+$(DIR_O)widget_editor_decoracion.o\
+$(DIR_O)widget_editor_color.o\
+$(DIR_O)widget_editor_propiedades_mapa.o\
+$(DIR_O)widget_editor_obstaculo.o\
+
+DEP_CONTROLADORES=\
+$(DIR_O)director_estados.o \
+$(DIR_O)controlador_principal.o \
+$(DIR_O)controlador_editor.o \
+$(DIR_O)controlador_ayuda_editor.o \
+
+DEP_FRAMEWORK=\
+$(DIR_O)fw_kernel.o \
+$(DIR_O)fw_input.o \
+$(DIR_O)fw_director_estados_interface.o \
+$(DIR_O)fw_estados.o \
+$(DIR_O)fw_controlador_interface.o \
+$(DIR_O)fw_eventos.o \
+$(DIR_O)fw_audio.o \
+$(DIR_O)fw_cargador_recursos.o \
+$(DIR_O)fw_kernel_driver_interface.o \
+$(DIR_O)fw_configuracion_base.o \

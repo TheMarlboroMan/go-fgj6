@@ -1,0 +1,23 @@
+config:{
+	audio:{
+		audio_buffers:1024, audio_canales:16, audio_ratio:44100, audio_salidas:0, volumen_audio:64, volumen_musica:64
+	}, input:{
+		general:{
+			zoom_mas:0, zoom_menos:0
+		}, jugador_1:{
+			abajo:[
+				0, 0, 81
+			], arriba:[
+				0, 0, 82
+			], derecha:[
+				0, 0, 79
+			], izquierda:[
+				0, 0, 80
+			]
+		}
+	}, meta:{
+		v:1
+	}, video:{
+		doble_buffer:1, h_fisica_ventana:500, h_logica_ventana:00, modo_hardware:1, modo_pantalla:0, pantalla_anyformat:1, w_fisica_ventana:800, w_logica_ventana:800
+	}
+}

@@ -1,0 +1,14 @@
+layout:
+[
+	{
+		tipo:"pantalla", 
+		rgba:[0, 0, 0, 255]
+	},
+	{
+		tipo:"ttf",
+		pos:[16, 16],
+		texto:"AYUDA",
+		fuente:"fuente", rgba:[255, 255, 255, 255], orden:10,
+		id:"txt_ayuda", alpha: 255
+	}
+]

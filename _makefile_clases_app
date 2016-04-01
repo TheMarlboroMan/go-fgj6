@@ -1,0 +1,148 @@
+################################################################################
+#Definciones
+
+DIR_CLASES_APP=./class/app/
+DIR_CLASES_IMPLEMENTACION_FRAMEWORK=./class/app/framework_impl/
+
+################################################################################
+#Implementación framework...
+################################################################################
+
+$(DIR_O)kernel_config.o:\
+$(DIR_CLASES_IMPLEMENTACION_FRAMEWORK)kernel_config.h \
+$(DIR_CLASES_IMPLEMENTACION_FRAMEWORK)kernel_config.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_IMPLEMENTACION_FRAMEWORK)kernel_config.cpp -o $(DIR_O)kernel_config.o
+
+$(DIR_O)app_config.o:\
+$(DIR_CLASES_IMPLEMENTACION_FRAMEWORK)app_config.h \
+$(DIR_CLASES_IMPLEMENTACION_FRAMEWORK)app_config.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_IMPLEMENTACION_FRAMEWORK)app_config.cpp -o $(DIR_O)app_config.o
+
+################################################################################
+#Definiciones...
+################################################################################
+
+################################################################################
+#Clases...
+################################################################################
+
+$(DIR_O)jugador.o:\
+$(DIR_O)espaciable.o\
+$(DIR_O)representable.o\
+$(DIR_CLASES_APP)color.h \
+$(DIR_CLASES_APP)bloque_input.h \
+$(DIR_CLASES_APP)jugador.h \
+$(DIR_CLASES_APP)jugador.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)jugador.cpp -o $(DIR_O)jugador.o
+
+$(DIR_O)logica_editor.o:\
+$(DIR_O)mapa.o\
+$(DIR_O)importador.o\
+$(DIR_O)exportador.o\
+$(DIR_O)representador.o\
+$(DIR_CLASES_APP)logica_interface.h\
+$(DIR_CLASES_APP)representador.h\
+$(DIR_CLASES_APP)logica_editor.h \
+$(DIR_CLASES_APP)logica_editor_objetos.h \
+$(DIR_CLASES_APP)logica_editor.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)logica_editor.cpp -o $(DIR_O)logica_editor.o
+
+$(DIR_O)logica_juego.o:\
+$(DIR_O)mapa.o\
+$(DIR_O)jugador.o\
+$(DIR_CLASES_APP)representador.h\
+$(DIR_CLASES_APP)logica_interface.h\
+$(DIR_CLASES_APP)bloque_input.h\
+$(DIR_CLASES_APP)logica_juego.h \
+$(DIR_CLASES_APP)logica_juego.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)logica_juego.cpp -o $(DIR_O)logica_juego.o
+
+$(DIR_O)mapa.o:\
+$(DIR_O)decoracion.o\
+$(DIR_O)obstaculo.o\
+$(DIR_O)representable.o\
+$(DIR_CLASES_APP)mapa.h \
+$(DIR_CLASES_APP)mapa.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)mapa.cpp -o $(DIR_O)mapa.o
+
+$(DIR_O)importador.o:\
+$(DIR_O)obstaculo.o\
+$(DIR_O)decoracion.o\
+$(DIR_CLASES_APP)importador.h \
+$(DIR_CLASES_APP)importador.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)importador.cpp -o $(DIR_O)importador.o
+
+$(DIR_O)exportador.o:\
+$(DIR_O)obstaculo.o\
+$(DIR_O)decoracion.o\
+$(DIR_CLASES_APP)exportador.h \
+$(DIR_CLASES_APP)exportador.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)exportador.cpp -o $(DIR_O)exportador.o
+
+$(DIR_O)decoracion.o:\
+$(DIR_O)obstaculo.o\
+$(DIR_O)representable.o\
+$(DIR_CLASES_APP)color.h \
+$(DIR_CLASES_APP)decoracion.h \
+$(DIR_CLASES_APP)decoracion.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)decoracion.cpp -o $(DIR_O)decoracion.o
+
+$(DIR_O)obstaculo.o:\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)obstaculo.h \
+$(DIR_CLASES_APP)obstaculo.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)obstaculo.cpp -o $(DIR_O)obstaculo.o
+
+$(DIR_O)representador.o:\
+$(DIR_CLASES_APP)color.h \
+$(DIR_CLASES_APP)representador.h \
+$(DIR_CLASES_APP)representador.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)representador.cpp -o $(DIR_O)representador.o
+
+$(DIR_O)espaciable.o:\
+$(DIR_CLASES_APP)espaciable.h \
+$(DIR_CLASES_APP)espaciable.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)espaciable.cpp -o $(DIR_O)espaciable.o
+
+$(DIR_O)widget_editor_propiedades_mapa.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_mapa.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_mapa.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_mapa.cpp -o $(DIR_O)widget_editor_propiedades_mapa.o
+
+$(DIR_O)widget_editor_color.o:\
+$(DIR_CLASES_APP)color.h \
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_color.h \
+$(DIR_CLASES_APP)widget_editor_color.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_color.cpp -o $(DIR_O)widget_editor_color.o
+
+$(DIR_O)widget_editor_obstaculo.o:\
+$(DIR_O)obstaculo.o\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_obstaculo.h \
+$(DIR_CLASES_APP)widget_editor_obstaculo.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_obstaculo.cpp -o $(DIR_O)widget_editor_obstaculo.o
+
+$(DIR_O)widget_editor_decoracion.o:\
+$(DIR_O)decoracion.o\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_decoracion.h \
+$(DIR_CLASES_APP)widget_editor_decoracion.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_decoracion.cpp -o $(DIR_O)widget_editor_decoracion.o
+
+$(DIR_O)mensajes.o:\
+$(DIR_CLASES_APP)mensajes.h \
+$(DIR_CLASES_APP)mensajes.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)mensajes.cpp -o $(DIR_O)mensajes.o
+
+$(DIR_O)fuentes.o:\
+$(DIR_CLASES_APP)fuentes.h \
+$(DIR_CLASES_APP)fuentes.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)fuentes.cpp -o $(DIR_O)fuentes.o
+
+$(DIR_O)representable.o:\
+$(DIR_O)representador.o\
+$(DIR_CLASES_APP)representable.h \
+$(DIR_CLASES_APP)representable.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)representable.cpp -o $(DIR_O)representable.o

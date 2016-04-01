@@ -1,0 +1,32 @@
+F1: Pantalla de ayuda.
+F2: Pasar a modo de juego.
+F5: Cargar mapa.
+F9: Guardar mapa.
+Tab: Intercambiar modo de creación.
+Cursores: mover cámara.
+Click izquierdo: 
+	Sin elementos bajo cursor: Crear elemento / vértice.
+	Con elemento bajo cursor + Control izquierdo : seleccionar.
+	Sin elemento bajo cursor + Control izquierdo : limpiar selección.
+Click derecho:
+	Editar elemento bajo cursor.
+Control izquierda +
+	1 : Ocultar / mostrar decoración frente.
+	2 : Ocultar / mostrar decoración fondo.
+	3 : Ocultar / mostrar obstáculos.
+	4 : Ocultar / mostrar conexiones para puntos de ruta.
+	Cursores: mover selección.
+Del: Eliminar elementos seleccionados.
+Escape: Anular polígono en construcción.
++: Incrementar zoom.
+-: Decrementar zoom.
+0: Reiniciar zoom.
+[: Decrementar rejilla.
+]: Incrementar rejilla.
+c: Seleccionar nuevo color.
+x: Copiar colores.
+v: Pegar colores.
+n: Quitar profundidad a decoración.
+m: Añadir profundidad a decoración.
+t: Construír árbol de visibilidad.
+

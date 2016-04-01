@@ -1,0 +1,24 @@
+layout:
+[
+	{tipo:"const", clave:"y_selector", valor:78},
+	{tipo:"const", clave:"x_selector", valor:130},
+	{tipo:"const", clave:"salto_selector", valor:20},
+	{
+		tipo:"caja",
+		pos:[100, 50, 440, 300], rgb:[255,255,255], orden: 10
+	},
+	{
+		tipo:"caja",
+		pos:[102, 52, 436, 296], rgb:[128,128,128], orden: 20
+	},
+	{
+		tipo:"ttf", pos:[140, 80], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"Tipo", orden: 30
+	},
+	{
+		tipo:"ttf", pos:[240, 80], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"-", id:"txt_tipo", orden: 30
+	},
+	{
+		tipo:"caja",
+		pos:[130, 78, 100, 16], rgb:[255,255,255,128], id:"selector", alpha:128, orden: 40
+	}
+]

@@ -1,0 +1,40 @@
+layout:
+[
+	{tipo:"const", clave:"y_selector", valor:78},
+	{tipo:"const", clave:"x_selector", valor:130},
+	{tipo:"const", clave:"salto_selector", valor:20},
+	{
+		tipo:"caja",
+		pos:[100, 50, 440, 300], rgb:[255,255,255], orden: 10
+	},
+	{
+		tipo:"caja",
+		pos:[102, 52, 436, 296], rgb:[128,128,128], orden: 20
+	},
+
+	{tipo:"ttf", pos:[140, 80], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"ID:", orden: 50},
+	{tipo:"ttf", pos:[240, 80], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"-", id:"txt_id", orden: 50},
+
+	{tipo:"ttf", pos:[140,100], fuente:"akashi", rgba:[0, 0, 0, 255],texto: "MIN CAM. X:", orden: 50},
+	{tipo:"ttf", pos:[240,100], fuente:"akashi", rgba:[0, 0, 0, 255],texto: "-", id:"txt_minx", orden: 50},
+
+	{tipo:"ttf", pos:[140,120], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MAX CAM. X:", orden: 50},
+	{tipo:"ttf", pos:[240,120], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_maxx", orden: 50},
+
+	{tipo:"ttf", pos:[140,140], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MIN CAM. Y:", orden: 50},
+	{tipo:"ttf", pos:[240,140], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_miny", orden: 50},
+
+	{tipo:"ttf", pos:[140, 160], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MAX CAM. Y:", orden: 50},
+	{tipo:"ttf", pos:[240, 160], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_maxy", orden: 50},
+
+	{tipo:"caja",pos:[130, 78, 100, 16], rgb:[255,255,255,128], id:"selector", alpha:128	, orden: 60},
+
+	{
+		tipo:"ttf", pos:[140,200], fuente:"akashi", rgba:[0, 0, 0, 255],
+		texto:">>>", orden: 50
+	},
+	{
+		tipo:"ttf", pos:[180,200], fuente:"akashi", rgba:[0, 0, 0, 255],
+		texto:"", id:"txt_input", orden: 50
+	}
+]
