@@ -1,4 +1,4 @@
-INICIANDO SESION 1459619113
+INICIANDO SESION 1459619802
 Iniciando proceso principal...
 Inicializando configuración aplicación...
 Inicializando configuración kernel...
@@ -6,30 +6,87 @@ Inicializando SDL2...
 Inicializando kernel...
 Detectado nuevo joystick...
 Detectado nuevo joystick...
+Detectado nuevo joystick...
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
 Inicializando mapa...
 Nuevo grupo de puertas 1
-Nuevo grupo de puertas 2
-Inicializando mapa...
+Grupo de puertas 1:2
+Grupo de puertas 1:3
 Nuevo grupo de puertas 1
-Nuevo grupo de puertas 2
+Grupo de puertas 1:2
+Grupo de puertas 1:3
 La puerta existe... activando...
-Puerta 14 completa
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Inicializando mapa...
 La puerta existe... activando...
-Puerta 15 completa
+La puerta existe... activando...
+La puerta existe... activando...
 Nuevo grupo de puertas 1
-Nuevo grupo de puertas 2
+Grupo de puertas 1:2
+Grupo de puertas 1:3
 Nuevo grupo de puertas 1
-Nuevo grupo de puertas 2
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Inicializando mapa...
+La puerta existe... activando...
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Inicializando mapa...
+La puerta existe... activando...
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
 Inicializando mapa...
 Nuevo grupo de puertas 1
-Nuevo grupo de puertas 2
+Grupo de puertas 1:2
+Grupo de puertas 1:3
 Nuevo grupo de puertas 1
-Nuevo grupo de puertas 2
-Inicializando mapa...
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+La puerta existe... activando...
+La puerta existe... activando...
+La puerta existe... activando...
+La puerta existe... activando...
+La puerta existe... activando...
+La puerta existe... activando...
+La puerta existe... activando...
+La puerta existe... activando...
+La puerta existe... activando...
+Puerta 8 completa
+Warning: no existe la puerta 8
 Nuevo grupo de puertas 1
-Nuevo grupo de puertas 2
-Inicializando mapa...
+Grupo de puertas 1:2
+Grupo de puertas 1:3
+Nuevo grupo de puertas 1
+Grupo de puertas 1:2
+Grupo de puertas 1:3
 Finalizando proceso principal.
 Finalizando SDL2...
 
-FINALIZANDO SESION 1459619309
+FINALIZANDO SESION 1459620762
