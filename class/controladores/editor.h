@@ -37,7 +37,8 @@ class Controlador_editor:
 	virtual bool			es_posible_abandonar_estado() const;
 
 	void				iniciar_edicion_fichero(const std::string& s);
-	void					aplicar_a_mapa(Mapa&);
+	void				aplicar_a_mapa(Mapa&);
+	Info_mapa			acc_info_mapa() const {return info_mapa;}
 
 	private:
 

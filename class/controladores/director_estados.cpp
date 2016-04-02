@@ -24,6 +24,7 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 	else
 	{
 		//TODO: Have main controller precache all info...
+		estados.validar_y_cambiar_estado(principal);
 		controlador_principal->iniciar_juego();
 	}
 }
@@ -58,7 +59,14 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 	switch(deseado)
 	{
 		case t_estados::principal: 
-			controlador_editor->aplicar_a_mapa(controlador_principal->acc_mapa());
+
+			if(actual==t_estados::editor)
+			{
+				auto im=controlador_editor->acc_info_mapa();
+				controlador_principal->iniciar_nivel(im.id, 1);
+			}
+//			controlador_editor->aplicar_a_mapa(controlador_principal->acc_mapa());
+
 		break;
 		case t_estados::editor: break;
 		case t_estados::ayuda_editor: break;

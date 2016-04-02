@@ -64,6 +64,7 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	switch(mapa.acc_id_fondo())
 	{
 		case 1: id_recurso=2; break;
+		case 2: id_recurso=3; break;
 	}
 
 	DLibV::Representacion_bitmap fondo(DLibV::Gestor_texturas::obtener(id_recurso));
@@ -242,6 +243,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 			switch(o.acc_tipo())
 			{
 				case Obstaculo::ttipos::normal: 
+			//TODO...
 					iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
 					return;
 				break;
@@ -249,6 +251,15 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 					//TODO...
 				break;
 			}
+		}
+	}
+
+	for(const auto& p : mapa.puertas)
+	{
+		if(j.en_colision_con(p))
+		{
+			//TODO...
+			iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
 		}
 	}
 }

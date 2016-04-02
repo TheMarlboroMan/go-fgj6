@@ -170,6 +170,8 @@ void Widget_editor_color::finalizar(DFramework::Input& input)
 {
 	input.vaciar_input_texto();
 	input.finalizar_input_texto();
+
+	color_linea=color_fondo;
 }
 
 void Widget_editor_color::inicializar(DFramework::Input& input)

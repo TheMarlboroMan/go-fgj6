@@ -38,11 +38,11 @@ class Controlador_principal:
 
 	Mapa&				acc_mapa() {return mapa;}
 	void				iniciar_juego();
+	void				iniciar_nivel(int, int);
 
 	private:
 
 	void					ajustar_camara();
-	void					iniciar_nivel(int, int);
 
 	void					procesar_jugador(DFramework::Input&, float, Jugador&);
 	void					procesar_interruptores(float);
