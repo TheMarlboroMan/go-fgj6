@@ -36,6 +36,7 @@ class Controlador_editor:
 	virtual void 			dormir();
 	virtual bool			es_posible_abandonar_estado() const;
 
+	void				iniciar_edicion_fichero(const std::string& s);
 	void					aplicar_a_mapa(Mapa&);
 
 	private:
@@ -95,6 +96,7 @@ class Controlador_editor:
 	DLibV::Camara				camara;
 	Mapa					mapa;
 	Widget_mensajes				mensajes;
+	std::string				nombre_fichero;
 
 	std::unique_ptr<Widget_editor_interface>	widget;
 	std::vector<Obstaculo_editor>		obstaculos;

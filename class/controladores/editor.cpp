@@ -43,6 +43,7 @@ Controlador_editor::Controlador_editor(DLibH::Log_base& l, const Fuentes& f)
 	fuente_akashi_mensajes(f.obtener_fuente("akashi", 9)),
 	camara(0, 0, 800, 500),
 	mensajes(fuente_akashi_mensajes, 4, 16, 0),
+	nombre_fichero("mapa.dat"),
 	widget(nullptr),
 	color_relleno({128, 128, 128, 255}),
 	color_linea({128, 128, 128, 255}), grid(20), ver_flags(fvdeco_frente | fvdeco_fondo | fvobstaculos),
@@ -265,8 +266,6 @@ bool Controlador_editor::es_posible_abandonar_estado() const
 
 void Controlador_editor::cargar_mapa()
 {
-	const std::string nombre_fichero="mapa.dat";
-
 	mapa.limpiar();
 	Importador importador;
 	importador.importar(nombre_fichero.c_str(), mapa);
@@ -279,8 +278,6 @@ void Controlador_editor::cargar_mapa()
 
 void Controlador_editor::grabar_mapa()
 {
-	const std::string nombre_fichero="mapa.dat";
-
 	std::ofstream fichero(nombre_fichero.c_str());
 	Exportador exportador;
 	aplicar_a_mapa(mapa);
@@ -758,4 +755,10 @@ void Controlador_editor::reordenar_decoraciones()
 		std::begin(decoraciones), 
 		std::end(decoraciones), 
 		[](const Decoracion_editor& a, const Decoracion_editor& b) {return a.elemento < b.elemento;});
+}
+
+void Controlador_editor::iniciar_edicion_fichero(const std::string& s)
+{
+	nombre_fichero=s;
+	cargar_mapa();
 }

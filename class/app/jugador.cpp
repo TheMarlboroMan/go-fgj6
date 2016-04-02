@@ -88,5 +88,11 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)
 {
 	angulo=an;
+
+	//reiniciar polígono para evitar problemas con rotaciones...
+	poligono=DLibH::Poligono_2d<double> {};
+	formar_poligono();
+	poligono.rotar(angulo);
+
 	establecer_posicion(pt.x, pt.y);
 } 

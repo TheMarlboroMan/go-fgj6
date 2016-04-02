@@ -11,9 +11,21 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 	config(c), log(log)
 {
 	preparar_video(kernel);
-	registrar_fuentes();	
+	registrar_fuentes();
 	registrar_controladores();
 	virtualizar_joysticks(kernel.acc_input());
+
+	int indice=kernel.acc_controlador_argumentos().buscar("file");
+	if(indice!=-1)
+	{
+		estados.validar_y_cambiar_estado(editor);
+		controlador_editor->iniciar_edicion_fichero(kernel.acc_controlador_argumentos().acc_argumento(indice+1));
+	}
+	else
+	{
+		//TODO: Have main controller precache all info...
+		controlador_principal->iniciar_juego();
+	}
 }
 
 void Director_estados::preparar_video(DFramework::Kernel& kernel)

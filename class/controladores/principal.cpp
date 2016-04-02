@@ -69,9 +69,6 @@ void  Controlador_principal::despertar()
 {
 	log<<"Inicializando mapa..."<<std::endl;
 	mapa.inicializar();
-
-	info_mapa.inicio_actual=mapa.inicios[0];
-	jugador.establecer_inicio(info_mapa.inicio_actual.acc_punto(), info_mapa.inicio_actual.acc_angulo());
 }
 
 void  Controlador_principal::dormir()
@@ -183,13 +180,11 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	j.recibir_input(bl);
 	j.turno(delta);
 
-	bool colision=false;
-
 	for(const auto& s : mapa.salidas)
 	{
 		if(j.en_colision_con(s))
 		{
-			jugador_en_salida(s);
+			iniciar_nivel(s.acc_id_mapa(), s.acc_id_inicio());
 			return;
 		}
 	}
@@ -200,21 +195,56 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 		{
 			switch(o.acc_tipo())
 			{
-				case Obstaculo::ttipos::normal: j.colisionar(true); break;
-				case Obstaculo::ttipos::inocuo: j.colisionar(false); break;
+				case Obstaculo::ttipos::normal: 
+					iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
+					return;
+				break;
+				case Obstaculo::ttipos::inocuo: 
+					//TODO...
+				break;
 			}
-			colision=true;
-			break;
 		}
-	}
-
-	if(colision)
-	{
-		//TODO...
 	}
 }
 
 void Controlador_principal::jugador_en_salida(const Salida& s)
 {
 	//
+}
+
+void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
+{
+	info_mapa.id_mapa=nivel;
+
+	const std::string nombre_fichero="data/mapas/mapa"+std::to_string(nivel)+".dat";
+
+	mapa.limpiar();
+	Importador importador;
+	importador.importar(nombre_fichero.c_str(), mapa);
+	mapa.inicializar();
+
+	//TODO: Procesar cosas persistentes.
+
+	//Colocar a jugador en punto de inicio.
+	auto it=std::find_if(std::begin(mapa.inicios), std::end(mapa.inicios), [id_inicio](const Inicio& i){return i.acc_id()==id_inicio;});
+
+	if(it==std::end(mapa.inicios))
+	{
+		throw std::runtime_error("Imposible localizar punto de inicio en mapa");
+	}
+
+	info_mapa.inicio_actual=*it;
+
+	jugador.establecer_inicio(info_mapa.inicio_actual.acc_punto(), info_mapa.inicio_actual.acc_angulo());
+
+}
+
+void Controlador_principal::preparar_info_juego()
+{
+	//TODO: Cargar todos los niveles y guardar el estado de las cosas persistentes.
+}
+
+void Controlador_principal::iniciar_juego()
+{
+	iniciar_nivel(1, 0);
 }

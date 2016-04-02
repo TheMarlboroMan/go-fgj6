@@ -24,7 +24,7 @@ class Director_estados:
 	public:
 
 							Director_estados(DFramework::Kernel& kernel, App::App_config& config, DLibH::Log_base&);
-
+	
 	virtual void					input_comun(DFramework::Input& input, float delta);
 	virtual void					preparar_cambio_estado(int deseado, int actual);
 

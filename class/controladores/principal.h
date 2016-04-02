@@ -35,10 +35,13 @@ class Controlador_principal:
 	virtual bool			es_posible_abandonar_estado() const;
 
 	Mapa&				acc_mapa() {return mapa;}
+	void				preparar_info_juego();
+	void				iniciar_juego();
 
 	private:
 
 	void					ajustar_camara();
+	void					iniciar_nivel(int, int);
 	void					procesar_jugador(DFramework::Input&, float, Jugador&);
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 	void					jugador_en_salida(const Salida&); 
@@ -52,8 +55,10 @@ class Controlador_principal:
 
 	struct
 	{
+		int				id_mapa;
 		Inicio				inicio_actual;
-	}info_mapa{Inicio(Espaciable::tpunto{0.0,0.0}, 0, 0)};
+
+	}info_mapa{1, Inicio(Espaciable::tpunto{0.0,0.0}, 0, 0)};
 };
 
 }

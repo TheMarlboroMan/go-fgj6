@@ -38,7 +38,11 @@ void Widget_mensajes::turno(float delta)
 	while(it < std::end(mensajes))
 	{
 		it->tiempo-=delta;
-		if(it->tiempo <=0.0f) it=mensajes.erase(it);
+		if(it->tiempo <=0.0f) 
+		{
+			it=mensajes.erase(it);	
+			return;			//Evitar un crash chungo... Ya lo miraremos bien.
+		}
 		else ++it;
 	}
 }
