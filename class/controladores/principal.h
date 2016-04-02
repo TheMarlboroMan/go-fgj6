@@ -50,10 +50,10 @@ class Controlador_principal:
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 
-	void					jugador_en_salida(const Salida&); 
-	void					jugador_en_interruptor(Interruptor&);
-	void					jugador_en_pieza(const Pieza&);
-	void					jugador_en_mejora_velocidad(const Mejora_velocidad&);
+	void					jugador_en_salida(const Salida&, Jugador&); 
+	void					jugador_en_interruptor(Interruptor&, Jugador&);
+	void					jugador_en_pieza(const Pieza&, Jugador&);
+	void					jugador_en_mejora_velocidad(const Mejora_velocidad&, Jugador&);
 
 	void					abrir_puerta(int);
 

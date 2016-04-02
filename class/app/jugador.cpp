@@ -8,7 +8,7 @@ const float Jugador::factor_aceleracion=180.0f;
 
 Jugador::Jugador()
 	:angulo(0.0), velocidad(100.0f), indice_velocidad(0), 
-	pieza_actual(0), max_velocidad(0), velocidades{80.0, 160.0, 320.0, 640.0}
+	pieza_actual(0), max_velocidad(3), velocidades{80.0, 160.0, 320.0, 640.0}
 {
 	formar_poligono();
 }

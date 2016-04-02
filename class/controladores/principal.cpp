@@ -206,7 +206,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		if(j.en_colision_con(s))
 		{
-			jugador_en_salida(s);
+			jugador_en_salida(s, j);
 			return;
 		}
 	}
@@ -215,7 +215,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		if(j.en_colision_con(i))
 		{
-			jugador_en_interruptor(i);
+			jugador_en_interruptor(i, j);
 		}
 	}
 
@@ -223,7 +223,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		if(j.en_colision_con(p))
 		{
-			jugador_en_pieza(p);
+			jugador_en_pieza(p, j);
 		}
 	}
 
@@ -231,7 +231,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		if(j.en_colision_con(m))
 		{
-			jugador_en_mejora_velocidad(m);
+			jugador_en_mejora_velocidad(m, j);
 		}
 	}
 
@@ -263,12 +263,12 @@ void Controlador_principal::procesar_estructuras(float delta)
 	for(auto& i : info_interruptores) i.second.turno(delta);
 }
 
-void Controlador_principal::jugador_en_salida(const Salida& s)
+void Controlador_principal::jugador_en_salida(const Salida& s, Jugador&)
 {
 	iniciar_nivel(s.acc_id_mapa(), s.acc_id_inicio());
 }
 
-void Controlador_principal::jugador_en_pieza(const Pieza& p)
+void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
 {
 	if(!jugador.acc_pieza_actual())
 	{
@@ -278,14 +278,17 @@ void Controlador_principal::jugador_en_pieza(const Pieza& p)
 	}
 }
 
-void Controlador_principal::jugador_en_mejora_velocidad(const Mejora_velocidad& p)
+void Controlador_principal::jugador_en_mejora_velocidad(const Mejora_velocidad& p, Jugador& j)
 {
-	jugador.establecer_max_velocidad(p.acc_nivel());
+	j.establecer_max_velocidad(p.acc_nivel());
 }
 
-void Controlador_principal::jugador_en_interruptor(Interruptor& i)
+void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 {
-	//TODO: Comparar nivel o sacar mensaje!!!.
+	if(i.acc_nivel() > j.acc_indice_velocidad())
+	{
+		return;
+	}
 
 	if(!i.es_activo())
 	{
