@@ -259,7 +259,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 					return;
 				break;
 				case Obstaculo::ttipos::inocuo: 
-					//TODO...
+					jugador.cancelar_movimiento(delta);
 				break;
 			}
 		}

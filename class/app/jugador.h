@@ -23,6 +23,7 @@ class Jugador:
 	void				colisionar(bool);
 	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;
 
+	void				cancelar_movimiento(float delta);
 	int				acc_indice_velocidad() const {return indice_velocidad;}
 	int				acc_pieza_actual() const {return pieza_actual;}
 	void				mut_pieza_actual(int v) {pieza_actual=v;}

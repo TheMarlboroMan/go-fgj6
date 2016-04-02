@@ -71,8 +71,8 @@ void Jugador::movimiento(float delta)
 {
 	desplazar_angulo_velocidad(angulo, velocidad*delta);
 
-	DLibH::Vector_2d<double> v=vector_unidad_para_angulo_cartesiano(angulo);
-	DLibH::Punto_2d<double> pd{v.x * velocidad, v.y * velocidad};
+//	DLibH::Vector_2d<double> v=vector_unidad_para_angulo_cartesiano(angulo);
+//	DLibH::Punto_2d<double> pd{v.x * velocidad, v.y * velocidad};
 }
 
 void Jugador::formar_poligono()
@@ -101,3 +101,8 @@ void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)
 
 	establecer_posicion(pt.x, pt.y);
 } 
+
+void Jugador::cancelar_movimiento(float delta)
+{
+	desplazar_angulo_velocidad(angulo+180.0, velocidad*delta);
+}
