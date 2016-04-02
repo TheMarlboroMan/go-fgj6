@@ -153,12 +153,25 @@ void Controlador_principal::ajustar_camara()
 
 	//Calcular el zoom. Realmente no tengo ni idea, he ido probando
 	//hasta que ha funcionado :P.
-	const double 	zoomx=distx < mitad_w_pantalla ? 1.0 : (double)mitad_w_pantalla / distx,
-			zoomy=disty < mitad_h_pantalla ? 1.0 : (double)mitad_h_pantalla / disty;
+//	const double 	zoomx=distx < mitad_w_pantalla ? 1.0 : (double)mitad_w_pantalla / distx,
+//			zoomy=disty < mitad_h_pantalla ? 1.0 : (double)mitad_h_pantalla / disty;
 
 	//Nos quedaremos con el menor de los dos factores
 	//y nos aseguramos de no acercarnos más del zoom por defecto.
-	double fin_zoom=zoomx < zoomy ? 1.0 / zoomx : 1.0 / zoomy;
+//	double fin_zoom=zoomx < zoomy ? 1.0 / zoomx : 1.0 / zoomy;
+
+
+	//TODO: Ajustar bien cámara.
+	//TODO: Transicionar zoom.
+	double fin_zoom=1.0;
+	switch(jugador.acc_indice_velocidad())
+	{
+		case 0: fin_zoom=1.0; break;
+		case 1: fin_zoom=1.2; break;
+		case 2: fin_zoom=1.4; break;
+		case 3: fin_zoom=1.6; break;
+	}
+
 
 	if(fin_zoom < 1.0) fin_zoom=1.0;
 	camara.mut_zoom(fin_zoom);
