@@ -23,6 +23,7 @@ void Importador::importar(const std::string& fichero, Mapa& mapa)
 		for(const auto& i : raiz["puertas"].acc_lista()) deserializar(i, mapa.puertas);
 		for(const auto& i : raiz["mejoras_velocidad"].acc_lista()) deserializar(i, mapa.mejoras_velocidad);
 		for(const auto& i : raiz["arboles"].acc_lista()) deserializar(i, mapa.arboles);
+		for(const auto& i : raiz["ayudas"].acc_lista()) deserializar(i, mapa.ayudas);
 	}
 	catch(std::exception &e)
 	{
@@ -192,4 +193,14 @@ void Importador::deserializar(const Herramientas_proyecto::Dnot_token& tok, std:
 	centro.x=c[0], centro.y=c[1];
 
 	arboles.push_back({centro});
+}
+
+void Importador::deserializar(const Herramientas_proyecto::Dnot_token& tok, std::vector<Ayuda>& ayudas)
+{
+	Espaciable::tpunto centro{0.0, 0.0};
+	const auto& c=tok["pos"].acc_lista();
+	centro.x=c[0], centro.y=c[1];
+
+	int indice=tok["i"].acc_int();
+	ayudas.push_back({centro, indice});
 }

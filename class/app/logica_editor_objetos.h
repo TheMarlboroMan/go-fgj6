@@ -250,6 +250,27 @@ class Arbol_editor:
 	}
 };
 
+
+class Ayuda_editor:
+	public Objeto_editor
+{
+	public:
+
+	Ayuda_editor(const Ayuda& i)
+		:elemento(i)
+	{
+
+	}
+
+	Ayuda			elemento;
+	virtual void		mover(double x, double y) {elemento.mover(x, y);}
+	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(elemento.acc_poligono(), pt);}
+	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
+	{
+		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_pieza_editor, color_pieza_editor, camara, seleccionado);
+	}
+};
+
 }
 
 #endif

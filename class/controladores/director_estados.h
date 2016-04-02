@@ -8,6 +8,7 @@
 #include "../framework/director_estados_interface.h"
 
 #include "../app/framework_impl/app_config.h"
+#include "../app/localizador.h"
 
 #include "estados_controladores.h"
 #include "principal.h"
@@ -40,6 +41,7 @@ class Director_estados:
 	DLibH::Log_base&				log;
 
 	App::Fuentes					fuentes;
+	Localizador 					localizador;
 	
 	std::unique_ptr<Controlador_principal>		controlador_principal;
 	std::unique_ptr<Controlador_editor>		controlador_editor;

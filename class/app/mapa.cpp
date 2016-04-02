@@ -15,6 +15,7 @@ void Mapa::limpiar()
 	puertas.clear();
 	mejoras_velocidad.clear();
 	arboles.clear();
+	ayudas.clear();
 	decoraciones_fondo.clear();
 	decoraciones_frente.clear();
 }

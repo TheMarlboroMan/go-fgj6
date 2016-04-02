@@ -12,6 +12,7 @@
 #include "interruptor.h"
 #include "puerta.h"
 #include "mejora_velocidad.h"
+#include "ayuda.h"
 
 namespace App
 {
@@ -38,6 +39,7 @@ class Mapa
 	std::vector<Puerta>			puertas;
 	std::vector<Mejora_velocidad>		mejoras_velocidad;
 	std::vector<Arbol>			arboles;
+	std::vector<Ayuda>			ayudas;
 	std::vector<const Decoracion *>		decoraciones_frente;
 	std::vector<const Decoracion *>		decoraciones_fondo;
 

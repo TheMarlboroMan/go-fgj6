@@ -69,6 +69,7 @@ class Controlador_editor:
 	void					nuevo_punto(DLibH::Punto_2d<double>);
 	void					nuevo_inicio(DLibH::Punto_2d<double>);
 	void					nueva_pieza(DLibH::Punto_2d<double>);
+	void					nueva_ayuda(DLibH::Punto_2d<double>);
 	void					nueva_mejora_velocidad(DLibH::Punto_2d<double>);
 	void					nuevo_interruptor(DLibH::Punto_2d<double>);
 	void					nuevo_arbol(DLibH::Punto_2d<double>);
@@ -123,6 +124,7 @@ class Controlador_editor:
 	std::vector<Puerta_editor>		puertas;
 	std::vector<Mejora_velocidad_editor>	mejoras_velocidad;
 	std::vector<Arbol_editor>		arboles;
+	std::vector<Ayuda_editor>		ayudas;
 
 	DFramework::Input::Posicion_raton	pos_raton;
 	Espaciable::tpoligono			poligono_construccion;
@@ -131,7 +133,7 @@ class Controlador_editor:
 	int					grid;
 	enum flags_ver{fvdeco_frente=1, fvdeco_fondo=2, fvobstaculos=4};
 	int					ver_flags;
-	enum class tobjetocreado		{obstaculo, decoracion, inicio, salida, pieza, interruptor, puerta, mejora_velocidad, arbol} tobjeto;
+	enum class tobjetocreado		{obstaculo, decoracion, inicio, salida, pieza, interruptor, puerta, mejora_velocidad, arbol, ayuda} tobjeto;
 
 	std::vector<Objeto_editor *>		objetos_cursor;
 	std::vector<Objeto_editor *>		objetos_seleccionados;

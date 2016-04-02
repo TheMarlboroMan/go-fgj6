@@ -8,12 +8,13 @@ extern DLibH::Log_base LOG;
 
 Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& c, DLibH::Log_base& log)
 	:Director_estados_interface(t_estados::editor, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
-	config(c), log(log)
+	config(c), log(log), localizador("data/localizacion/loc")
 {
 	preparar_video(kernel);
 	registrar_fuentes();
 	registrar_controladores();
 	virtualizar_joysticks(kernel.acc_input());
+	localizador.inicializar(0);
 
 	int indice=kernel.acc_controlador_argumentos().buscar("file");
 	if(indice!=-1)
@@ -45,7 +46,7 @@ void Director_estados::preparar_video(DFramework::Kernel& kernel)
 
 void Director_estados::registrar_controladores()
 {
-	controlador_principal.reset(new Controlador_principal(log, fuentes));
+	controlador_principal.reset(new Controlador_principal(log, fuentes, localizador));
 	controlador_editor.reset(new Controlador_editor(log, fuentes));
 	controlador_ayuda_editor.reset(new Controlador_ayuda_editor(log, fuentes));
 

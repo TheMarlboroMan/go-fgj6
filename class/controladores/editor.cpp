@@ -18,6 +18,7 @@
 #include "../app/widget_editor_propiedades_interruptor.h"
 #include "../app/widget_editor_propiedades_puerta.h"
 #include "../app/widget_editor_propiedades_mejora_velocidad.h"
+#include "../app/widget_editor_propiedades_ayuda.h"
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
@@ -207,6 +208,7 @@ void Controlador_editor::dibujar(DLibV::Pantalla& pantalla)
 	for(const auto& o : puertas) o.dibujar(r, pantalla, camara);
 	for(const auto& o : mejoras_velocidad) o.dibujar(r, pantalla, camara);
 	for(const auto& o : arboles) o.dibujar(r, pantalla, camara);
+	for(const auto& o : ayudas) o.dibujar(r, pantalla, camara);
 
 	for(const auto& oc : objetos_cursor) oc->dibujar(r, pantalla, camara, true);
 	for(const auto& os : objetos_seleccionados) os->dibujar(r, pantalla, camara, true);
@@ -239,6 +241,7 @@ void Controlador_editor::dibujar(DLibV::Pantalla& pantalla)
 		case tobjetocreado::puerta: texto+=" [door]"; break;
 		case tobjetocreado::mejora_velocidad: texto+=" [speed]"; break;
 		case tobjetocreado::arbol: texto+=" [tree]"; break;
+		case tobjetocreado::ayuda: texto+=" [hint]"; break;
 	}
 
 	DLibV::Representacion_TTF txt(fuente_akashi, {255, 255, 255, 255}, texto);
@@ -308,7 +311,8 @@ void Controlador_editor::intercambiar_objeto_creado()
 		case tobjetocreado::interruptor: 	tobjeto=tobjetocreado::puerta; break;
 		case tobjetocreado::puerta: 		tobjeto=tobjetocreado::mejora_velocidad; break;
 		case tobjetocreado::mejora_velocidad: 	tobjeto=tobjetocreado::arbol; break;
-		case tobjetocreado::arbol: 		tobjeto=tobjetocreado::obstaculo; break;
+		case tobjetocreado::arbol: 		tobjeto=tobjetocreado::ayuda; break;
+		case tobjetocreado::ayuda: 		tobjeto=tobjetocreado::obstaculo; break;
 	}
 }
 
@@ -336,6 +340,10 @@ void Controlador_editor::crear()
 		break;
 		case tobjetocreado::arbol:
 			nuevo_arbol(punto_desde_pos_pantalla(pos_raton.x, pos_raton.y));
+		break;
+
+		case tobjetocreado::ayuda:
+			nueva_ayuda(punto_desde_pos_pantalla(pos_raton.x, pos_raton.y));
 		break;
 	//TODO
 	}
@@ -403,7 +411,12 @@ void Controlador_editor::click_derecho()
 			if(v.size()==1) widget.reset(new Widget_editor_propiedades_mejora_velocidad(fuente_akashi, v[0]->elemento));
 		}
 		break;
-
+		case tobjetocreado::ayuda:
+		{
+			std::vector<Ayuda_editor *> v;
+			localizar_elementos_bajo_cursor_helper(ayudas, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false));
+			if(v.size()==1) widget.reset(new Widget_editor_propiedades_ayuda(fuente_akashi, v[0]->elemento));
+		}
 		case tobjetocreado::arbol:
 		break;
 	}
@@ -486,6 +499,11 @@ void Controlador_editor::nuevo_interruptor(DLibH::Punto_2d<double> p)
 void Controlador_editor::nueva_pieza(DLibH::Punto_2d<double> p)
 {
 	piezas.push_back(Pieza_editor({p, 0}));
+}
+
+void Controlador_editor::nueva_ayuda(DLibH::Punto_2d<double> p)
+{
+	ayudas.push_back(Ayuda_editor({p, 0}));
 }
 
 void Controlador_editor::nueva_mejora_velocidad(DLibH::Punto_2d<double> p)
@@ -571,6 +589,7 @@ void Controlador_editor::localizar_elementos_bajo_cursor()
 	localizar_elementos_bajo_cursor_helper(puertas, objetos_cursor, pt_raton);
 	localizar_elementos_bajo_cursor_helper(mejoras_velocidad, objetos_cursor, pt_raton);
 	localizar_elementos_bajo_cursor_helper(arboles, objetos_cursor, pt_raton);
+	localizar_elementos_bajo_cursor_helper(ayudas, objetos_cursor, pt_raton);
 }
 
 void Controlador_editor::mover_seleccion(double x, double y)
@@ -595,6 +614,7 @@ void Controlador_editor::aplicar_a_mapa(Mapa& m)
 	for(auto& o : puertas) m.puertas.push_back(o.elemento);
 	for(auto& o : mejoras_velocidad) m.mejoras_velocidad.push_back(o.elemento);
 	for(auto& o : arboles) m.arboles.push_back(o.elemento);
+	for(auto& o : ayudas) m.ayudas.push_back(o.elemento);
 	//TODO
 }
 
@@ -609,6 +629,7 @@ void Controlador_editor::obtener_desde_mapa()
 	puertas.clear();
 	mejoras_velocidad.clear();
 	arboles.clear();
+	ayudas.clear();
 
 	auto cam=mapa.acc_info_camara();
 	info_mapa={mapa.acc_id(), mapa.acc_id_fondo(), cam.min_cam_x, cam.max_cam_x,cam.min_cam_y, cam.max_cam_y};
@@ -622,6 +643,7 @@ void Controlador_editor::obtener_desde_mapa()
 	for(auto& o : mapa.puertas) puertas.push_back(Puerta_editor(o));
 	for(auto& o : mapa.mejoras_velocidad) mejoras_velocidad.push_back(Mejora_velocidad_editor(o));
 	for(auto& o : mapa.arboles) arboles.push_back(Arbol_editor(o));
+	for(auto& o : mapa.ayudas) ayudas.push_back(Ayuda_editor(o));
 	//TODO
 
 }
@@ -648,6 +670,7 @@ void Controlador_editor::eliminar()
 		case tobjetocreado::puerta: localizar_elementos_bajo_cursor_helper(puertas, cursor, pt_raton); break;
 		case tobjetocreado::mejora_velocidad: localizar_elementos_bajo_cursor_helper(mejoras_velocidad, cursor, pt_raton); break;
 		case tobjetocreado::arbol: localizar_elementos_bajo_cursor_helper(arboles, cursor, pt_raton); break;
+		case tobjetocreado::ayuda: localizar_elementos_bajo_cursor_helper(ayudas, cursor, pt_raton); break;
 	}
 	
 	for(auto& o : cursor) o->borrar();
@@ -662,6 +685,7 @@ void Controlador_editor::eliminar()
 	eliminar_helper(puertas);
 	eliminar_helper(mejoras_velocidad);
 	eliminar_helper(arboles);
+	eliminar_helper(ayudas);
 }
 
 void Controlador_editor::cambiar_grid(int dir)
@@ -722,6 +746,7 @@ void Controlador_editor::pegar()
 		case tobjetocreado::puerta:
 		case tobjetocreado::mejora_velocidad:
 		case tobjetocreado::arbol:
+		case tobjetocreado::ayuda:
 
 		break;
 
@@ -767,6 +792,7 @@ void Controlador_editor::copiar()
 		case tobjetocreado::puerta:
 		case tobjetocreado::mejora_velocidad:
 		case tobjetocreado::arbol:
+		case tobjetocreado::ayuda:
 
 		break;
 

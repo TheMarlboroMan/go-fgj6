@@ -23,6 +23,7 @@ class Importador
 	void 		deserializar(const Herramientas_proyecto::Dnot_token&, std::vector<Puerta>&);
 	void 		deserializar(const Herramientas_proyecto::Dnot_token&, std::vector<Mejora_velocidad>&);
 	void 		deserializar(const Herramientas_proyecto::Dnot_token&, std::vector<Arbol>&);
+	void 		deserializar(const Herramientas_proyecto::Dnot_token&, std::vector<Ayuda>&);
 };
 }
 

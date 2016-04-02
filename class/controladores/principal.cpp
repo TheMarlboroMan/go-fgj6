@@ -18,12 +18,15 @@
 
 using namespace App;
 
-Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes& f)
+Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes& f, const Localizador& l)
 	:log(log),
 	fuente_akashi(f.obtener_fuente("akashi", 16)),
+	localizador(l),
+	modo(modos::juego),
 	camara(0, 0, 800, 500)
 {
-
+	layout_ayuda.mapear_fuente("akashi", fuente_akashi);
+	layout_ayuda.parsear("data/layout/layout_ayuda.dnot", "layout");
 }
 
 void Controlador_principal::preloop(DFramework::Input& input, float delta)
@@ -45,10 +48,23 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 		return;
 	}
 
-	procesar_interruptores(delta);
-	procesar_estructuras(delta);
-	procesar_jugador(input, delta, jugador);
-	ajustar_camara(delta);
+	switch(modo)
+	{
+		case modos::juego:
+			procesar_interruptores(delta);
+			procesar_ayudas(delta);
+			procesar_estructuras(delta);
+			procesar_jugador(input, delta, jugador);
+			ajustar_camara(delta);
+		break;
+
+		case modos::ayuda:
+			if(input.hay_eventos_teclado_down())
+			{
+				modo=modos::juego;
+			}
+		break;
+	}
 }
 
 void  Controlador_principal::postloop(DFramework::Input& input, float delta)
@@ -60,7 +76,6 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 {
 	pantalla.limpiar(0, 0, 0, 255);
 
-	
 	int id_recurso=2;
 	switch(mapa.acc_id_fondo())
 	{
@@ -79,8 +94,34 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
 	jugador.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
+
+	if(modo==modos::ayuda)
+	{
+		layout_ayuda.volcar(pantalla);
+
+		auto ayuda=layout_ayuda.obtener_por_id("txt_ayuda");
+		if(ayuda->acc_alpha()==0)
+		{
+			//Centrar...
+			int 	w_txt=layout_ayuda.const_int("w_texto"),
+				h_txt=layout_ayuda.const_int("h_texto"),
+				x_txt=layout_ayuda.const_int("x_texto"),
+				y_txt=layout_ayuda.const_int("y_texto");
+
+//TODO: Centrar...
+
+			int x=x_txt+(w_txt + (ayuda->acc_posicion().w / 2));
+			int y=y_txt+(h_txt + (ayuda->acc_posicion().h / 2));
+
+
+
+			ayuda->ir_a(x_txt, y_txt);
+			ayuda->establecer_alpha(255);
+		}
+	}
 }
 
 void  Controlador_principal::despertar()
@@ -273,6 +314,16 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 			iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
 		}
 	}
+
+	for(auto& a : mapa.ayudas)
+	{
+		if(j.en_colision_con(a))
+		{
+			jugador_en_ayuda(a, j);
+			return;
+		}
+	}
+
 }
 
 void Controlador_principal::procesar_interruptores(float delta)
@@ -285,9 +336,25 @@ void Controlador_principal::procesar_estructuras(float delta)
 	for(auto& i : info_interruptores) i.second.turno(delta);
 }
 
+void Controlador_principal::procesar_ayudas(float delta)
+{
+	for(auto& i : mapa.ayudas) i.turno(delta);
+}
+
 void Controlador_principal::jugador_en_salida(const Salida& s, Jugador&)
 {
 	iniciar_nivel(s.acc_id_mapa(), s.acc_id_inicio());
+}
+
+void Controlador_principal::jugador_en_ayuda(Ayuda& a, Jugador&)
+{
+	if(a.es_activable())
+	{
+		a.activar();
+		static_cast<DLibV::Representacion_TTF *>(layout_ayuda.obtener_por_id("txt_ayuda"))->asignar(localizador.obtener(a.acc_indice()));
+		modo=modos::ayuda;
+	}
+
 }
 
 void Controlador_principal::jugador_en_arbol(Arbol& a, Jugador& j)

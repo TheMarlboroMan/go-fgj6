@@ -27,12 +27,14 @@ $(DIR_O)importador.o\
 $(DIR_O)inicio.o\
 $(DIR_O)salida.o\
 $(DIR_O)pieza.o\
+$(DIR_O)ayuda.o\
 $(DIR_O)interruptor.o\
 $(DIR_O)puerta.o\
 $(DIR_O)arbol.o\
 $(DIR_O)mejora_velocidad.o\
 $(DIR_O)mapa.o\
 $(DIR_O)representable.o\
+$(DIR_O)localizador.o\
 $(DIR_O)widget_editor_decoracion.o\
 $(DIR_O)widget_editor_color.o\
 $(DIR_O)widget_editor_propiedades_mapa.o\
@@ -40,6 +42,7 @@ $(DIR_O)widget_editor_obstaculo.o\
 $(DIR_O)widget_editor_propiedades_inicio.o\
 $(DIR_O)widget_editor_propiedades_salida.o\
 $(DIR_O)widget_editor_propiedades_pieza.o\
+$(DIR_O)widget_editor_propiedades_ayuda.o\
 $(DIR_O)widget_editor_propiedades_interruptor.o\
 $(DIR_O)widget_editor_propiedades_puerta.o\
 $(DIR_O)widget_editor_propiedades_mejora_velocidad.o\

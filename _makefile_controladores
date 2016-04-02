@@ -44,6 +44,7 @@ $(DIR_O)widget_editor_propiedades_pieza.o\
 $(DIR_O)widget_editor_propiedades_interruptor.o\
 $(DIR_O)widget_editor_propiedades_puerta.o\
 $(DIR_O)widget_editor_propiedades_mejora_velocidad.o\
+$(DIR_O)widget_editor_propiedades_ayuda.o\
 $(DIR_HEADERS_APP)logica_editor_objetos.h\
 $(DIR_HEADERS_IMPL)input.h\
 $(DIR_CONTROLADORES)estados_controladores.h \

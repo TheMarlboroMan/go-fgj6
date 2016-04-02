@@ -64,6 +64,7 @@ $(DIR_O)inicio.o\
 $(DIR_O)arbol.o\
 $(DIR_O)pieza.o\
 $(DIR_O)puerta.o\
+$(DIR_O)ayuda.o\
 $(DIR_O)mejora_velocidad.o\
 $(DIR_O)salida.o\
 $(DIR_O)interruptor.o\
@@ -124,6 +125,13 @@ $(DIR_CLASES_APP)arbol.h \
 $(DIR_CLASES_APP)arbol.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)arbol.cpp -o $(DIR_O)arbol.o
 
+$(DIR_O)ayuda.o:\
+$(DIR_O)representable.o\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)ayuda.h \
+$(DIR_CLASES_APP)ayuda.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)ayuda.cpp -o $(DIR_O)ayuda.o
+
 $(DIR_O)pieza.o:\
 $(DIR_O)representable.o\
 $(DIR_O)espaciable.o\
@@ -154,6 +162,12 @@ $(DIR_O)espaciable.o:\
 $(DIR_CLASES_APP)espaciable.h \
 $(DIR_CLASES_APP)espaciable.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)espaciable.cpp -o $(DIR_O)espaciable.o
+
+$(DIR_O)widget_editor_propiedades_ayuda.o:\
+$(DIR_CLASES_APP)widget_editor_interface.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_ayuda.h \
+$(DIR_CLASES_APP)widget_editor_propiedades_ayuda.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)widget_editor_propiedades_ayuda.cpp -o $(DIR_O)widget_editor_propiedades_ayuda.o
 
 $(DIR_O)widget_editor_propiedades_mejora_velocidad.o:\
 $(DIR_CLASES_APP)widget_editor_interface.h \
@@ -233,3 +247,8 @@ $(DIR_O)representador.o\
 $(DIR_CLASES_APP)representable.h \
 $(DIR_CLASES_APP)representable.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)representable.cpp -o $(DIR_O)representable.o
+
+$(DIR_O)localizador.o:\
+$(DIR_CLASES_APP)localizador.h \
+$(DIR_CLASES_APP)localizador.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)localizador.cpp -o $(DIR_O)localizador.o

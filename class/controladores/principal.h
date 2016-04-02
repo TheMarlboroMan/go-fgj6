@@ -7,9 +7,11 @@
 
 #include <def_video.h>
 
+#include <class/compositor_vista.h>
 #include <herramientas/log_base/log_base.h>
 #include <class/valor_limitado.h>
 
+#include "../app/localizador.h"
 #include "../app/fuentes.h"
 #include "../app/mapa.h"
 #include "../app/jugador.h"
@@ -26,7 +28,7 @@ class Controlador_principal:
 {
 	public:
 
-					Controlador_principal(DLibH::Log_base&, const Fuentes& f);
+					Controlador_principal(DLibH::Log_base&, const Fuentes&, const Localizador&);
 
 	virtual void 			preloop(DFramework::Input& input, float delta);
 	virtual void 			loop(DFramework::Input& input, float delta);
@@ -46,6 +48,7 @@ class Controlador_principal:
 
 	void					procesar_jugador(DFramework::Input&, float, Jugador&);
 	void					procesar_interruptores(float);
+	void					procesar_ayudas(float);
 	void					procesar_estructuras(float);
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
@@ -54,16 +57,21 @@ class Controlador_principal:
 	void					jugador_en_interruptor(Interruptor&, Jugador&);
 	void					jugador_en_pieza(const Pieza&, Jugador&);
 	void					jugador_en_arbol(Arbol&, Jugador&);
+	void					jugador_en_ayuda(Ayuda&, Jugador&);
 	void					jugador_en_mejora_velocidad(const Mejora_velocidad&, Jugador&);
 
 	void					abrir_puerta(int);
 
 	DLibH::Log_base&			log;
 	const DLibV::Fuente_TTF&		fuente_akashi;
+	const Localizador&			localizador;
+
+	enum class				modos{juego, ayuda} modo;
 
 	DLibV::Camara				camara;
 	Mapa					mapa;
 	Jugador					jugador;
+	Herramientas_proyecto::Compositor_vista		layout_ayuda;
 
 	struct
 	{
