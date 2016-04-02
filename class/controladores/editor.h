@@ -121,9 +121,7 @@ class Controlador_editor:
 	std::vector<Objeto_editor *>		objetos_seleccionados;
 	bool					decoracion_frente;
 
-	struct {
-		int				id, minx, maxx, miny, maxy;
-	}info_mapa{0,0,0,0,0};
+	Info_mapa				info_mapa;
 };
 
 }

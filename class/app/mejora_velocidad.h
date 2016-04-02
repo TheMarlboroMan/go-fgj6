@@ -2,12 +2,14 @@
 #define MEJORA_VELOCIDAD_H
 
 #include "espaciable.h"
+#include "representable.h"
 
 namespace App
 {
 
 class Mejora_velocidad:
-	public Espaciable
+	public Espaciable,
+	public Representable
 {
 	public:
 
@@ -15,6 +17,8 @@ class Mejora_velocidad:
 
 	int				acc_nivel() const {return nivel;}
 	void				mut_nivel(int v) {nivel=v;}
+
+	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;
 
 	private:
 

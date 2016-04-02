@@ -15,26 +15,29 @@ layout:
 	{tipo:"ttf", pos:[140, 80], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"ID:", orden: 50},
 	{tipo:"ttf", pos:[240, 80], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"-", id:"txt_id", orden: 50},
 
-	{tipo:"ttf", pos:[140,100], fuente:"akashi", rgba:[0, 0, 0, 255],texto: "MIN CAM. X:", orden: 50},
-	{tipo:"ttf", pos:[240,100], fuente:"akashi", rgba:[0, 0, 0, 255],texto: "-", id:"txt_minx", orden: 50},
+	{tipo:"ttf", pos:[140, 100], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"Id fondo:", orden: 50},
+	{tipo:"ttf", pos:[240, 100], fuente:"akashi", rgba:[0, 0, 0, 255], texto:"-", id:"txt_id_fondo", orden: 50},
 
-	{tipo:"ttf", pos:[140,120], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MAX CAM. X:", orden: 50},
-	{tipo:"ttf", pos:[240,120], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_maxx", orden: 50},
+	{tipo:"ttf", pos:[140,120], fuente:"akashi", rgba:[0, 0, 0, 255],texto: "MIN CAM. X:", orden: 50},
+	{tipo:"ttf", pos:[240,120], fuente:"akashi", rgba:[0, 0, 0, 255],texto: "-", id:"txt_minx", orden: 50},
 
-	{tipo:"ttf", pos:[140,140], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MIN CAM. Y:", orden: 50},
-	{tipo:"ttf", pos:[240,140], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_miny", orden: 50},
+	{tipo:"ttf", pos:[140,140], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MAX CAM. X:", orden: 50},
+	{tipo:"ttf", pos:[240,140], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_maxx", orden: 50},
 
-	{tipo:"ttf", pos:[140, 160], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MAX CAM. Y:", orden: 50},
-	{tipo:"ttf", pos:[240, 160], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_maxy", orden: 50},
+	{tipo:"ttf", pos:[140,160], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MIN CAM. Y:", orden: 50},
+	{tipo:"ttf", pos:[240,160], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_miny", orden: 50},
+
+	{tipo:"ttf", pos:[140, 180], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"MAX CAM. Y:", orden: 50},
+	{tipo:"ttf", pos:[240, 180], fuente:"akashi", rgba:[0, 0, 0, 255],texto:"-", id:"txt_maxy", orden: 50},
 
 	{tipo:"caja",pos:[130, 78, 100, 16], rgb:[255,255,255,128], id:"selector", alpha:128	, orden: 60},
 
 	{
-		tipo:"ttf", pos:[140,200], fuente:"akashi", rgba:[0, 0, 0, 255],
+		tipo:"ttf", pos:[140,220], fuente:"akashi", rgba:[0, 0, 0, 255],
 		texto:">>>", orden: 50
 	},
 	{
-		tipo:"ttf", pos:[180,200], fuente:"akashi", rgba:[0, 0, 0, 255],
+		tipo:"ttf", pos:[180,220], fuente:"akashi", rgba:[0, 0, 0, 255],
 		texto:"", id:"txt_input", orden: 50
 	}
 ]

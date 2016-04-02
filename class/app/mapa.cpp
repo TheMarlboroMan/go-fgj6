@@ -35,3 +35,19 @@ void Mapa::establecer_info_camara(int minx, int maxx, int miny, int maxy)
 	info_camara=Mapa_info_camara{minx, maxx, miny, maxy};
 }
 
+void Mapa::recoger_pieza(int id_pieza)
+{
+	auto it=std::remove_if(std::begin(piezas), std::end(piezas), [id_pieza](const Pieza& p) {return p.acc_indice()==id_pieza;});
+	piezas.erase(it, std::end(piezas));
+}
+
+void Mapa::abrir_puerta(int id_puerta)
+{
+	auto it=std::remove_if(std::begin(puertas), std::end(puertas), [id_puerta](const Puerta& p) {return p.acc_id()==id_puerta;});
+	puertas.erase(it, std::end(puertas));
+}
+
+bool Mapa::existe_puerta(int id_puerta) const
+{
+	return std::any_of(std::begin(puertas), std::end(puertas), [id_puerta](const Puerta&p) {return p.acc_id()==id_puerta;});
+}

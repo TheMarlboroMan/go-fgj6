@@ -7,7 +7,8 @@ const float Jugador::factor_min_rotacion=60.0;
 const float Jugador::factor_aceleracion=180.0f;
 
 Jugador::Jugador()
-	:angulo(0.0), velocidad(100.0f), indice_velocidad(0), velocidades{40.0, 80.0, 120.0, 160.0}
+	:angulo(0.0), velocidad(100.0f), indice_velocidad(0), 
+	pieza_actual(0), max_velocidad(0), velocidades{80.0, 160.0, 320.0, 640.0}
 {
 	formar_poligono();
 }
@@ -50,10 +51,14 @@ void Jugador::cambiar_velocidad(int dir)
 	if(indice < 0) indice=0;
 	else if(indice >= (int) velocidades.size()) indice=velocidades.size()-1;
 
+	//Limite de velocidades...
+	if(indice > max_velocidad) indice=max_velocidad;
+		
+
 	indice_velocidad=indice;
 	velocidad=velocidades[indice_velocidad];	//TODO: Not really!!!!.
 
-std::cout<<indice_velocidad<<" "<<velocidad<<std::endl;
+//std::cout<<indice_velocidad<<" "<<velocidad<<std::endl;
 
 /*	velocidad+=dir > 0 ? delta * factor_aceleracion : delta * factor_freno;
 

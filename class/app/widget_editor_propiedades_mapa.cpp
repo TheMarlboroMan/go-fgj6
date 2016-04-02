@@ -6,8 +6,8 @@
 
 using namespace App;
 
-Widget_editor_propiedades_mapa::Widget_editor_propiedades_mapa(const DLibV::Fuente_TTF& fuente, int& id, int& minx, int& maxx, int& miny, int& maxy)
-	:id(id), minx(minx), maxx(maxx), miny(miny), maxy(maxy), cerrar(false),
+Widget_editor_propiedades_mapa::Widget_editor_propiedades_mapa(const DLibV::Fuente_TTF& fuente, Info_mapa& ref)
+	:ref(ref), id(ref.id), id_fondo(ref.id_fondo), minx(ref.minx), maxx(ref.maxx), miny(ref.miny), maxy(ref.maxy), cerrar(false),
 	indice_actual(min_indice)
 {
 	layout.mapear_fuente("akashi", fuente);
@@ -60,10 +60,11 @@ void Widget_editor_propiedades_mapa::cambiar_por_indice(int indice, int val)
 	switch(indice)
 	{
 		case 0: cambiar(val, id, "txt_id"); break;
-		case 1: cambiar(val, minx, "txt_minx"); break;
-		case 2: cambiar(val, maxx, "txt_maxx"); break;
-		case 3: cambiar(val, miny, "txt_miny"); break;
-		case 4: cambiar(val, maxy, "txt_maxy"); break;
+		case 1: cambiar(val, id_fondo, "txt_id_fondo"); break;
+		case 2: cambiar(val, minx, "txt_minx"); break;
+		case 3: cambiar(val, maxx, "txt_maxx"); break;
+		case 4: cambiar(val, miny, "txt_miny"); break;
+		case 5: cambiar(val, maxy, "txt_maxy"); break;
 	}
 }
 
@@ -72,10 +73,11 @@ int Widget_editor_propiedades_mapa::valor_por_indice(int indice) const
 	switch(indice)
 	{
 		case 0: return id; break;
-		case 1: return minx; break;
-		case 2: return maxx; break;
-		case 3: return miny; break;
-		case 4: return maxy; break;
+		case 1: return id_fondo; break;
+		case 2: return minx; break;
+		case 3: return maxx; break;
+		case 4: return miny; break;
+		case 5: return maxy; break;
 	}
 
 	return 0;
@@ -106,6 +108,7 @@ void Widget_editor_propiedades_mapa::cambiar(int val, int& ref, const std::strin
 void Widget_editor_propiedades_mapa::actualizar_layout()
 {
 	cambiar(id, id, "txt_id");
+	cambiar(id_fondo, id_fondo, "txt_id_fondo");
 	cambiar(minx, minx, "txt_minx");
 	cambiar(maxx, maxx, "txt_maxx");
 	cambiar(miny, miny, "txt_miny");
@@ -116,6 +119,13 @@ void Widget_editor_propiedades_mapa::finalizar(DFramework::Input& input)
 {
 	input.vaciar_input_texto();
 	input.finalizar_input_texto();
+
+	ref.id=id;
+	ref.id_fondo=id_fondo;
+	ref.minx=minx;
+	ref.maxx=maxx;
+	ref.miny=miny;
+	ref.maxy=maxy;
 }
 
 void Widget_editor_propiedades_mapa::inicializar(DFramework::Input& input)

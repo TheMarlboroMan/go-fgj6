@@ -48,7 +48,8 @@ Controlador_editor::Controlador_editor(DLibH::Log_base& l, const Fuentes& f)
 	color_relleno({128, 128, 128, 255}),
 	color_linea({128, 128, 128, 255}), grid(20), ver_flags(fvdeco_frente | fvdeco_fondo | fvobstaculos),
 	tobjeto(tobjetocreado::obstaculo),
-	decoracion_frente(false)
+	decoracion_frente(false),
+	info_mapa{0,0,0,0,0,0}
 {
 	mensajes.insertar_mensaje("F1 para ayuda.", 2.f);
 }
@@ -91,8 +92,10 @@ void Controlador_editor::loop(DFramework::Input& input, float delta)
 			widget->finalizar(input);
 			//TODO: alguna forma de controlar esto???.
 			reordenar_decoraciones();
+
 			mapa.establecer_info_camara(info_mapa.minx, info_mapa.maxx, info_mapa.miny, info_mapa.maxy);
 			mapa.mut_id(info_mapa.id);
+			mapa.mut_id_fondo(info_mapa.id_fondo);
 			widget.reset(nullptr);
 		}
 		else
@@ -132,7 +135,7 @@ void Controlador_editor::loop(DFramework::Input& input, float delta)
 	if(input.es_input_pulsado(Input::control_izquierdo) && input.es_input_down(Input::copiar)) copiar();
 	else if(input.es_input_pulsado(Input::control_izquierdo) && input.es_input_down(Input::pegar)) pegar();
 	else if(input.es_input_down(Input::seleccion_color)) widget.reset(new Widget_editor_color(fuente_akashi, color_relleno, color_linea));
-	else if(input.es_input_down(Input::propiedades_mapa)) widget.reset(new Widget_editor_propiedades_mapa(fuente_akashi, info_mapa.id, info_mapa.minx, info_mapa.maxx, info_mapa.miny, info_mapa.maxy));
+	else if(input.es_input_down(Input::propiedades_mapa)) widget.reset(new Widget_editor_propiedades_mapa(fuente_akashi, info_mapa));
 
 	if(input.es_input_down(Input::profundidad_mas)) cambiar_profundidad(1);
 	else if(input.es_input_down(Input::profundidad_menos)) cambiar_profundidad(-1);
@@ -561,7 +564,10 @@ void Controlador_editor::aplicar_a_mapa(Mapa& m)
 {
 	m.limpiar();
 
-	//TODO
+	mapa.mut_id(info_mapa.id);
+	mapa.mut_id_fondo(info_mapa.id_fondo);
+	mapa.establecer_info_camara(info_mapa.minx, info_mapa.maxx, info_mapa.miny, info_mapa.maxy);
+
 	for(auto& o : obstaculos) m.obstaculos.push_back(o.elemento);
 	for(auto& o : decoraciones) m.decoraciones.push_back(o.elemento);
 	for(auto& o : inicios) m.inicios.push_back(o.elemento);
@@ -577,7 +583,9 @@ void Controlador_editor::obtener_desde_mapa()
 	obstaculos.clear();
 	decoraciones.clear();
 
-	//TODO
+	auto cam=mapa.acc_info_camara();
+	info_mapa={mapa.acc_id(), mapa.acc_id_fondo(), cam.min_cam_x, cam.max_cam_x,cam.min_cam_y, cam.max_cam_y};
+
 	for(auto& o : mapa.obstaculos) obstaculos.push_back(Obstaculo_editor(o));
 	for(auto& o : mapa.decoraciones) decoraciones.push_back(Decoracion_editor(o));
 	for(auto& o : mapa.inicios) inicios.push_back(Inicio_editor(o));

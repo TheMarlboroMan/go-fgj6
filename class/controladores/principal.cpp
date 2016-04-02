@@ -45,6 +45,8 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 		return;
 	}
 
+	procesar_interruptores(delta);
+	procesar_estructuras(delta);
 	procesar_jugador(input, delta, jugador);
 }
 
@@ -60,9 +62,13 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	Representador r;
 	ajustar_camara();
 
-	for(const auto& d : mapa.decoraciones_fondo)	d->dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.decoraciones_fondo)	o->dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.puertas)		o.dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
 	jugador.dibujar(r, pantalla, camara);
-	for(const auto& d : mapa.decoraciones_frente)	d->dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
 }
 
 void  Controlador_principal::despertar()
@@ -184,8 +190,32 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		if(j.en_colision_con(s))
 		{
-			iniciar_nivel(s.acc_id_mapa(), s.acc_id_inicio());
+			jugador_en_salida(s);
 			return;
+		}
+	}
+
+	for(auto& i : mapa.interruptores)
+	{
+		if(j.en_colision_con(i))
+		{
+			jugador_en_interruptor(i);
+		}
+	}
+
+	for(auto& p : mapa.piezas)
+	{
+		if(j.en_colision_con(p))
+		{
+			jugador_en_pieza(p);
+		}
+	}
+
+	for(auto& m : mapa.mejoras_velocidad)
+	{
+		if(j.en_colision_con(m))
+		{
+			jugador_en_mejora_velocidad(m);
 		}
 	}
 
@@ -207,9 +237,65 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	}
 }
 
+void Controlador_principal::procesar_interruptores(float delta)
+{
+	for(auto& i : mapa.interruptores) i.turno(delta);
+}
+
+void Controlador_principal::procesar_estructuras(float delta)
+{
+	for(auto& i : info_interruptores) i.second.turno(delta);
+}
+
 void Controlador_principal::jugador_en_salida(const Salida& s)
 {
-	//
+	iniciar_nivel(s.acc_id_mapa(), s.acc_id_inicio());
+}
+
+void Controlador_principal::jugador_en_pieza(const Pieza& p)
+{
+	if(!jugador.acc_pieza_actual())
+	{
+		mapa.recoger_pieza(p.acc_indice());
+		jugador.mut_pieza_actual(p.acc_indice());
+		info_persistente.recoger_pieza(p.acc_indice());
+	}
+}
+
+void Controlador_principal::jugador_en_mejora_velocidad(const Mejora_velocidad& p)
+{
+	jugador.establecer_max_velocidad(p.acc_nivel());
+}
+
+void Controlador_principal::jugador_en_interruptor(Interruptor& i)
+{
+	//TODO: Comparar nivel o sacar mensaje!!!.
+
+	if(!i.es_activo())
+	{
+		i.activar();
+
+		//Comprobar que existe puerta aún...
+		auto& s=info_interruptores[i.acc_id_grupo()];
+
+		if(!mapa.existe_puerta(s.id_puerta))
+		{
+			log<<"Warning: no existe la puerta "<<s.id_puerta<<std::endl;
+		}
+		else
+		{
+			log<<"La puerta existe... activando..."<<std::endl;
+			s.activar(i.acc_tiempo_grupo());
+	
+			if(s.es_completo())
+			{
+				log<<"Puerta "<<s.id_puerta<<" completa"<<std::endl;
+				info_persistente.abrir_puerta(s.id_puerta);
+				mapa.abrir_puerta(s.id_puerta);
+				s.finalizar();
+			}
+		}
+	}
 }
 
 void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
@@ -224,6 +310,8 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 	mapa.inicializar();
 
 	//TODO: Procesar cosas persistentes.
+	for(auto id_p : info_persistente.puertas_abiertas) mapa.abrir_puerta(id_p);
+	for(auto id_p : info_persistente.piezas_recogidas) mapa.recoger_pieza(id_p);
 
 	//Colocar a jugador en punto de inicio.
 	auto it=std::find_if(std::begin(mapa.inicios), std::end(mapa.inicios), [id_inicio](const Inicio& i){return i.acc_id()==id_inicio;});
@@ -237,14 +325,26 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 
 	jugador.establecer_inicio(info_mapa.inicio_actual.acc_punto(), info_mapa.inicio_actual.acc_angulo());
 
-}
-
-void Controlador_principal::preparar_info_juego()
-{
-	//TODO: Cargar todos los niveles y guardar el estado de las cosas persistentes.
+	//Preparar info interruptores...
+	info_interruptores.clear();
+	for(const auto& i : mapa.interruptores)
+	{
+		size_t id_grupo=i.acc_id_grupo();
+		if(!info_interruptores.count(id_grupo))
+		{
+			info_interruptores[id_grupo]=info_interruptor(1, 0, i.acc_id_puerta());
+			log<<"Nuevo grupo de puertas "<<id_grupo<<std::endl;
+		}
+		else
+		{
+			++info_interruptores[id_grupo].total;
+			log<<"Grupo de puertas "<<id_grupo<<":"<<info_interruptores[id_grupo].total<<std::endl;
+		}
+	}
 }
 
 void Controlador_principal::iniciar_juego()
 {
+	info_persistente.reiniciar();
 	iniciar_nivel(1, 0);
 }

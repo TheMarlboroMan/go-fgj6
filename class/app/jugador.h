@@ -23,6 +23,10 @@ class Jugador:
 	void				colisionar(bool);
 	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;
 
+	int				acc_pieza_actual() const {return pieza_actual;}
+	void				mut_pieza_actual(int v) {pieza_actual=v;}
+	void				establecer_max_velocidad(int v) {if(v > max_velocidad) max_velocidad=v;}
+
 	private:
 
 	static const float 		factor_rotacion;
@@ -38,7 +42,9 @@ class Jugador:
 	Bloque_input			input_actual;
 	double 				angulo;
 	float				velocidad;
-	int 				indice_velocidad;
+	int 				indice_velocidad,
+					pieza_actual,
+					max_velocidad;
 	std::vector<float>		velocidades;
 	
 };

@@ -105,6 +105,7 @@ $(DIR_CLASES_APP)decoracion.cpp
 
 $(DIR_O)interruptor.o:\
 $(DIR_O)espaciable.o\
+$(DIR_O)representable.o\
 $(DIR_CLASES_APP)interruptor.h \
 $(DIR_CLASES_APP)interruptor.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)interruptor.cpp -o $(DIR_O)interruptor.o
@@ -116,6 +117,7 @@ $(DIR_CLASES_APP)mejora_velocidad.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)mejora_velocidad.cpp -o $(DIR_O)mejora_velocidad.o
 
 $(DIR_O)pieza.o:\
+$(DIR_O)representable.o\
 $(DIR_O)espaciable.o\
 $(DIR_CLASES_APP)pieza.h \
 $(DIR_CLASES_APP)pieza.cpp
@@ -129,6 +131,7 @@ $(DIR_CLASES_APP)obstaculo.cpp
 
 $(DIR_O)puerta.o:\
 $(DIR_O)espaciable.o\
+$(DIR_O)representable.o\
 $(DIR_CLASES_APP)puerta.h \
 $(DIR_CLASES_APP)puerta.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)puerta.cpp -o $(DIR_O)puerta.o

@@ -2,12 +2,14 @@
 #define PIEZA_H
 
 #include "espaciable.h"
+#include "representable.h"
 
 namespace App
 {
 
 class Pieza:
-	public Espaciable
+	public Espaciable,
+	public Representable
 {
 	public:
 
@@ -15,6 +17,7 @@ class Pieza:
 
 	int				acc_indice() const {return indice;}
 	void				mut_indice(int v) {indice=v;}
+	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;
 
 	private:
 

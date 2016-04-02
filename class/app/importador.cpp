@@ -10,6 +10,10 @@ void Importador::importar(const std::string& fichero, Mapa& mapa)
 
 	try
 	{
+		mapa.mut_id(raiz["propiedades"]["id"]);
+		mapa.mut_id_fondo(raiz["propiedades"]["idf"]);
+		mapa.establecer_info_camara(raiz["propiedades"]["cam"][0], raiz["propiedades"]["cam"][1], raiz["propiedades"]["cam"][2], raiz["propiedades"]["cam"][3]);
+
 		for(const auto& i : raiz["geometria"].acc_lista()) deserializar(i, mapa.obstaculos);
 		for(const auto& i : raiz["decoracion"].acc_lista()) deserializar(i, mapa.decoraciones);
 		for(const auto& i : raiz["inicios"].acc_lista()) deserializar(i, mapa.inicios);

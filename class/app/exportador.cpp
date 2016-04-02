@@ -6,6 +6,18 @@ std::string Exportador::serializar(Mapa& mapa)
 {
 	using namespace Herramientas_proyecto;
 
+	Dnot_token::t_vector tok_cam;
+	auto icam=mapa.acc_info_camara();
+	tok_cam.push_back(Dnot_token(icam.min_cam_x));
+	tok_cam.push_back(Dnot_token(icam.max_cam_x));
+	tok_cam.push_back(Dnot_token(icam.min_cam_y));
+	tok_cam.push_back(Dnot_token(icam.max_cam_y));
+
+	Dnot_token::t_mapa mapa_propiedades;
+	mapa_propiedades["id"].asignar(mapa.acc_id());
+	mapa_propiedades["idf"].asignar(mapa.acc_id_fondo());
+	mapa_propiedades["cam"].asignar(tok_cam);
+
 	Dnot_token::t_vector vobstaculos;
 	for(const auto& o : mapa.obstaculos) vobstaculos.push_back(serializar(o));
 
@@ -30,6 +42,7 @@ std::string Exportador::serializar(Mapa& mapa)
 	Dnot_token::t_vector vmejoras_velocidad;
 	for(const auto& o : mapa.mejoras_velocidad) vmejoras_velocidad.push_back(serializar(o));
 
+	Dnot_token tok_propiedades(mapa_propiedades);
 	Dnot_token tok_obstaculos(vobstaculos);
 	Dnot_token tok_decoraciones(vdecoraciones);
 	Dnot_token tok_inicios(vinicios);
@@ -40,6 +53,7 @@ std::string Exportador::serializar(Mapa& mapa)
 	Dnot_token tok_mejoras_velocidad(vmejoras_velocidad);
 
 	Dnot_token::t_mapa mapa_final;
+	mapa_final["propiedades"]=tok_propiedades;
 	mapa_final["geometria"]=tok_obstaculos;
 	mapa_final["decoracion"]=tok_decoraciones;
 	mapa_final["inicios"]=tok_inicios;
