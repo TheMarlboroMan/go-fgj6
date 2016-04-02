@@ -125,7 +125,6 @@ void Controlador_principal::ajustar_camara(float delta)
 	auto c=jugador.acc_poligono().acc_centro();
 	int	cam_x=0, cam_y=0;
 
-/*
 	switch(jugador.acc_indice_velocidad())
 	{
 		case 0: fin_zoom=1.0; break;
@@ -163,12 +162,12 @@ void Controlador_principal::ajustar_camara(float delta)
 		zoom_aplicar+=delta;
 		if(zoom_aplicar > fin_zoom) zoom_aplicar=fin_zoom;
 	}
-*/
+
 	//Y ahora colocar la cámara...
 
 	//Comprobaremos que no nos salimos por la izquierda, en cuyo caso ajustaremos.
-	cam_x=c.x - (mitad_w_pantalla * fin_zoom);
-	cam_y=-(c.y + (mitad_h_pantalla * fin_zoom));
+	cam_x=c.x - (mitad_w_pantalla * zoom_aplicar);
+	cam_y=-(c.y + (mitad_h_pantalla * zoom_aplicar));
 
 	if(cam_x < cam.min_cam_x) 
 	{
@@ -180,24 +179,21 @@ void Controlador_principal::ajustar_camara(float delta)
 		cam_y=cam.min_cam_y;
 	}
 
-	//TODO: Antes de enfocar comprobar que no nos salimos por la derecha por el zoom!!!!.
-	double ancho=((double)camara.acc_foco_w() * camara.acc_zoom());
-	double alto=((double)camara.acc_foco_h() * camara.acc_zoom());
+	double ancho=((double)w_pantalla * zoom_aplicar);
+	double alto=((double)h_pantalla * zoom_aplicar);
 
-	//TODO: FUCK FUCK FUCK FUCK FUCK...
 	if(ancho + cam_x > cam.max_cam_x)
 	{
-		cam_x=cam.max_cam_x-(w_pantalla * fin_zoom);
+		cam_x=cam.max_cam_x-(w_pantalla * zoom_aplicar);
 	}
 
 	if(alto + cam_y > cam.max_cam_y) 
 	{
-		cam_y=cam.max_cam_y-(h_pantalla * fin_zoom);
+		cam_y=cam.max_cam_y-(h_pantalla * zoom_aplicar);
 	}
 
 	//Y finalmente podemos enfocar.
-//	camara.mut_zoom(zoom_aplicar);
-	camara.mut_zoom(fin_zoom);
+	camara.mut_zoom(zoom_aplicar);
 	camara.enfocar_a(cam_x, cam_y);
 }
 
@@ -246,8 +242,9 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 		{
 			switch(o.acc_tipo())
 			{
-				case Obstaculo::ttipos::normal: 
-			//TODO...
+				case Obstaculo::ttipos::normal:
+				 
+			//TODO... Llevar a otro método.
 					iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
 					return;
 				break;
@@ -262,7 +259,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		if(j.en_colision_con(p))
 		{
-			//TODO...
+			//TODO... Llevar a otro método.
 			iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
 		}
 	}
@@ -375,6 +372,8 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 			log<<"Grupo de puertas "<<id_grupo<<":"<<info_interruptores[id_grupo].total<<std::endl;
 		}
 	}
+
+	camara.mut_zoom(1.0);
 }
 
 void Controlador_principal::iniciar_juego()
