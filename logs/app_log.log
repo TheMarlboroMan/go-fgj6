@@ -1,4 +1,4 @@
-INICIANDO SESION 1459598384
+INICIANDO SESION 1459600216
 Iniciando proceso principal...
 Inicializando configuración aplicación...
 Inicializando configuración kernel...
@@ -13,9 +13,13 @@ Puerta 1 completa
 Nuevo grupo de puertas 1
 Nuevo grupo de puertas 1
 Nuevo grupo de puertas 2
+Nuevo grupo de puertas 2
+Nuevo grupo de puertas 2
+Nuevo grupo de puertas 2
+Nuevo grupo de puertas 2
 La puerta existe... activando...
 Puerta 2 completa
-Ha ocurrido un error Imposible abrir fichero data/mapas/mapa4.dat
+Ha ocurrido un error Imposible abrir fichero data/mapas/mapa5.dat
 Finalizando SDL2...
 
-FINALIZANDO SESION 1459598407
+FINALIZANDO SESION 1459600264
