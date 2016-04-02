@@ -53,6 +53,7 @@ class Controlador_principal:
 	void					jugador_en_salida(const Salida&, Jugador&); 
 	void					jugador_en_interruptor(Interruptor&, Jugador&);
 	void					jugador_en_pieza(const Pieza&, Jugador&);
+	void					jugador_en_arbol(Arbol&, Jugador&);
 	void					jugador_en_mejora_velocidad(const Mejora_velocidad&, Jugador&);
 
 	void					abrir_puerta(int);

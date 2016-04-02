@@ -8,6 +8,7 @@
 #include "inicio.h"
 #include "salida.h"
 #include "pieza.h"
+#include "arbol.h"
 #include "interruptor.h"
 #include "puerta.h"
 #include "mejora_velocidad.h"
@@ -36,11 +37,13 @@ class Mapa
 	std::vector<Interruptor>		interruptores;
 	std::vector<Puerta>			puertas;
 	std::vector<Mejora_velocidad>		mejoras_velocidad;
+	std::vector<Arbol>			arboles;
 	std::vector<const Decoracion *>		decoraciones_frente;
 	std::vector<const Decoracion *>		decoraciones_fondo;
 
 	void					recoger_pieza(int);
 	void					abrir_puerta(int);
+	void					actualizar_arbol(const std::vector<int>&);
 	bool					existe_puerta(int) const;
 
 

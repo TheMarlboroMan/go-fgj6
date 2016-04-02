@@ -22,6 +22,7 @@ class Exportador
 	Herramientas_proyecto::Dnot_token 		serializar(const Interruptor&);
 	Herramientas_proyecto::Dnot_token 		serializar(const Puerta&);
 	Herramientas_proyecto::Dnot_token 		serializar(const Mejora_velocidad&);
+	Herramientas_proyecto::Dnot_token 		serializar(const Arbol&);
 
 	Herramientas_proyecto::Dnot_token::t_vector	generar_punto(double x, double y);
 	Herramientas_proyecto::Dnot_token::t_vector	generar_color(int r, int g, int b, int a);

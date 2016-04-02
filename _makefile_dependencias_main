@@ -29,6 +29,7 @@ $(DIR_O)salida.o\
 $(DIR_O)pieza.o\
 $(DIR_O)interruptor.o\
 $(DIR_O)puerta.o\
+$(DIR_O)arbol.o\
 $(DIR_O)mejora_velocidad.o\
 $(DIR_O)mapa.o\
 $(DIR_O)representable.o\

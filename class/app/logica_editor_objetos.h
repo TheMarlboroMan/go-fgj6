@@ -32,6 +32,7 @@ class Objeto_editor
 	static const tcolor	color_interruptor_editor;
 	static const tcolor	color_puerta_editor;
 	static const tcolor	color_mejora_velocidad_editor;
+	static const tcolor	color_arbol_editor;
 
 	protected:
 
@@ -226,6 +227,26 @@ class Mejora_velocidad_editor:
 	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
 	{
 		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_mejora_velocidad_editor, color_mejora_velocidad_editor, camara, seleccionado);
+	}
+};
+
+class Arbol_editor:
+	public Objeto_editor
+{
+	public:
+
+	Arbol_editor(const Arbol& i)
+		:elemento(i)
+	{
+
+	}
+
+	Arbol			elemento;
+	virtual void		mover(double x, double y) {elemento.mover(x, y);}
+	virtual bool		es_bajo_cursor(punto pt) const {return punto_en_poligono(elemento.acc_poligono(), pt);}
+	virtual void		dibujar(Representador& r,DLibV::Pantalla& pantalla, const DLibV::Camara& camara, bool seleccionado=false) const
+	{
+		dibujar_poligono(r, pantalla, elemento.acc_poligono(), color_arbol_editor, color_arbol_editor, camara, seleccionado);
 	}
 };
 

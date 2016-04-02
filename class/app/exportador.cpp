@@ -42,6 +42,9 @@ std::string Exportador::serializar(Mapa& mapa)
 	Dnot_token::t_vector vmejoras_velocidad;
 	for(const auto& o : mapa.mejoras_velocidad) vmejoras_velocidad.push_back(serializar(o));
 
+	Dnot_token::t_vector varboles;
+	for(const auto& o : mapa.arboles) varboles.push_back(serializar(o));
+
 	Dnot_token tok_propiedades(mapa_propiedades);
 	Dnot_token tok_obstaculos(vobstaculos);
 	Dnot_token tok_decoraciones(vdecoraciones);
@@ -51,6 +54,7 @@ std::string Exportador::serializar(Mapa& mapa)
 	Dnot_token tok_interruptores(vinterruptores);
 	Dnot_token tok_puertas(vpuertas);
 	Dnot_token tok_mejoras_velocidad(vmejoras_velocidad);
+	Dnot_token tok_arboles(varboles);
 
 	Dnot_token::t_mapa mapa_final;
 	mapa_final["propiedades"]=tok_propiedades;
@@ -62,6 +66,7 @@ std::string Exportador::serializar(Mapa& mapa)
 	mapa_final["interruptores"]=tok_interruptores;
 	mapa_final["puertas"]=tok_puertas;
 	mapa_final["mejoras_velocidad"]=tok_mejoras_velocidad;
+	mapa_final["arboles"]=tok_arboles;
 	
 	Dnot_token base(mapa_final);
 	return base.serializar();
@@ -234,6 +239,18 @@ Herramientas_proyecto::Dnot_token Exportador::serializar(const Mejora_velocidad&
 	auto centro=o.acc_poligono().acc_centro();
 	mapa_objeto["pos"].asignar(generar_punto(centro.x, centro.y));
 	mapa_objeto["n"].asignar(o.acc_nivel());
+
+	return Dnot_token(mapa_objeto);
+}
+
+Herramientas_proyecto::Dnot_token Exportador::serializar(const Arbol& o)
+{
+	using namespace Herramientas_proyecto;
+
+	Dnot_token::t_mapa mapa_objeto;
+
+	auto centro=o.acc_poligono().acc_centro();
+	mapa_objeto["pos"].asignar(generar_punto(centro.x, centro.y));
 
 	return Dnot_token(mapa_objeto);
 }

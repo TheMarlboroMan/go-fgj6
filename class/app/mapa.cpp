@@ -14,6 +14,7 @@ void Mapa::limpiar()
 	interruptores.clear();
 	puertas.clear();
 	mejoras_velocidad.clear();
+	arboles.clear();
 	decoraciones_fondo.clear();
 	decoraciones_frente.clear();
 }
@@ -50,4 +51,13 @@ void Mapa::abrir_puerta(int id_puerta)
 bool Mapa::existe_puerta(int id_puerta) const
 {
 	return std::any_of(std::begin(puertas), std::end(puertas), [id_puerta](const Puerta&p) {return p.acc_id()==id_puerta;});
+}
+
+void Mapa::actualizar_arbol(const std::vector<int>& v)
+{
+	if(arboles.size())
+	{
+		auto& arbol=arboles.front();
+		for(const auto& p : v) arbol.colocar_pieza(p);
+	}
 }

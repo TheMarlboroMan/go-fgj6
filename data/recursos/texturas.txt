@@ -2,3 +2,4 @@
 1	data/graficos/lens_flare.png	0	0	0	0
 2	data/graficos/background1.jpg	0	0	0	0
 3	data/graficos/background2.jpg	0	0	0	0
+4	data/graficos/piezas.png	0	0	0	0

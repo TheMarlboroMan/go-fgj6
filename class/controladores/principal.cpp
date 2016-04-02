@@ -78,6 +78,7 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
 	jugador.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
 }
@@ -220,11 +221,20 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 		}
 	}
 
+	for(auto& a : mapa.arboles)
+	{
+		if(j.en_colision_con(a) && j.acc_pieza_actual())
+		{
+			jugador_en_arbol(a, j);
+		}
+	}
+
 	for(auto& p : mapa.piezas)
 	{
 		if(j.en_colision_con(p))
 		{
 			jugador_en_pieza(p, j);
+			break;	//No va a haber dos piezas seguidas y nos quitamos un crash...
 		}
 	}
 
@@ -278,6 +288,19 @@ void Controlador_principal::procesar_estructuras(float delta)
 void Controlador_principal::jugador_en_salida(const Salida& s, Jugador&)
 {
 	iniciar_nivel(s.acc_id_mapa(), s.acc_id_inicio());
+}
+
+void Controlador_principal::jugador_en_arbol(Arbol& a, Jugador& j)
+{
+	a.colocar_pieza(j.acc_pieza_actual());
+	j.mut_pieza_actual(0);
+
+	if(a.es_finalizado())
+	{
+		//TODO...
+		throw std::runtime_error("FIN DE JUEGO LOOL");
+	}
+
 }
 
 void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
@@ -343,6 +366,7 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 	//TODO: Procesar cosas persistentes.
 	for(auto id_p : info_persistente.puertas_abiertas) mapa.abrir_puerta(id_p);
 	for(auto id_p : info_persistente.piezas_recogidas) mapa.recoger_pieza(id_p);
+	mapa.actualizar_arbol(info_persistente.piezas_recogidas);
 
 	//Colocar a jugador en punto de inicio.
 	auto it=std::find_if(std::begin(mapa.inicios), std::end(mapa.inicios), [id_inicio](const Inicio& i){return i.acc_id()==id_inicio;});
