@@ -48,6 +48,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 	procesar_interruptores(delta);
 	procesar_estructuras(delta);
 	procesar_jugador(input, delta, jugador);
+	ajustar_camara(delta);
 }
 
 void  Controlador_principal::postloop(DFramework::Input& input, float delta)
@@ -71,7 +72,6 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	fondo.volcar(pantalla);
 
 	Representador r;
-	ajustar_camara();
 
 	for(const auto& o : mapa.decoraciones_fondo)	o->dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.puertas)		o.dibujar(r, pantalla, camara);
@@ -113,57 +113,19 @@ Bloque_input Controlador_principal::obtener_bloque_input(DFramework::Input& inpu
 	return res;
 }
 
-void Controlador_principal::ajustar_camara()
+void Controlador_principal::ajustar_camara(float delta)
 {
 	const int w_pantalla=camara.acc_pos_w(), 
 		h_pantalla=camara.acc_pos_h(),
 		mitad_w_pantalla=w_pantalla / 2,
 		mitad_h_pantalla=h_pantalla / 2;
 
-
-	int xmin=jugador.acc_poligono().acc_centro().x, xmax=xmin,
-		ymin=jugador.acc_poligono().acc_centro().y, ymax=ymin;
-
-/*		//Vamos a determinar cuál es el punto central de todos los actores
-		//de juego...
-		for(const auto&j : jugadores)
-		{
-			const auto& c=j.acc_poligono().acc_centro();
-			if(c.x < xmin) xmin=c.x;
-			else if(c.x > xmax) xmax=c.x;
-
-			if(c.y < ymin) ymin=c.y;
-			else if(c.y > ymax) ymax=c.y;
-		}
-
-		for(const auto& bot : bots)
-		{
-			const auto& c=bot.acc_poligono().acc_centro();
-			if(c.x < xmin) xmin=c.x;
-			else if(c.x > xmax) xmax=c.x;
-
-			if(c.y < ymin) ymin=c.y;
-			else if(c.y > ymax) ymax=c.y;
-		}		
-*/
-		//Trataremos ahora el zoom. Vamos a medir la distancia máxima en 
-		//x e y que hay entre actores.
-	
-	const double distx=xmax-xmin, disty=ymax-ymin;
-
-	//Calcular el zoom. Realmente no tengo ni idea, he ido probando
-	//hasta que ha funcionado :P.
-//	const double 	zoomx=distx < mitad_w_pantalla ? 1.0 : (double)mitad_w_pantalla / distx,
-//			zoomy=disty < mitad_h_pantalla ? 1.0 : (double)mitad_h_pantalla / disty;
-
-	//Nos quedaremos con el menor de los dos factores
-	//y nos aseguramos de no acercarnos más del zoom por defecto.
-//	double fin_zoom=zoomx < zoomy ? 1.0 / zoomx : 1.0 / zoomy;
-
-
-	//TODO: Ajustar bien cámara.
-	//TODO: Transicionar zoom.
 	double fin_zoom=1.0;
+	auto cam=mapa.acc_info_camara();
+	auto c=jugador.acc_poligono().acc_centro();
+	int	cam_x=0, cam_y=0;
+
+/*
 	switch(jugador.acc_indice_velocidad())
 	{
 		case 0: fin_zoom=1.0; break;
@@ -173,40 +135,69 @@ void Controlador_principal::ajustar_camara()
 	}
 
 
-	if(fin_zoom < 1.0) fin_zoom=1.0;
-	camara.mut_zoom(fin_zoom);
-
-	//Este es el punto central...
-	int 	centro_x=( xmin + ( (xmax-xmin) / 2) ),
-		centro_y=( ymin + ( (ymax-ymin) / 2) );
-
-	//Y a partir del mismo podemos calcular el offset de la cámara, 
-	//al que aplicamos el zoom.
-	int 	cam_x=centro_x - (mitad_w_pantalla * fin_zoom) ,
-		cam_y=-(centro_y + (mitad_h_pantalla * fin_zoom));
+	int 	ancho_foco=w_pantalla * fin_zoom,
+		alto_foco=h_pantalla * fin_zoom;
 
 
-	auto cam=mapa.acc_info_camara();
-	if(cam_x < cam.min_cam_x) cam_x=cam.min_cam_x;
-	if(cam_y < cam.min_cam_y) cam_y=cam.min_cam_y;
+
+	//El ancho o el alto de la cámara son mayores que el nivel:
+	//tenemos que reajustar el zoom.
+	if(ancho_foco > cam.max_cam_x || alto_foco > cam.max_cam_y)
+	{
+		double zoom_x=(double) w_pantalla / (double) cam.max_cam_x,
+			zoom_y=(double) h_pantalla / (double) cam.max_cam_y;
+		fin_zoom=std::max(zoom_x, zoom_y);
+	}
+
+	//Transicionar el zoom.
+	double zoom_actual=camara.acc_zoom();
+	double zoom_aplicar=zoom_actual;
+
+	if(zoom_actual > fin_zoom)
+	{
+		zoom_aplicar-=delta;
+		if(zoom_aplicar < fin_zoom) zoom_aplicar=fin_zoom;
+	}
+	else if(zoom_actual < fin_zoom)
+	{
+		zoom_aplicar+=delta;
+		if(zoom_aplicar > fin_zoom) zoom_aplicar=fin_zoom;
+	}
+*/
+	//Y ahora colocar la cámara...
+
+	//Comprobaremos que no nos salimos por la izquierda, en cuyo caso ajustaremos.
+	cam_x=c.x - (mitad_w_pantalla * fin_zoom);
+	cam_y=-(c.y + (mitad_h_pantalla * fin_zoom));
+
+	if(cam_x < cam.min_cam_x) 
+	{
+		cam_x=cam.min_cam_x;
+	}
+
+	if(cam_y < cam.min_cam_y) 
+	{		
+		cam_y=cam.min_cam_y;
+	}
 
 	//TODO: Antes de enfocar comprobar que no nos salimos por la derecha por el zoom!!!!.
 	double ancho=((double)camara.acc_foco_w() * camara.acc_zoom());
 	double alto=((double)camara.acc_foco_h() * camara.acc_zoom());
 
-	//TODO TODO TODO TODO TODO TODO TODO...
-
+	//TODO: FUCK FUCK FUCK FUCK FUCK...
 	if(ancho + cam_x > cam.max_cam_x)
 	{
-		cam_x=cam.max_cam_x-camara.acc_foco_w();
+		cam_x=cam.max_cam_x-(w_pantalla * fin_zoom);
 	}
 
 	if(alto + cam_y > cam.max_cam_y) 
 	{
-		cam_y=cam.max_cam_y-camara.acc_foco_h();
+		cam_y=cam.max_cam_y-(h_pantalla * fin_zoom);
 	}
 
 	//Y finalmente podemos enfocar.
+//	camara.mut_zoom(zoom_aplicar);
+	camara.mut_zoom(fin_zoom);
 	camara.enfocar_a(cam_x, cam_y);
 }
 

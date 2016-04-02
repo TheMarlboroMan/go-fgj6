@@ -42,7 +42,7 @@ class Controlador_principal:
 
 	private:
 
-	void					ajustar_camara();
+	void					ajustar_camara(float delta);
 
 	void					procesar_jugador(DFramework::Input&, float, Jugador&);
 	void					procesar_interruptores(float);
