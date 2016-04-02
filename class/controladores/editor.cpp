@@ -132,6 +132,8 @@ void Controlador_editor::loop(DFramework::Input& input, float delta)
 	
 	if(input.es_input_pulsado(Input::suprimir)) eliminar();
 
+	if(input.es_input_down(Input::intercambiar_decoracion)) decoracion_frente=!decoracion_frente;
+
 	if(input.es_input_pulsado(Input::control_izquierdo) && input.es_input_down(Input::copiar)) copiar();
 	else if(input.es_input_pulsado(Input::control_izquierdo) && input.es_input_down(Input::pegar)) pegar();
 	else if(input.es_input_down(Input::seleccion_color)) widget.reset(new Widget_editor_color(fuente_akashi, color_relleno, color_linea));
@@ -220,7 +222,8 @@ void Controlador_editor::dibujar(DLibV::Pantalla& pantalla)
 
 	std::string texto="GRID: "+std::to_string((int)grid)
 		+" CAM: "+std::to_string((int)camara.acc_x())+","+std::to_string((int)camara.acc_y())
-		+" POS: "+std::to_string((int)pt_raton.x)+","+std::to_string((int)pt_raton.y);
+		+" POS: "+std::to_string((int)pt_raton.x)+","+std::to_string((int)pt_raton.y)
+		+(decoracion_frente ? " [foreground] " : " [background]");
 
 	switch(tobjeto)
 	{
@@ -544,7 +547,8 @@ void Controlador_editor::localizar_elementos_bajo_cursor()
 	objetos_cursor.clear();
 
 	if(ver_flags & fvobstaculos) localizar_elementos_bajo_cursor_helper(obstaculos, objetos_cursor, pt_raton);
-	if(ver_flags & fvdeco_fondo || ver_flags & fvdeco_frente) localizar_elementos_bajo_cursor_helper(decoraciones, objetos_cursor, pt_raton);
+	if(ver_flags & fvdeco_fondo) localizar_decoraciones_bajo_cursor_helper(decoraciones, objetos_cursor, pt_raton, false);
+	if(ver_flags & fvdeco_frente) localizar_decoraciones_bajo_cursor_helper(decoraciones, objetos_cursor, pt_raton, true);
 
 	//TODO
 	localizar_elementos_bajo_cursor_helper(inicios, objetos_cursor, pt_raton);
@@ -582,6 +586,12 @@ void Controlador_editor::obtener_desde_mapa()
 {
 	obstaculos.clear();
 	decoraciones.clear();
+	inicios.clear();
+	salidas.clear();
+	piezas.clear();
+	interruptores.clear();
+	puertas.clear();
+	mejoras_velocidad.clear();
 
 	auto cam=mapa.acc_info_camara();
 	info_mapa={mapa.acc_id(), mapa.acc_id_fondo(), cam.min_cam_x, cam.max_cam_x,cam.min_cam_y, cam.max_cam_y};
@@ -625,6 +635,12 @@ void Controlador_editor::eliminar()
 	//Esto los borra... Pasamos por todos los tipos ya que podríamos tener más cosas seleccionadas.
 	eliminar_helper(obstaculos);
 	eliminar_helper(decoraciones);
+	eliminar_helper(inicios);
+	eliminar_helper(salidas);
+	eliminar_helper(piezas);
+	eliminar_helper(interruptores);
+	eliminar_helper(puertas);
+	eliminar_helper(mejoras_velocidad);
 }
 
 void Controlador_editor::cambiar_grid(int dir)
@@ -658,11 +674,15 @@ void Controlador_editor::pegar()
 		break;
 		case tobjetocreado::decoracion:
 		{
+			//TODO...
 			std::vector<Decoracion_editor *> v;
-			localizar_elementos_bajo_cursor_helper(decoraciones, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false));
+
+			if(ver_flags & fvdeco_fondo) localizar_decoraciones_bajo_cursor_helper(decoraciones, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false), false);
+			if(ver_flags & fvdeco_frente) localizar_decoraciones_bajo_cursor_helper(decoraciones, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false), true);
+
 			if(v.size())
 			{
-				mensajes.insertar_mensaje("Propiedades copiadas", 2.0f);
+				mensajes.insertar_mensaje("Propiedades pegadas", 2.0f);
 				for(auto &e : v)
 				{
 					auto& item=e->elemento;
@@ -694,6 +714,7 @@ void Controlador_editor::copiar()
 		case tobjetocreado::obstaculo: 
 		{
 			std::vector<Obstaculo_editor *> v;
+
 			localizar_elementos_bajo_cursor_helper(obstaculos, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false));
 			if(v.size()==1)
 			{
@@ -706,7 +727,9 @@ void Controlador_editor::copiar()
 		case tobjetocreado::decoracion:
 		{
 			std::vector<Decoracion_editor *> v;
-			localizar_elementos_bajo_cursor_helper(decoraciones, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false));
+			if(ver_flags & fvdeco_fondo) localizar_decoraciones_bajo_cursor_helper(decoraciones, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false), false);
+			if(ver_flags & fvdeco_frente) localizar_decoraciones_bajo_cursor_helper(decoraciones, v, punto_desde_pos_pantalla(pos_raton.x, pos_raton.y, false), true);
+
 			if(v.size()==1)
 			{
 				mensajes.insertar_mensaje("Propiedades copiadas", 2.0f);

@@ -59,6 +59,16 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 {
 	pantalla.limpiar(0, 0, 0, 255);
 
+	
+	int id_recurso=2;
+	switch(mapa.acc_id_fondo())
+	{
+		case 1: id_recurso=2; break;
+	}
+
+	DLibV::Representacion_bitmap fondo(DLibV::Gestor_texturas::obtener(id_recurso));
+	fondo.volcar(pantalla);
+
 	Representador r;
 	ajustar_camara();
 
@@ -161,20 +171,26 @@ void Controlador_principal::ajustar_camara()
 	int 	cam_x=centro_x - (mitad_w_pantalla * fin_zoom) ,
 		cam_y=-(centro_y + (mitad_h_pantalla * fin_zoom));
 
-/*
-TODO
-	if(cam_x < -850) cam_x=-860;
-	if(cam_y < -120) cam_y=-120;
+
+	auto cam=mapa.acc_info_camara();
+	if(cam_x < cam.min_cam_x) cam_x=cam.min_cam_x;
+	if(cam_y < cam.min_cam_y) cam_y=cam.min_cam_y;
 
 	//TODO: Antes de enfocar comprobar que no nos salimos por la derecha por el zoom!!!!.
 	double ancho=((double)camara.acc_foco_w() * camara.acc_zoom());
 	double alto=((double)camara.acc_foco_h() * camara.acc_zoom());
 
-	if(ancho + cam_x > 650 || alto + cam_y > 450) 
+	//TODO TODO TODO TODO TODO TODO TODO...
+
+	if(ancho + cam_x > cam.max_cam_x)
 	{
-		//std::cout<<"FUERA CAMARA!!!"<<std::endl;
+		cam_x=cam.max_cam_x-camara.acc_foco_w();
 	}
-*/
+
+	if(alto + cam_y > cam.max_cam_y) 
+	{
+		cam_y=cam.max_cam_y-camara.acc_foco_h();
+	}
 
 	//Y finalmente podemos enfocar.
 	camara.enfocar_a(cam_x, cam_y);
@@ -346,5 +362,5 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 void Controlador_principal::iniciar_juego()
 {
 	info_persistente.reiniciar();
-	iniciar_nivel(1, 0);
+	iniciar_nivel(1, 1);
 }

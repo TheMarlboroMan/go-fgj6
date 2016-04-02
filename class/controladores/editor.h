@@ -80,6 +80,19 @@ class Controlador_editor:
 					v.push_back(&o);
 	}
 
+	template<typename T, typename TV>	
+	void 					localizar_decoraciones_bajo_cursor_helper(T& t, TV& v, DLibH::Punto_2d<double> pt, bool fr)
+	{
+			for(auto& o : t) 
+			{
+				if(o.es_bajo_cursor(pt))
+				{
+					if(fr && o.elemento.es_frente()) v.push_back(&o);
+					else if(!fr && !o.elemento.es_frente()) v.push_back(&o);
+				}
+			}
+	}
+
 	void					mover_seleccion(double, double);
 	void					obtener_desde_mapa();
 	void					copiar();

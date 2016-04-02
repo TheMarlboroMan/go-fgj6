@@ -1,6 +1,3 @@
 #indice	ruta	transparencia	rtrans	gtrans	btrans
 1	data/graficos/lens_flare.png	0	0	0	0
-2	data/graficos/item_triple.png	0	0	0	0
-3	data/graficos/item_explosivo.png	0	0	0	0
-4	data/graficos/item_trasero.png	0	0	0	0
-5	data/graficos/item_divide.png	0	0	0	0
+2	data/graficos/background1.jpg	0	0	0	0

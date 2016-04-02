@@ -69,7 +69,7 @@ class Controlador_principal:
 		int				id_mapa;
 		Inicio				inicio_actual;
 
-	}info_mapa{1, Inicio(Espaciable::tpunto{0.0,0.0}, 0, 0)};
+	}info_mapa{1, Inicio(Espaciable::tpunto{0.0,0.0}, 1, 0)};
 
 	struct info_interruptor
 	{
