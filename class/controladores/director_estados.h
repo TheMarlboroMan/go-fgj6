@@ -13,6 +13,7 @@
 #include "estados_controladores.h"
 #include "principal.h"
 #include "editor.h"
+#include "intro.h"
 #include "ayuda_editor.h"
 
 
@@ -45,6 +46,7 @@ class Director_estados:
 	
 	std::unique_ptr<Controlador_principal>		controlador_principal;
 	std::unique_ptr<Controlador_editor>		controlador_editor;
+	std::unique_ptr<Controlador_intro>		controlador_intro;
 	std::unique_ptr<Controlador_ayuda_editor>	controlador_ayuda_editor;
 };
 

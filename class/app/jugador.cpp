@@ -1,5 +1,8 @@
 #include "jugador.h"
 
+#include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
+#include <video/gestores/gestor_texturas.h>
+
 using namespace App;
 
 const float Jugador::factor_rotacion=220.0;
@@ -8,7 +11,8 @@ const float Jugador::factor_aceleracion=180.0f;
 
 Jugador::Jugador()
 	:angulo(0.0), velocidad(100.0f), indice_velocidad(0), 
-	pieza_actual(0), max_velocidad(3), velocidades{80.0, 160.0, 320.0, 640.0}
+	pieza_actual(0), max_velocidad(3), tiempo(0.0f),
+	velocidades{80.0, 160.0, 320.0, 640.0}
 {
 	formar_poligono();
 }
@@ -25,6 +29,10 @@ void Jugador::turno(float delta)
 	if(input_actual.aceleracion) cambiar_velocidad(input_actual.aceleracion);
 
 	if(velocidad) movimiento(delta);
+
+	tiempo+=delta;
+
+	if(tiempo > 0.15f) tiempo=0.0f;
 }
 
 void Jugador::colisionar(bool con_dano)
@@ -77,17 +85,37 @@ void Jugador::movimiento(float delta)
 
 void Jugador::formar_poligono()
 {
-	poligono.insertar_vertice({15.0, 0.0});
-	poligono.insertar_vertice({-5.0, -7.0});
-	poligono.insertar_vertice({-5.0, 7.0});
+	poligono.insertar_vertice({-15.0, 10.0});
+	poligono.insertar_vertice({-10.0, 15.0});
+	poligono.insertar_vertice({10.0, 15.0});
+	poligono.insertar_vertice({15.0, 10.0});
+	poligono.insertar_vertice({15.0, -10.0});
+	poligono.insertar_vertice({10.0, -15.0});
+	poligono.insertar_vertice({-10.0, -15.0});
+	poligono.insertar_vertice({-15.0, -10.0});
 	poligono.cerrar();
 	poligono.mut_centro({0.0, 0.0});
 }
 
 void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Camara& camara) const
 {
-	//TODO...
-	r.dibujar_poligono(pantalla, poligono, {255, 255, 255, 255}, camara);
+	auto c=poligono.acc_centro();
+
+	int x=0;
+	if(tiempo <= 0.03f) x=0;
+	else if(tiempo <= 0.06f) x=1;
+	else if(tiempo <= 0.09f) x=2;
+	else if(tiempo <= 0.12f) x=3;
+	else if(tiempo <= 0.15f) x=4;
+
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(5));
+	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+	sprite.establecer_alpha(255);
+	sprite.establecer_recorte(x*30, 0, 30, 30);
+	sprite.establecer_posicion(c.x-15, -c.y-15, 30, 30);
+	sprite.transformar_centro_rotacion(15 / camara.acc_zoom(), 15 / camara.acc_zoom());
+	sprite.transformar_rotar(-angulo);
+	sprite.volcar(pantalla, camara);
 }
 
 void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)

@@ -7,7 +7,7 @@ using namespace App;
 extern DLibH::Log_base LOG;
 
 Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& c, DLibH::Log_base& log)
-	:Director_estados_interface(t_estados::editor, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
+	:Director_estados_interface(t_estados::intro, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
 	config(c), log(log), localizador("data/localizacion/loc")
 {
 	preparar_video(kernel);
@@ -24,9 +24,7 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 	}
 	else
 	{
-		//TODO: Have main controller precache all info...
-		estados.validar_y_cambiar_estado(principal);
-		controlador_principal->iniciar_juego();
+		estados.validar_y_cambiar_estado(intro);
 	}
 }
 
@@ -49,10 +47,12 @@ void Director_estados::registrar_controladores()
 	controlador_principal.reset(new Controlador_principal(log, fuentes, localizador));
 	controlador_editor.reset(new Controlador_editor(log, fuentes));
 	controlador_ayuda_editor.reset(new Controlador_ayuda_editor(log, fuentes));
+	controlador_intro.reset(new Controlador_intro(log, fuentes, localizador));
 
 	registrar_controlador(t_estados::principal, *controlador_principal);
 	registrar_controlador(t_estados::editor, *controlador_editor);
 	registrar_controlador(t_estados::ayuda_editor, *controlador_ayuda_editor);
+	registrar_controlador(t_estados::intro, *controlador_intro);
 }
 
 void Director_estados::preparar_cambio_estado(int deseado, int actual)
@@ -60,17 +60,20 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 	switch(deseado)
 	{
 		case t_estados::principal: 
-
 			if(actual==t_estados::editor)
 			{
 				auto im=controlador_editor->acc_info_mapa();
 				controlador_principal->iniciar_nivel(im.id, 1);
 			}
-//			controlador_editor->aplicar_a_mapa(controlador_principal->acc_mapa());
-
+			else if(actual==t_estados::intro)
+			{
+				controlador_principal->iniciar_juego();
+			}
 		break;
 		case t_estados::editor: break;
 		case t_estados::ayuda_editor: break;
+		case t_estados::intro: break;
+		case t_estados::game_over: break;
 	}
 }
 

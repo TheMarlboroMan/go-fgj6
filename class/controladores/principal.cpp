@@ -2,8 +2,6 @@
 
 #include <algorithm>
 
-#include <class/generador_numeros.h>
-
 #include "../app/representador.h"
 
 #include "../app/importador.h"
@@ -54,6 +52,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 			procesar_interruptores(delta);
 			procesar_ayudas(delta);
 			procesar_estructuras(delta);
+			procesar_cola_viento(delta);
 			procesar_jugador(input, delta, jugador);
 			ajustar_camara(delta);
 		break;
@@ -96,6 +95,7 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
 	jugador.dibujar(r, pantalla, camara);
+	for(const auto& o : cola_viento)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
 
 	if(modo==modos::ayuda)
@@ -241,6 +241,9 @@ void Controlador_principal::ajustar_camara(float delta)
 
 void Controlador_principal::procesar_jugador(DFramework::Input& input, float delta, Jugador &j)
 {
+	//TODO: mejor con algo de sentido!!!
+	cola_viento.push_back( Cola_viento(j.acc_poligono().acc_centro(), j.acc_velocidad(), j.acc_angulo() + 180.0f) );
+
 	auto bl=obtener_bloque_input(input);
 	j.recibir_input(bl);
 	j.turno(delta);
@@ -323,7 +326,13 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 			return;
 		}
 	}
+}
 
+void Controlador_principal::procesar_cola_viento(float delta)
+{
+	for(auto& i : cola_viento) i.turno(delta);
+	auto it=std::remove_if(std::begin(cola_viento), std::end(cola_viento), [](const Cola_viento& c) {return c.es_borrar();});
+	cola_viento.erase(it, std::end(cola_viento));
 }
 
 void Controlador_principal::procesar_interruptores(float delta)
@@ -425,6 +434,7 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 
 	const std::string nombre_fichero="data/mapas/mapa"+std::to_string(nivel)+".dat";
 
+	cola_viento.clear();
 	mapa.limpiar();
 	Importador importador;
 	importador.importar(nombre_fichero.c_str(), mapa);

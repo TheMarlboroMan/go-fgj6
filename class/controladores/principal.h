@@ -15,6 +15,7 @@
 #include "../app/fuentes.h"
 #include "../app/mapa.h"
 #include "../app/jugador.h"
+#include "../app/cola_viento.h"
 #include "../app/bloque_input.h"
 
 #include "estados_controladores.h"
@@ -50,6 +51,7 @@ class Controlador_principal:
 	void					procesar_interruptores(float);
 	void					procesar_ayudas(float);
 	void					procesar_estructuras(float);
+	void					procesar_cola_viento(float);
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 
@@ -71,6 +73,7 @@ class Controlador_principal:
 	DLibV::Camara				camara;
 	Mapa					mapa;
 	Jugador					jugador;
+	std::vector<Cola_viento>		cola_viento;
 	Herramientas_proyecto::Compositor_vista		layout_ayuda;
 
 	struct

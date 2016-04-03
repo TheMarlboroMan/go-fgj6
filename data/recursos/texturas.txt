@@ -3,3 +3,4 @@
 2	data/graficos/background1.jpg	0	0	0	0
 3	data/graficos/background2.jpg	0	0	0	0
 4	data/graficos/piezas.png	0	0	0	0
+5	data/graficos/viento.png	0	0	0	0

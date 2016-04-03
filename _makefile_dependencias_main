@@ -20,6 +20,7 @@ $(DIR_O)espaciable.o\
 $(DIR_O)fuentes.o\
 $(DIR_O)mensajes.o\
 $(DIR_O)jugador.o\
+$(DIR_O)cola_viento.o\
 $(DIR_O)obstaculo.o\
 $(DIR_O)decoracion.o\
 $(DIR_O)exportador.o\
@@ -51,6 +52,7 @@ DEP_CONTROLADORES=\
 $(DIR_O)director_estados.o \
 $(DIR_O)controlador_principal.o \
 $(DIR_O)controlador_editor.o \
+$(DIR_O)controlador_intro.o \
 $(DIR_O)controlador_ayuda_editor.o \
 
 DEP_FRAMEWORK=\

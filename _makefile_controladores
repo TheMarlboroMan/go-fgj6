@@ -20,11 +20,20 @@ $(DIR_CONTROLADORES)director_estados.cpp
 
 $(DIR_O)controlador_ayuda_editor.o :\
 $(DIR_O)fuentes.o\
+$(DIR_O)localizador.o\
 $(DIR_HEADERS_IMPL)input.h\
 $(DIR_CONTROLADORES)estados_controladores.h \
 $(DIR_CONTROLADORES)ayuda_editor.h \
 $(DIR_CONTROLADORES)ayuda_editor.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)ayuda_editor.cpp -o $(DIR_O)controlador_ayuda_editor.o 
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)ayuda_editor.cpp -o $(DIR_O)controlador_ayuda_editor.o
+
+$(DIR_O)controlador_intro.o :\
+$(DIR_O)fuentes.o\
+$(DIR_O)localizador.o\
+$(DIR_CONTROLADORES)estados_controladores.h \
+$(DIR_CONTROLADORES)intro.h \
+$(DIR_CONTROLADORES)intro.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)intro.cpp -o $(DIR_O)controlador_intro.o  
 
 $(DIR_O)controlador_editor.o :\
 $(DIR_O)exportador.o\
@@ -57,6 +66,7 @@ $(DIR_O)fuentes.o\
 $(DIR_O)mapa.o\
 $(DIR_O)inicio.o\
 $(DIR_O)jugador.o\
+$(DIR_O)cola_viento.o\
 $(DIR_O)representador.o\
 $(DIR_O)importador.o\
 $(DIR_HEADERS_APP)bloque_input.h\

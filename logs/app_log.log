@@ -1,4 +1,4 @@
-INICIANDO SESION 1459636336
+INICIANDO SESION 1459641864
 Iniciando proceso principal...
 Inicializando configuración aplicación...
 Inicializando configuración kernel...
@@ -6,57 +6,12 @@ Inicializando SDL2...
 Inicializando kernel...
 Detectado nuevo joystick...
 Detectado nuevo joystick...
+Detectado nuevo joystick...
 Nuevo grupo de puertas 1
-Grupo de puertas 1:2
 Inicializando mapa...
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
 La puerta existe... activando...
-La puerta existe... activando...
-Puerta 13 completa
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Inicializando mapa...
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Inicializando mapa...
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Inicializando mapa...
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Inicializando mapa...
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Inicializando mapa...
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Inicializando mapa...
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Warning: no existe la puerta 13
-Warning: no existe la puerta 13
-Nuevo grupo de puertas 1
-Nuevo grupo de puertas 1
-Grupo de puertas 1:2
-Nuevo grupo de puertas 1
+Puerta 1 completa
 Finalizando proceso principal.
 Finalizando SDL2...
 
-FINALIZANDO SESION 1459637275
+FINALIZANDO SESION 1459641893

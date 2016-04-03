@@ -29,6 +29,9 @@ class Jugador:
 	void				mut_pieza_actual(int v) {pieza_actual=v;}
 	void				establecer_max_velocidad(int v) {if(v > max_velocidad) max_velocidad=v;}
 
+	float				acc_angulo() const {return angulo;}
+	float				acc_velocidad() const {return velocidad;}
+
 	private:
 
 	static const float 		factor_rotacion;
@@ -47,6 +50,7 @@ class Jugador:
 	int 				indice_velocidad,
 					pieza_actual,
 					max_velocidad;
+	float				tiempo;
 	std::vector<float>		velocidades;
 	
 };

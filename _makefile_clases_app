@@ -35,6 +35,13 @@ $(DIR_CLASES_APP)jugador.h \
 $(DIR_CLASES_APP)jugador.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)jugador.cpp -o $(DIR_O)jugador.o
 
+$(DIR_O)cola_viento.o:\
+$(DIR_O)espaciable.o\
+$(DIR_O)representable.o\
+$(DIR_CLASES_APP)cola_viento.h \
+$(DIR_CLASES_APP)cola_viento.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)cola_viento.cpp -o $(DIR_O)cola_viento.o
+
 $(DIR_O)logica_editor.o:\
 $(DIR_O)mapa.o\
 $(DIR_O)importador.o\
