@@ -46,12 +46,12 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 		return;
 	}
 
-	//TODO: Retirar!!!!.
-	if(input.es_input_down(Input::cambio_logica))
+/*	if(input.es_input_down(Input::cambio_logica))
 	{
 		solicitar_cambio_estado(editor);
 		return;
 	}
+*/
 
 	switch(modo)
 	{
@@ -252,10 +252,11 @@ void Controlador_principal::ajustar_camara(float delta)
 	//tenemos que reajustar el zoom.
 	if(ancho_foco > cam.max_cam_x || alto_foco > cam.max_cam_y)
 	{
-		double zoom_x=(double) w_pantalla / (double) cam.max_cam_x,
-			zoom_y=(double) h_pantalla / (double) cam.max_cam_y;
-		fin_zoom=std::max(zoom_x, zoom_y);
+		double zoom_x=(double) cam.max_cam_x / (double) w_pantalla,
+			zoom_y=(double) cam.max_cam_y / (double) h_pantalla;
+		fin_zoom=std::min(zoom_x, zoom_y);
 	}
+
 
 	//Transicionar el zoom.
 	double zoom_actual=camara.acc_zoom();

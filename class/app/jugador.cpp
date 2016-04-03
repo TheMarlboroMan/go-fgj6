@@ -6,13 +6,13 @@
 
 using namespace App;
 
-const float Jugador::factor_rotacion=220.0;
+const float Jugador::factor_rotacion=280.0;
 const float Jugador::factor_min_rotacion=60.0;
 const float Jugador::factor_aceleracion=100.0f;
 
 Jugador::Jugador()
 	:angulo(0.0), velocidad(0.0f), velocidad_destino(0.0f), indice_velocidad(0), 
-	pieza_actual(0), max_velocidad(15), tiempo(0.0f), t_cola(0.0f),
+	pieza_actual(0), max_velocidad(3), tiempo(0.0f), t_cola(0.0f),
 	velocidades{80.0, 120.0, 160.0, 200.0, 240.0, 280.0, 320.0, 360.0, 400.0, 420.0, 460.0, 500.0, 540.0, 580.0, 620.0, 660.0}, sonido_velocidad(false)
 {
 	formar_poligono();
