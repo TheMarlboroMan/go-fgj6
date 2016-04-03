@@ -2,6 +2,11 @@
 
 Small game for the Familiar Game Jam 6, made with C++ and SDL2.
 
+Code available at https://github.com/TheMarlboroMan/go-fgj6. If you want to build it, be sure to tinkle with the makefile routes and build these before:
+
+	https://github.com/TheMarlboroMan/libdansdl2
+	https://github.com/TheMarlboroMan/herramientas_proyecto
+
 Credits:
 
 Music:
