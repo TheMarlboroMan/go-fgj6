@@ -91,14 +91,15 @@ void Jugador::movimiento(float delta)
 
 void Jugador::formar_poligono()
 {
-	poligono.insertar_vertice({-15.0, 10.0});
-	poligono.insertar_vertice({-10.0, 15.0});
-	poligono.insertar_vertice({10.0, 15.0});
-	poligono.insertar_vertice({15.0, 10.0});
-	poligono.insertar_vertice({15.0, -10.0});
-	poligono.insertar_vertice({10.0, -15.0});
-	poligono.insertar_vertice({-10.0, -15.0});
-	poligono.insertar_vertice({-15.0, -10.0});
+	poligono.insertar_vertice({-11.0, 6.0});
+	poligono.insertar_vertice({-6.0, 11.0});
+	poligono.insertar_vertice({6.0, 11.0});
+	poligono.insertar_vertice({11.0, 6.0});
+	poligono.insertar_vertice({11.0, -6.0});
+	poligono.insertar_vertice({6.0, -11.0});
+	poligono.insertar_vertice({-6.0, -11.0});
+	poligono.insertar_vertice({-11.0, -6.0});
+
 	poligono.cerrar();
 	poligono.mut_centro({0.0, 0.0});
 }
@@ -106,6 +107,8 @@ void Jugador::formar_poligono()
 void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Camara& camara) const
 {
 	auto c=poligono.acc_centro();
+
+//	r.dibujar_poligono(pantalla, poligono, {255, 255, 255, 255}, camara);
 
 	int x=0;
 	if(tiempo <= 0.03f) x=0;
@@ -139,6 +142,8 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 		bmp.establecer_alpha(128);
 		bmp.volcar(pantalla, camara);
 	}
+
+
 }
 
 void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)
