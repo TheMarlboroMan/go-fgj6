@@ -43,6 +43,7 @@ class Controlador_principal:
 	Mapa&				acc_mapa() {return mapa;}
 	void				iniciar_juego();
 	void				iniciar_nivel(int, int);
+	bool				es_juego_finalizado() const {return juego_finalizado;}
 
 	private:
 
@@ -53,6 +54,7 @@ class Controlador_principal:
 	void					procesar_ayudas(float);
 	void					procesar_estructuras(float);
 	void					procesar_particulas(float);
+	void					procesar_florecimiento(float);
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 
@@ -75,7 +77,7 @@ class Controlador_principal:
 	const DLibV::Fuente_TTF&		fuente_hud;
 	const Localizador&			localizador;
 
-	enum class				modos{juego, ayuda, confirmar_salida, animacion_choque} modo;
+	enum class				modos{juego, ayuda, confirmar_salida, animacion_choque, florecimiento, recuento_final} modo;
 
 	DLibV::Camara				camara;
 	Mapa					mapa;
@@ -83,6 +85,7 @@ class Controlador_principal:
 	std::vector<std::unique_ptr<Particula>>	particulas;
 	Tiempo					tiempo;
 	Herramientas_proyecto::Compositor_vista		layout_mensaje;
+	bool					juego_finalizado;
 
 	struct
 	{

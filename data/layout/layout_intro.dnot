@@ -16,5 +16,10 @@ layout:
 		pos:[140, 300, 546, 376], rec:[0, 0, 546, 376],
 		textura:"cover", orden: 15, id:"cover"
 	},
+	{
+		tipo:"bitmap",
+		pos:[140, 300, 546, 376], rec:[0, 0, 546, 376],
+		textura:"flores", orden: 16, id:"flores", alpha:0
+	},
 	{tipo:"caja",pos:[0, 0, 800, 600], rgb:[255,255,255], id:"fader", alpha:255, orden: 20}
 ]

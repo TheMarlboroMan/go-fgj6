@@ -29,13 +29,20 @@ class Controlador_intro:
 	virtual void 			dormir();
 	virtual bool			es_posible_abandonar_estado() const;
 
+	void				establecer_finalizado() {juego_finalizado=true;}
+
 	private:
+
+	enum class			modos{fadein, input, fadeout} modo;
+
+	void				procesar_input(DFramework::Input& input);
 
 	DLibH::Log_base&			log;
 	const Localizador&			localizador;
 	Herramientas_proyecto::Compositor_vista		layout;
 
 	float				fade;
+	bool				juego_finalizado;
 };
 
 }

@@ -26,7 +26,7 @@ Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes
 	fuente_hud(f.obtener_fuente("bulldozer", 20)),
 	localizador(l),
 	modo(modos::juego),
-	camara(0, 0, 800, 500)
+	camara(0, 0, 800, 500), juego_finalizado(false)
 {
 	layout_mensaje.mapear_fuente("akashi", fuente);
 	layout_mensaje.parsear("data/layout/layout_mensaje.dnot", "layout");
@@ -104,6 +104,24 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 				modo=modos::juego;
 			}
 		break;
+
+		case modos::florecimiento:
+			procesar_florecimiento(delta);
+			procesar_particulas(delta);
+		break;
+
+		case modos::recuento_final:
+
+			procesar_particulas(delta);
+
+			if(input.hay_eventos_teclado_down())
+			{
+				solicitar_cambio_estado(intro);
+				modo=modos::juego;
+				juego_finalizado=true;
+				return;
+			}
+		break;
 	}
 }
 
@@ -135,17 +153,49 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
-	if(modo!=modos::animacion_choque) 		jugador.dibujar(r, pantalla, camara);
+
+	switch(modo)
+	{
+		case modos::juego:
+		case modos::ayuda:
+		case modos::confirmar_salida:
+			jugador.dibujar(r, pantalla, camara);
+		break;
+
+		case modos::animacion_choque:
+		case modos::florecimiento:
+		case modos::recuento_final: break;
+	}
+
 	for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
 	for(const auto& o : particulas)			o->dibujar(r, pantalla, camara);
 
-	r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad());
-
-	if(modo==modos::ayuda || modo==modos::confirmar_salida)
+	switch(modo)
 	{
-		layout_mensaje.volcar(pantalla);
-		auto mensaje=layout_mensaje.obtener_por_id("txt_mensaje");
-		if(mensaje->acc_alpha()==0) centrar_mensaje();
+		case modos::juego:
+		case modos::ayuda:
+		case modos::confirmar_salida:
+		case modos::animacion_choque:
+			r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad());
+		break;
+		case modos::florecimiento:
+		case modos::recuento_final: break;
+	}
+
+	switch(modo)
+	{	
+		case modos::confirmar_salida:
+		case modos::ayuda:
+		case modos::recuento_final:
+		{
+			layout_mensaje.volcar(pantalla);
+			auto mensaje=layout_mensaje.obtener_por_id("txt_mensaje");
+			if(mensaje->acc_alpha()==0) centrar_mensaje();
+		}
+		break;
+		case modos::juego:
+		case modos::animacion_choque:
+		case modos::florecimiento: break;
 	}
 }
 
@@ -403,10 +453,8 @@ void Controlador_principal::jugador_en_arbol(Arbol& a, Jugador& j)
 
 	if(a.es_finalizado())
 	{
-		//TODO...
-		throw std::runtime_error("FIN DE JUEGO LOOL");
+		modo=modos::florecimiento;
 	}
-
 }
 
 void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
@@ -579,7 +627,17 @@ void Controlador_principal::crear_brillo(Espaciable::tpunto centro)
 	centro+={(double)desp(), (double)desp()};
 	particulas.push_back(std::move(std::unique_ptr<Particula>(new Brillo(centro, 90.0, velocidad, tiempo) ) ) );
 	}
+}
 
+void Controlador_principal::procesar_florecimiento(float delta)
+{
+	auto &a=mapa.arboles[0];
 
+	a.turno(delta);
 
+	if(a.es_florecido())
+	{
+		asignar_mensaje(localizador.obtener(101)+tiempo.a_cadena());
+		modo=modos::recuento_final;
+	}
 }

@@ -72,7 +72,14 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 		break;
 		case t_estados::editor: break;
 		case t_estados::ayuda_editor: break;
-		case t_estados::intro: break;
+		case t_estados::intro: 
+			if(actual==t_estados::principal)
+			{
+				if(controlador_principal->es_juego_finalizado()) controlador_intro->establecer_finalizado();
+			}
+		break;
+
+
 		case t_estados::game_over: break;
 	}
 }

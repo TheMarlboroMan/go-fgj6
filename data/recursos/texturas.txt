@@ -6,3 +6,4 @@
 5	data/graficos/viento.png	0	0	0	0
 6	data/graficos/hud.png	0	0	0	0
 7	data/graficos/cover.png	0	0	0	0
+8	data/graficos/flores.png	0	0	0	0

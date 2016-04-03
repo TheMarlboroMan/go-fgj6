@@ -122,7 +122,7 @@ void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_T
 	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(6));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	sprite.establecer_alpha(128);
-	sprite.establecer_recorte(0, 0, 30, 40);
+	sprite.establecer_recorte(0, 0, 31, 40);
 
 	int x_vel=0;
 	while(x_vel <= max_vel)
@@ -132,7 +132,7 @@ void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_T
 		++x_vel;
 	}
 
-	sprite.establecer_recorte(30, 0, 30, 40);
+	sprite.establecer_recorte(31, 0, 31, 40);
 	sprite.establecer_alpha(255);
 	x_vel=0;
 	while(x_vel <= act_vel)

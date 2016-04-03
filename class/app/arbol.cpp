@@ -6,6 +6,7 @@
 using namespace App;
 
 Arbol::Arbol(Espaciable::tpunto pt)
+	:tiempo_florecimiento(0.0)
 {
 	formar_poligono();
 	establecer_posicion(pt.x, pt.y);
@@ -58,4 +59,22 @@ void Arbol::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Ca
 
 		x+=50;
 	}
+
+	if(tiempo_florecimiento)
+	{
+		int alpha=(tiempo_florecimiento * 254.0) / 2.5f;
+		if(alpha > 255) alpha=255;
+
+		DLibV::Representacion_bitmap flores(DLibV::Gestor_texturas::obtener(8));
+		flores.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+		flores.establecer_alpha(alpha);
+		flores.establecer_posicion(c.x-240, -c.y-270);
+		flores.volcar(pantalla, camara);
+	}
+}
+
+void Arbol::turno(float delta)
+{
+	tiempo_florecimiento+=delta;
+	if(tiempo_florecimiento > 5.0f) tiempo_florecimiento=5.0f;
 }

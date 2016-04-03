@@ -1,8 +1,10 @@
 <1$>That's the wind. 
+
 Use the left and right cursor keys to change direction.
 Avoid crashing into walls.<#>
 
 <2$>A door is blocking the exit above.
+
 Make the wind flow into the windmill 
 to activate it and open doors.<#>
 
@@ -13,12 +15,22 @@ to be activated. If there's not enough force
 to activate a windmill look for another way.<#>
 
 <5$>Make the wind flow into the symbol to gain more speed.
+
 Use the up and down cursors to change speed.<#>
 
 <6$>Make the wind flow into the element to carry it. 
+
+Only one element can be carried at the same time.
+
 Carry all five different elements to the tree to finish the game.<#>
 
 <100$>Are you sure you want to quit?.
 
 Press escape to confirm. Any other key to continue.
+<#>
+
+<101$>All elements have been reunited and the cycle 
+begins anew.
+
+Your time: 
 <#>

@@ -1,6 +1,10 @@
 #indice ruta
 
 #Sonidos motor... estos no debemos cambiarlos porque se usan en código!
-#1	data/sonidos/defecto.ogg
+1	data/sonidos/chocar.ogg
+2	data/sonidos/molino.ogg
+3	data/sonidos/poner_pieza.ogg
+4	data/sonidos/puerta.ogg
+5	data/sonidos/viento.ogg
 
 #Sonidos de aplicacion...
