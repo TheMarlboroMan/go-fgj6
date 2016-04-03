@@ -15,6 +15,8 @@ class Mejora_velocidad:
 
 					Mejora_velocidad(Espaciable::tpunto, int);
 
+	void				turno(float);
+	bool				es_generar_particula() const {return !tiempo;}
 	int				acc_nivel() const {return nivel;}
 	void				mut_nivel(int v) {nivel=v;}
 
@@ -25,6 +27,7 @@ class Mejora_velocidad:
 	void				formar_poligono();
 
 	int				nivel;
+	float				tiempo;
 };
 
 }

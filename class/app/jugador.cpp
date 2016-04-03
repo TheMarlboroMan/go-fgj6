@@ -2,19 +2,21 @@
 
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
+#include <class/valor_limitado.h>
 
 using namespace App;
 
 const float Jugador::factor_rotacion=220.0;
 const float Jugador::factor_min_rotacion=60.0;
-const float Jugador::factor_aceleracion=180.0f;
+const float Jugador::factor_aceleracion=100.0f;
 
 Jugador::Jugador()
-	:angulo(0.0), velocidad(100.0f), indice_velocidad(0), 
-	pieza_actual(0), max_velocidad(3), tiempo(0.0f),
+	:angulo(0.0), velocidad(0.0f), velocidad_destino(0.0f), indice_velocidad(0), 
+	pieza_actual(0), max_velocidad(3), tiempo(0.0f), t_cola(0.0f),
 	velocidades{80.0, 160.0, 320.0, 640.0}
 {
 	formar_poligono();
+	cambiar_velocidad(0);
 }
 
 void Jugador::recibir_input(const Bloque_input& bi)
@@ -26,25 +28,35 @@ void Jugador::turno(float delta)
 {
 	if(input_actual.giro) girar(input_actual.giro, delta);
 
-	if(input_actual.aceleracion) cambiar_velocidad(input_actual.aceleracion);
+	if(velocidad_destino != velocidad)
+	{
+		Herramientas_proyecto::Valor_limitado<float> velocidad_aplicar(velocidad, velocidad_destino, velocidad, Herramientas_proyecto::Valor_limitado<float>::ambos);
 
+		if(velocidad_destino > velocidad_aplicar)
+		{
+			velocidad_aplicar+=factor_aceleracion * delta;
+		}
+		else if(velocidad_destino < velocidad_aplicar)
+		{
+			velocidad_aplicar-=factor_aceleracion * delta;
+		}
+
+		velocidad=velocidad_aplicar;
+	}
+
+	if(input_actual.aceleracion) cambiar_velocidad(input_actual.aceleracion);
 	if(velocidad) movimiento(delta);
 
 	tiempo+=delta;
+	t_cola+=delta;
 
+	if(t_cola > 0.05) t_cola=0.0f;
 	if(tiempo > 0.15f) tiempo=0.0f;
-}
-
-void Jugador::colisionar(bool con_dano)
-{
-	//TODO...
 }
 
 void Jugador::girar(int dir, float delta)
 {
 	//La velocidad afecta a la capacidad de giro. No afecta parado o marcha atrás.	
-
-	//TODO: Usar velocidad actual como int!.
 	double factor=velocidad <= 0.0 ? factor_rotacion : factor_rotacion - (velocidad / 3.0);
 	if(factor < factor_min_rotacion) factor=factor_min_rotacion;
 
@@ -62,17 +74,8 @@ void Jugador::cambiar_velocidad(int dir)
 	//Limite de velocidades...
 	if(indice > max_velocidad) indice=max_velocidad;
 		
-
 	indice_velocidad=indice;
-	velocidad=velocidades[indice_velocidad];	//TODO: Not really!!!!.
-
-//std::cout<<indice_velocidad<<" "<<velocidad<<std::endl;
-
-/*	velocidad+=dir > 0 ? delta * factor_aceleracion : delta * factor_freno;
-
-	if(velocidad > max_vel) velocidad=max_vel;
-	else if(velocidad < min_vel) velocidad=min_vel;
-*/
+	velocidad_destino=velocidades[indice_velocidad];
 }
 
 void Jugador::movimiento(float delta)
@@ -116,6 +119,23 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 	sprite.transformar_centro_rotacion(15 / camara.acc_zoom(), 15 / camara.acc_zoom());
 	sprite.transformar_rotar(-angulo);
 	sprite.volcar(pantalla, camara);
+
+	if(pieza_actual)
+	{
+		DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(1));
+		DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(4));
+
+		flare.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+		flare.establecer_alpha(255);
+		flare.ir_a(c.x - 25, -c.y - 25);
+		flare.volcar(pantalla, camara);
+
+		bmp.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+		bmp.establecer_recorte((pieza_actual-1) * 30, 0, 30, 30);
+		bmp.establecer_posicion(c.x - 15, -c.y - 15, 30, 30);
+		bmp.establecer_alpha(128);
+		bmp.volcar(pantalla, camara);
+	}
 }
 
 void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)
@@ -133,4 +153,10 @@ void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)
 void Jugador::cancelar_movimiento(float delta)
 {
 	desplazar_angulo_velocidad(angulo+180.0, velocidad*delta);
+}
+
+void Jugador::reiniciar()
+{
+	indice_velocidad=0;
+	velocidad=velocidades[0];
 }

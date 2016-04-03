@@ -14,6 +14,6 @@ layout:
 	},
 	{
 		tipo:"ttf", pos:[180,260], fuente:"akashi", rgba:[0, 0, 0, 255],
-		texto:"", id:"txt_ayuda", orden: 50, alpha: 0
+		texto:"", id:"txt_mensaje", orden: 50, alpha: 0
 	}
 ]

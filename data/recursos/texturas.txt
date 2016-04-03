@@ -2,5 +2,7 @@
 1	data/graficos/lens_flare.png	0	0	0	0
 2	data/graficos/background1.jpg	0	0	0	0
 3	data/graficos/background2.jpg	0	0	0	0
-4	data/graficos/piezas.png	0	0	0	0
+4	data/graficos/sprites.png	0	0	0	0
 5	data/graficos/viento.png	0	0	0	0
+6	data/graficos/hud.png	0	0	0	0
+7	data/graficos/cover.png	0	0	0	0

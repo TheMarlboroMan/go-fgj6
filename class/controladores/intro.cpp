@@ -1,11 +1,14 @@
 #include "intro.h"
 
+#include "../app/framework_impl/input.h"
+
 using namespace App;
 
 Controlador_intro::Controlador_intro(DLibH::Log_base& log, const Fuentes& fuentes, const Localizador& loc)
 	:log(log), localizador(loc), fade(255.0f)
 {
-	layout.mapear_fuente("fuente", fuentes.obtener_fuente("akashi", 16));
+	layout.mapear_fuente("fuente", fuentes.obtener_fuente("imagination_station", 16));
+	layout.mapear_textura("cover", DLibV::Gestor_texturas::obtener(7));
 }
 
 void Controlador_intro::preloop(DFramework::Input& input, float delta)
@@ -20,7 +23,7 @@ void Controlador_intro::postloop(DFramework::Input& input, float delta)
 
 void Controlador_intro::loop(DFramework::Input& input, float delta)
 {
-	if(input.es_senal_salida())
+	if(input.es_senal_salida() || input.es_input_down(Input::escape))
 	{
 		abandonar_aplicacion();
 	}
@@ -32,9 +35,12 @@ void Controlador_intro::loop(DFramework::Input& input, float delta)
 			if(fade < 1.0f) fade=1.0f;
 			int ffade=floor(fade);
 			layout.obtener_por_id("fader")->establecer_alpha(ffade);
+
+			int y=ffade < 130 ? 130 : ffade;
+			layout.obtener_por_id("cover")->ir_a(140, y);
 		}
 
-		if(input.hay_eventos_teclado_down() && fade <= 128.0)
+		if(input.hay_eventos_teclado_down() && fade <= 200.0)
 		{
 			solicitar_cambio_estado(principal);
 		}

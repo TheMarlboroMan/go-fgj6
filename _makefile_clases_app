@@ -36,11 +36,23 @@ $(DIR_CLASES_APP)jugador.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)jugador.cpp -o $(DIR_O)jugador.o
 
 $(DIR_O)cola_viento.o:\
-$(DIR_O)espaciable.o\
-$(DIR_O)representable.o\
+$(DIR_O)particula.o\
 $(DIR_CLASES_APP)cola_viento.h \
 $(DIR_CLASES_APP)cola_viento.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)cola_viento.cpp -o $(DIR_O)cola_viento.o
+
+$(DIR_O)brillo.o:\
+$(DIR_O)particula.o\
+$(DIR_CLASES_APP)brillo.h \
+$(DIR_CLASES_APP)brillo.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)brillo.cpp -o $(DIR_O)brillo.o
+
+$(DIR_O)particula.o:\
+$(DIR_O)espaciable.o\
+$(DIR_O)representable.o\
+$(DIR_CLASES_APP)particula.h \
+$(DIR_CLASES_APP)particula.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)particula.cpp -o $(DIR_O)particula.o
 
 $(DIR_O)logica_editor.o:\
 $(DIR_O)mapa.o\
@@ -254,6 +266,11 @@ $(DIR_O)representador.o\
 $(DIR_CLASES_APP)representable.h \
 $(DIR_CLASES_APP)representable.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)representable.cpp -o $(DIR_O)representable.o
+
+$(DIR_O)tiempo.o:\
+$(DIR_CLASES_APP)tiempo.h \
+$(DIR_CLASES_APP)tiempo.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)tiempo.cpp -o $(DIR_O)tiempo.o
 
 $(DIR_O)localizador.o:\
 $(DIR_CLASES_APP)localizador.h \

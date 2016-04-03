@@ -14,8 +14,9 @@
 #include "../app/localizador.h"
 #include "../app/fuentes.h"
 #include "../app/mapa.h"
+#include "../app/tiempo.h"
 #include "../app/jugador.h"
-#include "../app/cola_viento.h"
+#include "../app/particula.h"
 #include "../app/bloque_input.h"
 
 #include "estados_controladores.h"
@@ -51,7 +52,7 @@ class Controlador_principal:
 	void					procesar_interruptores(float);
 	void					procesar_ayudas(float);
 	void					procesar_estructuras(float);
-	void					procesar_cola_viento(float);
+	void					procesar_particulas(float);
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 
@@ -63,18 +64,25 @@ class Controlador_principal:
 	void					jugador_en_mejora_velocidad(const Mejora_velocidad&, Jugador&);
 
 	void					abrir_puerta(int);
+	void					chocar_jugador(Jugador&);
+	void					preparar_confirmar_salida();
+	void					asignar_mensaje(const std::string&);
+	void					centrar_mensaje();
+	void					crear_brillo(Espaciable::tpunto);
 
 	DLibH::Log_base&			log;
-	const DLibV::Fuente_TTF&		fuente_akashi;
+	const DLibV::Fuente_TTF&		fuente;
+	const DLibV::Fuente_TTF&		fuente_hud;
 	const Localizador&			localizador;
 
-	enum class				modos{juego, ayuda} modo;
+	enum class				modos{juego, ayuda, confirmar_salida, animacion_choque} modo;
 
 	DLibV::Camara				camara;
 	Mapa					mapa;
 	Jugador					jugador;
-	std::vector<Cola_viento>		cola_viento;
-	Herramientas_proyecto::Compositor_vista		layout_ayuda;
+	std::vector<std::unique_ptr<Particula>>	particulas;
+	Tiempo					tiempo;
+	Herramientas_proyecto::Compositor_vista		layout_mensaje;
 
 	struct
 	{

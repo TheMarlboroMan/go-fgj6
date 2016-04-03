@@ -1,5 +1,8 @@
 #include "representador.h"
 
+#include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
+#include <video/gestores/gestor_texturas.h>
+
 using namespace App;
 
 void Representador::dibujar_poligono(DLibV::Pantalla& pantalla, const DLibH::Poligono_2d<double>& poligono, tcolor color, const DLibV::Camara& camara)
@@ -108,3 +111,34 @@ DLibV::Representacion_primitiva_poligono_base::punto Representador::cartesiano_a
 	return DLibV::Representacion_primitiva_poligono_base::punto{(int)floor(pt.x), (int)floor(-pt.y)};
 }
 
+void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_TTF& f, const std::string& cad_tiempo, bool aviso_tiempo, int max_vel, int act_vel)
+{
+
+	auto color=aviso_tiempo ? SDL_Color{255, 32, 32, 255} : SDL_Color{255, 255, 255, 255};
+	DLibV::Representacion_TTF txt(f, color, cad_tiempo);
+	txt.ir_a(16, 70);
+	txt.volcar(pantalla);
+
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(6));
+	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+	sprite.establecer_alpha(128);
+	sprite.establecer_recorte(0, 0, 30, 40);
+
+	int x_vel=0;
+	while(x_vel <= max_vel)
+	{
+		sprite.establecer_posicion( (x_vel * 33) + 16 , 16, 31, 40);
+		sprite.volcar(pantalla);
+		++x_vel;
+	}
+
+	sprite.establecer_recorte(30, 0, 30, 40);
+	sprite.establecer_alpha(255);
+	x_vel=0;
+	while(x_vel <= act_vel)
+	{
+		sprite.establecer_posicion( (x_vel * 33) + 16 , 16, 31, 40);
+		sprite.volcar(pantalla);
+		++x_vel;
+	}
+}

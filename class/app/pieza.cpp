@@ -26,14 +26,15 @@ void Pieza::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Ca
 {
 	auto c=poligono.acc_centro();
 
-	DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(4));
 	DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(1));
+	DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(4));
 
 	flare.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	flare.establecer_alpha(255);
 	flare.ir_a(c.x - 25, -c.y - 25);
 	flare.volcar(pantalla, camara);
 
+	bmp.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	bmp.establecer_recorte((indice-1) * 30, 0, 30, 30);
 	bmp.establecer_posicion(c.x - 15, -c.y - 15, 30, 30);
 	bmp.volcar(pantalla, camara);

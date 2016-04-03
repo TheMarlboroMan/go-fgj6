@@ -21,6 +21,9 @@ $(DIR_O)fuentes.o\
 $(DIR_O)mensajes.o\
 $(DIR_O)jugador.o\
 $(DIR_O)cola_viento.o\
+$(DIR_O)brillo.o\
+$(DIR_O)particula.o\
+$(DIR_O)tiempo.o\
 $(DIR_O)obstaculo.o\
 $(DIR_O)decoracion.o\
 $(DIR_O)exportador.o\

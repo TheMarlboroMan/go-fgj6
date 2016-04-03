@@ -27,13 +27,18 @@ void Ayuda::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Ca
 	auto c=poligono.acc_centro();
 
 	DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(1));
-
 	flare.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	flare.establecer_alpha(255);
 	flare.ir_a(c.x - 25, -c.y - 25);
 	flare.volcar(pantalla, camara);
 
-	r.dibujar_poligono(pantalla, poligono, {255, 255, 255, 255}, camara);
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(4));
+	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+	sprite.establecer_alpha(128);
+	sprite.establecer_recorte(105, 30, 30, 30);
+	sprite.establecer_posicion(c.x-15, -c.y-15, 30, 30);
+	sprite.transformar_centro_rotacion(15 / camara.acc_zoom(), 15 / camara.acc_zoom());
+	sprite.volcar(pantalla, camara);
 }
 
 void Ayuda::turno(float delta)

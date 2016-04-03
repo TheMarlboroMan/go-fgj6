@@ -1,5 +1,5 @@
-#ifndef COLA_VIENTO_H
-#define COLA_VIENTO_H
+#ifndef BRILLO_H
+#define BRILLO_H
 
 #include <class/valor_limitado.h>
 
@@ -8,12 +8,12 @@
 namespace App
 {
 
-class Cola_viento:
+class Brillo:
 	public Particula
 {
 	public:
 
-					Cola_viento(Espaciable::tpunto, double, float, float t);
+					Brillo(Espaciable::tpunto, double, float, float t);
 	virtual void			turno(float);
 	virtual bool			es_borrar() const {return tiempo <= 0.f;}
 	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;

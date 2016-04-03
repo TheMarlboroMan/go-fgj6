@@ -2,7 +2,11 @@
 
 #include <algorithm>
 
+#include <class/generador_numeros.h>
+
 #include "../app/representador.h"
+#include "../app/cola_viento.h"
+#include "../app/brillo.h"
 
 #include "../app/importador.h"
 
@@ -18,13 +22,14 @@ using namespace App;
 
 Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes& f, const Localizador& l)
 	:log(log),
-	fuente_akashi(f.obtener_fuente("akashi", 16)),
+	fuente(f.obtener_fuente("inkburrow", 20)),
+	fuente_hud(f.obtener_fuente("bulldozer", 20)),
 	localizador(l),
 	modo(modos::juego),
 	camara(0, 0, 800, 500)
 {
-	layout_ayuda.mapear_fuente("akashi", fuente_akashi);
-	layout_ayuda.parsear("data/layout/layout_ayuda.dnot", "layout");
+	layout_mensaje.mapear_fuente("akashi", fuente);
+	layout_mensaje.parsear("data/layout/layout_mensaje.dnot", "layout");
 }
 
 void Controlador_principal::preloop(DFramework::Input& input, float delta)
@@ -40,6 +45,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 		return;
 	}
 
+	//TODO: Retirar!!!!.
 	if(input.es_input_down(Input::cambio_logica))
 	{
 		solicitar_cambio_estado(editor);
@@ -49,12 +55,47 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 	switch(modo)
 	{
 		case modos::juego:
+		case modos::animacion_choque:
+
+			if(input.es_input_down(Input::escape))
+			{
+				preparar_confirmar_salida();
+				return;
+			}
+
+			tiempo.turno(delta);
 			procesar_interruptores(delta);
 			procesar_ayudas(delta);
 			procesar_estructuras(delta);
-			procesar_cola_viento(delta);
-			procesar_jugador(input, delta, jugador);
-			ajustar_camara(delta);
+			procesar_particulas(delta);
+
+			if(modo==modos::juego)
+			{
+				procesar_jugador(input, delta, jugador);
+				ajustar_camara(delta);
+			}
+			else if(!tiempo.es_aviso())
+			{
+				iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
+				jugador.reiniciar();
+				modo=modos::juego;
+				return;
+			}
+		break;
+
+		case modos::confirmar_salida:
+
+			if(input.es_input_down(Input::escape))
+			{
+				solicitar_cambio_estado(intro);
+				modo=modos::juego;
+				return;
+			}
+			else if(input.hay_eventos_teclado_down())
+			{
+				modo=modos::juego;
+			}
+
 		break;
 
 		case modos::ayuda:
@@ -89,38 +130,22 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 
 	for(const auto& o : mapa.decoraciones_fondo)	o->dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.puertas)		o.dibujar(r, pantalla, camara);
-	for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
-	jugador.dibujar(r, pantalla, camara);
-	for(const auto& o : cola_viento)		o.dibujar(r, pantalla, camara);
+	for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
+	if(modo!=modos::animacion_choque) 		jugador.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
+	for(const auto& o : particulas)			o->dibujar(r, pantalla, camara);
 
-	if(modo==modos::ayuda)
+	r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad());
+
+	if(modo==modos::ayuda || modo==modos::confirmar_salida)
 	{
-		layout_ayuda.volcar(pantalla);
-
-		auto ayuda=layout_ayuda.obtener_por_id("txt_ayuda");
-		if(ayuda->acc_alpha()==0)
-		{
-			//Centrar...
-			int 	w_txt=layout_ayuda.const_int("w_texto"),
-				h_txt=layout_ayuda.const_int("h_texto"),
-				x_txt=layout_ayuda.const_int("x_texto"),
-				y_txt=layout_ayuda.const_int("y_texto");
-
-//TODO: Centrar...
-
-			int x=x_txt+(w_txt + (ayuda->acc_posicion().w / 2));
-			int y=y_txt+(h_txt + (ayuda->acc_posicion().h / 2));
-
-
-
-			ayuda->ir_a(x_txt, y_txt);
-			ayuda->establecer_alpha(255);
-		}
+		layout_mensaje.volcar(pantalla);
+		auto mensaje=layout_mensaje.obtener_por_id("txt_mensaje");
+		if(mensaje->acc_alpha()==0) centrar_mensaje();
 	}
 }
 
@@ -241,8 +266,10 @@ void Controlador_principal::ajustar_camara(float delta)
 
 void Controlador_principal::procesar_jugador(DFramework::Input& input, float delta, Jugador &j)
 {
-	//TODO: mejor con algo de sentido!!!
-	cola_viento.push_back( Cola_viento(j.acc_poligono().acc_centro(), j.acc_velocidad(), j.acc_angulo() + 180.0f) );
+	if(jugador.es_generar_cola())
+	{
+		particulas.push_back(std::move(std::unique_ptr<Particula>(new Cola_viento(j.acc_poligono().acc_centro(), j.acc_angulo(), -j.acc_velocidad(), .5f) ) ) );
+	}
 
 	auto bl=obtener_bloque_input(input);
 	j.recibir_input(bl);
@@ -297,9 +324,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 			switch(o.acc_tipo())
 			{
 				case Obstaculo::ttipos::normal:
-				 
-			//TODO... Llevar a otro método.
-					iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
+					chocar_jugador(j);
 					return;
 				break;
 				case Obstaculo::ttipos::inocuo: 
@@ -313,8 +338,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		if(j.en_colision_con(p))
 		{
-			//TODO... Llevar a otro método.
-			iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
+			chocar_jugador(j);
 		}
 	}
 
@@ -328,11 +352,17 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	}
 }
 
-void Controlador_principal::procesar_cola_viento(float delta)
+void Controlador_principal::procesar_particulas(float delta)
 {
-	for(auto& i : cola_viento) i.turno(delta);
-	auto it=std::remove_if(std::begin(cola_viento), std::end(cola_viento), [](const Cola_viento& c) {return c.es_borrar();});
-	cola_viento.erase(it, std::end(cola_viento));
+	for(auto& mv : mapa.mejoras_velocidad)
+	{
+		mv.turno(delta);
+		if(mv.es_generar_particula()) crear_brillo(mv.acc_poligono().acc_centro());
+	}
+
+	for(auto& i : particulas) i->turno(delta);
+	auto it=std::remove_if(std::begin(particulas), std::end(particulas), [](const std::unique_ptr<Particula>& c) {return c->es_borrar();});
+	particulas.erase(it, std::end(particulas));
 }
 
 void Controlador_principal::procesar_interruptores(float delta)
@@ -360,7 +390,7 @@ void Controlador_principal::jugador_en_ayuda(Ayuda& a, Jugador&)
 	if(a.es_activable())
 	{
 		a.activar();
-		static_cast<DLibV::Representacion_TTF *>(layout_ayuda.obtener_por_id("txt_ayuda"))->asignar(localizador.obtener(a.acc_indice()));
+		asignar_mensaje(localizador.obtener(a.acc_indice()));
 		modo=modos::ayuda;
 	}
 
@@ -434,7 +464,7 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 
 	const std::string nombre_fichero="data/mapas/mapa"+std::to_string(nivel)+".dat";
 
-	cola_viento.clear();
+	particulas.clear();
 	mapa.limpiar();
 	Importador importador;
 	importador.importar(nombre_fichero.c_str(), mapa);
@@ -480,5 +510,76 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 void Controlador_principal::iniciar_juego()
 {
 	info_persistente.reiniciar();
+	jugador.reiniciar();
+	tiempo.reiniciar();
 	iniciar_nivel(1, 1);
+}
+
+void Controlador_principal::chocar_jugador(Jugador& j)
+{
+	modo=modos::animacion_choque;
+	tiempo.penalizar();
+
+	auto centro=j.acc_poligono().acc_centro();
+	Herramientas_proyecto::Generador_int g(0, 360), t(0, 1000);
+
+	for(int i=0; i < 20; ++i)
+	{
+		double velocidad=100;
+		float angulo=g();
+		float tiempo=1.0f+( (float)t() / 1000.0);
+		particulas.push_back(std::move(std::unique_ptr<Particula>(new Cola_viento(centro, angulo, velocidad, tiempo) ) ) );
+	}
+}
+
+void Controlador_principal::preparar_confirmar_salida()
+{
+	modo=modos::confirmar_salida;
+	asignar_mensaje(localizador.obtener(100));
+}
+
+void Controlador_principal::asignar_mensaje(const std::string& m)
+{
+	auto r=static_cast<DLibV::Representacion_TTF *>(layout_mensaje.obtener_por_id("txt_mensaje"));
+	r->asignar(m);
+	r->establecer_alpha(0);
+}
+
+void Controlador_principal::centrar_mensaje()
+{
+	auto mensaje=layout_mensaje.obtener_por_id("txt_mensaje");
+
+	//Centrar...
+	int 	w_txt=layout_mensaje.const_int("w_texto"),
+		h_txt=layout_mensaje.const_int("h_texto"),
+		x_txt=layout_mensaje.const_int("x_texto"),
+		y_txt=layout_mensaje.const_int("y_texto");
+
+	int x=x_txt+( (w_txt / 2) - (mensaje->acc_posicion().w / 2));
+	int y=y_txt+( (h_txt / 2) - (mensaje->acc_posicion().h / 2));
+
+	mensaje->ir_a(x, y);
+	mensaje->establecer_alpha(255);
+}
+
+void Controlador_principal::crear_brillo(Espaciable::tpunto centro)
+{
+	Herramientas_proyecto::Generador_int g(0, 100), t(0, 1000), desp(-20, 20), ang(45, 135);
+
+	{
+	float angulo=ang();
+	float tiempo=1.0f+( (float)t() / 1000.0);
+	double velocidad=40.0+((double) g() / 100.0);
+	particulas.push_back(std::move(std::unique_ptr<Particula>(new Cola_viento(centro, angulo, velocidad, tiempo) ) ) );
+	}
+
+	{
+	float tiempo=0.5f+( (float)t() / 1000.0);
+	double velocidad=100.0+((double) g() / 100.0);
+	centro+={(double)desp(), (double)desp()};
+	particulas.push_back(std::move(std::unique_ptr<Particula>(new Brillo(centro, 90.0, velocidad, tiempo) ) ) );
+	}
+
+
+
 }

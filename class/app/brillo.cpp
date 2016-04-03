@@ -1,4 +1,4 @@
-#include "cola_viento.h"
+#include "brillo.h"
 
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
@@ -6,14 +6,14 @@
 
 using namespace App;
 
-Cola_viento::Cola_viento(Espaciable::tpunto c, double ang, float vel, float t)
+Brillo::Brillo(Espaciable::tpunto c, double ang, float vel, float t)
 	:Particula(c, ang, vel), tiempo(0.0f, t, t, Herramientas_proyecto::Valor_limitado<float>::inferior)
 {
-	Herramientas_proyecto::Generador_int g(0, 4);
+	Herramientas_proyecto::Generador_int g(0, 7);
 	rep=g();
 }
 
-void Cola_viento::turno(float delta)
+void Brillo::turno(float delta)
 {
 	tiempo-=delta;
 	DLibH::Vector_2d<double> v=vector_unidad_para_angulo_cartesiano(angulo);
@@ -21,17 +21,17 @@ void Cola_viento::turno(float delta)
 	centro+=pd;
 }
 
-void Cola_viento::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Camara& camara) const
+void Brillo::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Camara& camara) const
 {
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(5));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(4));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 
 	float alpha=255.0f - ( (tiempo) / 255.f);;
 
 	sprite.establecer_alpha((int)alpha);
-	sprite.establecer_recorte(rep*30, 30, 30, 30);
-	sprite.establecer_posicion(centro.x-15, -centro.y-15, 30, 30);
-	sprite.transformar_centro_rotacion(15 / camara.acc_zoom(), 15 / camara.acc_zoom());
-	sprite.transformar_rotar(angulo+(tiempo * 200.f));
+	sprite.establecer_recorte(60, 30+(rep*5), 5, 5);
+	sprite.establecer_posicion(centro.x-2, -centro.y-2, 5, 5);
+	sprite.transformar_centro_rotacion(2 / camara.acc_zoom(), 2 / camara.acc_zoom());
+	sprite.transformar_rotar(angulo+(tiempo * 300.f));
 	sprite.volcar(pantalla, camara);
 }
