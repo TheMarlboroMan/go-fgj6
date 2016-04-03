@@ -12,8 +12,8 @@ const float Jugador::factor_aceleracion=100.0f;
 
 Jugador::Jugador()
 	:angulo(0.0), velocidad(0.0f), velocidad_destino(0.0f), indice_velocidad(0), 
-	pieza_actual(0), max_velocidad(3), tiempo(0.0f), t_cola(0.0f),
-	velocidades{80.0, 160.0, 320.0, 640.0}
+	pieza_actual(0), max_velocidad(15), tiempo(0.0f), t_cola(0.0f),
+	velocidades{80.0, 120.0, 160.0, 200.0, 240.0, 280.0, 320.0, 360.0, 400.0, 420.0, 460.0, 500.0, 540.0, 580.0, 620.0, 660.0}, sonido_velocidad(false)
 {
 	formar_poligono();
 	cambiar_velocidad(0);
@@ -26,6 +26,8 @@ void Jugador::recibir_input(const Bloque_input& bi)
 
 void Jugador::turno(float delta)
 {
+	sonido_velocidad=false;
+
 	if(input_actual.giro) girar(input_actual.giro, delta);
 
 	if(velocidad_destino != velocidad)
@@ -70,6 +72,7 @@ void Jugador::cambiar_velocidad(int dir)
 	int indice=indice_velocidad+dir;
 	if(indice < 0) indice=0;
 	else if(indice >= (int) velocidades.size()) indice=velocidades.size()-1;
+	else sonido_velocidad=true;
 
 	//Limite de velocidades...
 	if(indice > max_velocidad) indice=max_velocidad;

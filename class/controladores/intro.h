@@ -10,6 +10,7 @@
 
 #include "../app/localizador.h"
 #include "../app/fuentes.h"
+#include "../app/sistema_audio.h"
 
 
 namespace App
@@ -20,7 +21,7 @@ class Controlador_intro:
 {
 	public:
 	
-					Controlador_intro(DLibH::Log_base&, const Fuentes&, const Localizador&);
+					Controlador_intro(DLibH::Log_base&, const Fuentes&, const Localizador&, Sistema_audio&);
 	virtual void 			preloop(DFramework::Input& input, float delta);
 	virtual void 			loop(DFramework::Input& input, float delta);
 	virtual void 			postloop(DFramework::Input& input, float delta);
@@ -39,6 +40,8 @@ class Controlador_intro:
 
 	DLibH::Log_base&			log;
 	const Localizador&			localizador;
+	Sistema_audio&				sistema_audio;
+
 	Herramientas_proyecto::Compositor_vista		layout;
 
 	float				fade;

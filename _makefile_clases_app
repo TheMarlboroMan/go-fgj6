@@ -276,3 +276,26 @@ $(DIR_O)localizador.o:\
 $(DIR_CLASES_APP)localizador.h \
 $(DIR_CLASES_APP)localizador.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)localizador.cpp -o $(DIR_O)localizador.o
+
+$(DIR_O)sistema_audio.o:\
+$(DIR_O)gestor_audio.o\
+$(DIR_CLASES_APP)sistema_audio.h\
+$(DIR_CLASES_APP)sistema_audio.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)sistema_audio.cpp -o $(DIR_O)sistema_audio.o
+
+$(DIR_O)audio_reproducir.o:\
+$(DIR_CLASES_APP)audio_reproducir.h\
+$(DIR_CLASES_APP)audio_reproducir.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)audio_reproducir.cpp -o $(DIR_O)audio_reproducir.o
+
+$(DIR_O)audio_detener.o:\
+$(DIR_CLASES_APP)audio_detener.h\
+$(DIR_CLASES_APP)audio_detener.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)audio_detener.cpp -o $(DIR_O)audio_detener.o
+
+$(DIR_O)gestor_audio.o:\
+$(DIR_O)audio_reproducir.o\
+$(DIR_O)audio_detener.o\
+$(DIR_CLASES_APP)gestor_audio.h\
+$(DIR_CLASES_APP)gestor_audio.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)gestor_audio.cpp -o $(DIR_O)gestor_audio.o

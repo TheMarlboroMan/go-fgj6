@@ -9,6 +9,7 @@
 
 #include "../app/framework_impl/app_config.h"
 #include "../app/localizador.h"
+#include "../app/sistema_audio.h"
 
 #include "estados_controladores.h"
 #include "principal.h"
@@ -41,7 +42,8 @@ class Director_estados:
 	App::App_config&				config;
 	DLibH::Log_base&				log;
 
-	App::Fuentes					fuentes;
+	Sistema_audio					sistema_audio;
+	Fuentes						fuentes;
 	Localizador 					localizador;
 	
 	std::unique_ptr<Controlador_principal>		controlador_principal;

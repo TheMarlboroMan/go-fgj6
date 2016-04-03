@@ -14,6 +14,9 @@ DIR_CLASES_EVENTOS=./class/app/eventos/
 $(DIR_O)director_estados.o :\
 $(DIR_O)controlador_principal.o \
 $(DIR_O)controlador_editor.o \
+$(DIR_O)sistema_audio.o \
+$(DIR_O)controlador_ayuda_editor.o \
+$(DIR_O)controlador_intro.o \
 $(DIR_CONTROLADORES)director_estados.h \
 $(DIR_CONTROLADORES)director_estados.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)director_estados.cpp -o $(DIR_O)director_estados.o 

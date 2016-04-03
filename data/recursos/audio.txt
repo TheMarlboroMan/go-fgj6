@@ -6,5 +6,6 @@
 3	data/sonidos/poner_pieza.ogg
 4	data/sonidos/puerta.ogg
 5	data/sonidos/viento.ogg
+6	data/sonidos/campana.ogg
 
 #Sonidos de aplicacion...

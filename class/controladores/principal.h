@@ -18,6 +18,7 @@
 #include "../app/jugador.h"
 #include "../app/particula.h"
 #include "../app/bloque_input.h"
+#include "../app/sistema_audio.h"
 
 #include "estados_controladores.h"
 #include "../framework/controlador_interface.h"
@@ -30,7 +31,7 @@ class Controlador_principal:
 {
 	public:
 
-					Controlador_principal(DLibH::Log_base&, const Fuentes&, const Localizador&);
+					Controlador_principal(DLibH::Log_base&, const Fuentes&, const Localizador&, Sistema_audio&);
 
 	virtual void 			preloop(DFramework::Input& input, float delta);
 	virtual void 			loop(DFramework::Input& input, float delta);
@@ -76,6 +77,10 @@ class Controlador_principal:
 	const DLibV::Fuente_TTF&		fuente;
 	const DLibV::Fuente_TTF&		fuente_hud;
 	const Localizador&			localizador;
+	Sistema_audio&				sistema_audio;
+
+	std::vector<Info_audio_reproducir>	reproducir;
+	std::vector<Audio_detener>		detener;
 
 	enum class				modos{juego, ayuda, confirmar_salida, animacion_choque, florecimiento, recuento_final} modo;
 

@@ -50,6 +50,11 @@ $(DIR_O)widget_editor_propiedades_ayuda.o\
 $(DIR_O)widget_editor_propiedades_interruptor.o\
 $(DIR_O)widget_editor_propiedades_puerta.o\
 $(DIR_O)widget_editor_propiedades_mejora_velocidad.o\
+$(DIR_O)audio_reproducir.o\
+$(DIR_O)audio_detener.o\
+$(DIR_O)gestor_audio.o\
+$(DIR_O)sistema_audio.o
+
 
 DEP_CONTROLADORES=\
 $(DIR_O)director_estados.o \

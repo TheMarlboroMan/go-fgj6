@@ -4,8 +4,8 @@
 
 using namespace App;
 
-Controlador_intro::Controlador_intro(DLibH::Log_base& log, const Fuentes& fuentes, const Localizador& loc)
-	:log(log), localizador(loc), fade(255.0f), juego_finalizado(false)
+Controlador_intro::Controlador_intro(DLibH::Log_base& log, const Fuentes& fuentes, const Localizador& loc, Sistema_audio& sa)
+	:log(log), localizador(loc), sistema_audio(sa), fade(255.0f), juego_finalizado(false)
 {
 	layout.mapear_fuente("fuente", fuentes.obtener_fuente("imagination_station", 16));
 	layout.mapear_textura("cover", DLibV::Gestor_texturas::obtener(7));
@@ -69,8 +69,6 @@ void Controlador_intro::loop(DFramework::Input& input, float delta)
 				}
 			break;
 		}
-
-
 	}
 }
 
@@ -105,6 +103,11 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 {
 	if(input.hay_eventos_teclado_down() && fade <= 200.0)
 	{
+		sistema_audio.insertar(Info_audio_reproducir(
+			Info_audio_reproducir::t_reproduccion::simple,
+			Info_audio_reproducir::t_sonido::repetible,
+			5, 127, 127));
+
 		modo=modos::fadeout;
 	}
 }

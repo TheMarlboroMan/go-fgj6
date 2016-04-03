@@ -20,11 +20,12 @@
 
 using namespace App;
 
-Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes& f, const Localizador& l)
+Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes& f, const Localizador& l, Sistema_audio& sa)
 	:log(log),
-	fuente(f.obtener_fuente("inkburrow", 20)),
+	fuente(f.obtener_fuente("inkburrow", 26)),
 	fuente_hud(f.obtener_fuente("bulldozer", 20)),
 	localizador(l),
+	sistema_audio(sa),
 	modo(modos::juego),
 	camara(0, 0, 800, 500), juego_finalizado(false)
 {
@@ -242,19 +243,10 @@ void Controlador_principal::ajustar_camara(float delta)
 	auto c=jugador.acc_poligono().acc_centro();
 	int	cam_x=0, cam_y=0;
 
-	switch(jugador.acc_indice_velocidad())
-	{
-		case 0: fin_zoom=1.0; break;
-		case 1: fin_zoom=1.2; break;
-		case 2: fin_zoom=1.4; break;
-		case 3: fin_zoom=1.6; break;
-	}
-
+	fin_zoom=(1.0 + ((double) jugador.acc_indice_velocidad() / 5));
 
 	int 	ancho_foco=w_pantalla * fin_zoom,
 		alto_foco=h_pantalla * fin_zoom;
-
-
 
 	//El ancho o el alto de la cámara son mayores que el nivel:
 	//tenemos que reajustar el zoom.
@@ -324,6 +316,14 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	auto bl=obtener_bloque_input(input);
 	j.recibir_input(bl);
 	j.turno(delta);
+
+	if(j.es_sonido_velocidad())
+	{
+		sistema_audio.insertar(Info_audio_reproducir(
+			Info_audio_reproducir::t_reproduccion::simple,
+			Info_audio_reproducir::t_sonido::repetible,
+			5, 127, 127));
+	}
 
 	for(const auto& s : mapa.salidas)
 	{
@@ -439,6 +439,11 @@ void Controlador_principal::jugador_en_ayuda(Ayuda& a, Jugador&)
 {
 	if(a.es_activable())
 	{
+		sistema_audio.insertar(Info_audio_reproducir(
+			Info_audio_reproducir::t_reproduccion::simple,
+			Info_audio_reproducir::t_sonido::unico,
+			6, 127, 127));
+
 		a.activar();
 		asignar_mensaje(localizador.obtener(a.acc_indice()));
 		modo=modos::ayuda;
@@ -451,6 +456,11 @@ void Controlador_principal::jugador_en_arbol(Arbol& a, Jugador& j)
 	a.colocar_pieza(j.acc_pieza_actual());
 	j.mut_pieza_actual(0);
 
+	sistema_audio.insertar(Info_audio_reproducir(
+		Info_audio_reproducir::t_reproduccion::simple,
+		Info_audio_reproducir::t_sonido::unico,
+		3, 127, 127));
+
 	if(a.es_finalizado())
 	{
 		modo=modos::florecimiento;
@@ -461,6 +471,11 @@ void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
 {
 	if(!jugador.acc_pieza_actual())
 	{
+		sistema_audio.insertar(Info_audio_reproducir(
+			Info_audio_reproducir::t_reproduccion::simple,
+			Info_audio_reproducir::t_sonido::unico,
+			6, 127, 127));
+		
 		mapa.recoger_pieza(p.acc_indice());
 		jugador.mut_pieza_actual(p.acc_indice());
 		info_persistente.recoger_pieza(p.acc_indice());
@@ -469,7 +484,15 @@ void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
 
 void Controlador_principal::jugador_en_mejora_velocidad(const Mejora_velocidad& p, Jugador& j)
 {
-	j.establecer_max_velocidad(p.acc_nivel());
+	if(j.acc_max_velocidad() < p.acc_nivel())
+	{
+		sistema_audio.insertar(Info_audio_reproducir(
+			Info_audio_reproducir::t_reproduccion::simple,
+				Info_audio_reproducir::t_sonido::unico,
+				6, 127, 127));
+
+		j.establecer_max_velocidad(p.acc_nivel());
+	}
 }
 
 void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
@@ -482,6 +505,11 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 	if(!i.es_activo())
 	{
 		i.activar();
+
+		sistema_audio.insertar(Info_audio_reproducir(
+			Info_audio_reproducir::t_reproduccion::simple,
+			Info_audio_reproducir::t_sonido::unico,
+			2, 64, 127));
 
 		//Comprobar que existe puerta aún...
 		auto& s=info_interruptores[i.acc_id_grupo()];
@@ -501,6 +529,11 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 				info_persistente.abrir_puerta(s.id_puerta);
 				mapa.abrir_puerta(s.id_puerta);
 				s.finalizar();
+				
+				sistema_audio.insertar(Info_audio_reproducir(
+					Info_audio_reproducir::t_reproduccion::simple,
+					Info_audio_reproducir::t_sonido::unico,
+					4, 127, 127));
 			}
 		}
 	}
@@ -565,6 +598,11 @@ void Controlador_principal::iniciar_juego()
 
 void Controlador_principal::chocar_jugador(Jugador& j)
 {
+	sistema_audio.insertar(Info_audio_reproducir(
+		Info_audio_reproducir::t_reproduccion::simple,
+		Info_audio_reproducir::t_sonido::unico,
+		1, 127, 127));
+
 	modo=modos::animacion_choque;
 	tiempo.penalizar();
 

@@ -26,6 +26,8 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 	{
 		estados.validar_y_cambiar_estado(intro);
 	}
+
+	DFramework::Audio::reproducir_musica(DLibA::Gestor_recursos_audio::obtener_musica(1));
 }
 
 void Director_estados::preparar_video(DFramework::Kernel& kernel)
@@ -44,10 +46,10 @@ void Director_estados::preparar_video(DFramework::Kernel& kernel)
 
 void Director_estados::registrar_controladores()
 {
-	controlador_principal.reset(new Controlador_principal(log, fuentes, localizador));
+	controlador_principal.reset(new Controlador_principal(log, fuentes, localizador, sistema_audio));
 	controlador_editor.reset(new Controlador_editor(log, fuentes));
 	controlador_ayuda_editor.reset(new Controlador_ayuda_editor(log, fuentes));
-	controlador_intro.reset(new Controlador_intro(log, fuentes, localizador));
+	controlador_intro.reset(new Controlador_intro(log, fuentes, localizador, sistema_audio));
 
 	registrar_controlador(t_estados::principal, *controlador_principal);
 	registrar_controlador(t_estados::editor, *controlador_editor);
@@ -86,6 +88,8 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 
 void Director_estados::input_comun(DFramework::Input& input, float delta)
 {
+	sistema_audio.turno(delta);	//No es input, pero bueno...
+
 	if(input.es_nuevo_joystick_conectado())
 	{
 		log<<"Detectado nuevo joystick..."<<std::endl;
@@ -109,6 +113,6 @@ void Director_estados::registrar_fuentes()
 	fuentes.registrar_fuente("akashi", 20);
 	fuentes.registrar_fuente("akashi", 9);
 	fuentes.registrar_fuente("imagination_station", 16);
-	fuentes.registrar_fuente("inkburrow", 20);
+	fuentes.registrar_fuente("inkburrow", 26);
 	fuentes.registrar_fuente("bulldozer", 20);
 }

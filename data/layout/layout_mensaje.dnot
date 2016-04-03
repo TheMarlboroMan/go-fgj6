@@ -1,16 +1,16 @@
 layout:
 [
-	{tipo:"const", clave:"x_texto", valor:130},
-	{tipo:"const", clave:"y_texto", valor:80},
-	{tipo:"const", clave:"w_texto", valor:410},
-	{tipo:"const", clave:"h_texto", valor:270},
+	{tipo:"const", clave:"x_texto", valor:100},
+	{tipo:"const", clave:"y_texto", valor:100},
+	{tipo:"const", clave:"w_texto", valor:600},
+	{tipo:"const", clave:"h_texto", valor:300},
 	{
 		tipo:"caja",
-		pos:[100, 50, 540, 300], rgb:[255,255,255], orden:10
+		pos:[100, 100, 600, 300], rgb:[0,0,0], orden:10
 	},
 	{
 		tipo:"caja",
-		pos:[102, 52, 536, 296], rgb:[128,128,128], orden:20
+		pos:[104, 104, 592, 292], rgb:[255,255,255], orden:20
 	},
 	{
 		tipo:"ttf", pos:[180,260], fuente:"akashi", rgba:[0, 0, 0, 255],
