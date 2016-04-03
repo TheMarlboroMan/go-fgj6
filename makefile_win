@@ -15,7 +15,7 @@ DIR_O_HERRAMIENTAS_PROYECTO=$(DIR_HOME)herramientas_proyecto-master/objects/
 CFLAGS= -DWINCOMPIL=1 -c -Wno-deprecated -Wall -ansi -pedantic -std=c++11
 CFLAGS_TARGET_FINAL=-DWINCOMPIL=1 -Wno-deprecated -Wall -ansi -pedantic -std=c++11
 CC=g++
-EJECUTABLE=kanafun.exe
+EJECUTABLE=go.exe
 LIMPIAR=rmdir objects /s /q; del $(EJECUTABLE);
 PREPARAR_DIR_OBJECTS=if not exist objects mkdir objects & copy nul objects/dummy > nul
 

@@ -4,6 +4,11 @@
 
 #include <def_video.h>
 
+#ifdef WINCOMPIL
+/* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
+#include <herramientas/herramientas/herramientas.h>
+#endif
+
 using namespace App;
 
 Widget_editor_propiedades_inicio::Widget_editor_propiedades_inicio(const DLibV::Fuente_TTF& fuente, Inicio& i)
@@ -92,7 +97,13 @@ void Widget_editor_propiedades_inicio::cambiar_seleccion(int dir)
 void Widget_editor_propiedades_inicio::cambiar(int val, int& ref, const std::string& id)
 {
 	ref=val;
-	std::string cad_final=std::to_string(val);
+#ifdef WINCOMPIL
+	using namespace parche_mingw;
+#else
+	using namespace std;
+#endif
+
+	std::string cad_final=to_string(val);
 	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id(id))->asignar(cad_final);
 }
 

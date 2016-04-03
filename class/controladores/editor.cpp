@@ -224,9 +224,16 @@ void Controlador_editor::dibujar(DLibV::Pantalla& pantalla)
 		r.dibujar_segmento(pantalla, s, {0, 255, 0, 128}, camara);
 	}
 
-	std::string texto="GRID: "+std::to_string((int)grid)
-		+" CAM: "+std::to_string((int)camara.acc_x())+","+std::to_string((int)camara.acc_y())
-		+" POS: "+std::to_string((int)pt_raton.x)+","+std::to_string((int)pt_raton.y)
+#ifdef WINCOMPIL
+	using namespace parche_mingw;
+#else
+	using namespace std;
+#endif
+
+
+	std::string texto="GRID: "+to_string((int)grid)
+		+" CAM: "+to_string((int)camara.acc_x())+","+to_string((int)camara.acc_y())
+		+" POS: "+to_string((int)pt_raton.x)+","+to_string((int)pt_raton.y)
 		+(decoracion_frente ? " [foreground] " : " [background]");
 
 	switch(tobjeto)
@@ -824,8 +831,15 @@ void Controlador_editor::cambiar_profundidad(int dir)
 		if(dir > 0) v[0]->elemento.subir_profundidad();
 		else v[0]->elemento.bajar_profundidad();
 
+#ifdef WINCOMPIL
+	using namespace parche_mingw;
+#else
+	using namespace std;
+#endif
+
+
 		reordenar_decoraciones();
-		mensajes.insertar_mensaje("Nueva profundidad de "+std::to_string(v[0]->elemento.acc_profundidad()), 2.0f);
+		mensajes.insertar_mensaje("Nueva profundidad de "+to_string(v[0]->elemento.acc_profundidad()), 2.0f);
 	}
 }
 

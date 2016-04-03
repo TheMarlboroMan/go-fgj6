@@ -544,7 +544,14 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 {
 	info_mapa.id_mapa=nivel;
 
-	const std::string nombre_fichero="data/mapas/mapa"+std::to_string(nivel)+".dat";
+#ifdef WINCOMPIL
+	using namespace parche_mingw;
+#else
+	using namespace std;
+#endif
+
+
+	const std::string nombre_fichero="data/mapas/mapa"+to_string(nivel)+".dat";
 
 	particulas.clear();
 	mapa.limpiar();

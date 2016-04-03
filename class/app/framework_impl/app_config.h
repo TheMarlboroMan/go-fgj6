@@ -5,6 +5,11 @@
 
 #include <iostream>
 
+#ifdef WINCOMPIL
+/* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
+#include <herramientas/herramientas/herramientas.h>
+#endif
+
 namespace App
 {
 
@@ -58,7 +63,12 @@ class App_config:
 
 	std::string ruta_jugador(const std::string& tipo, int j) const
 	{
-		return "config:input:jugador_"+std::to_string(j)+":"+tipo;
+#ifdef WINCOMPIL
+		using namespace parche_mingw;
+#else
+		using namespace std;
+#endif
+		return "config:input:jugador_"+to_string(j)+":"+tipo;
 	}
 
 	input_jugador token_por_ruta_jugador(const std::string& tipo, int j) const
