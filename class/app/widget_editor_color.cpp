@@ -52,7 +52,7 @@ void Widget_editor_color::input(DFramework::Input& input, float delta)
 
 		try
 		{
-			val=std::stoi(input.acc_input_texto());
+			val=stoi(input.acc_input_texto());
 		}
 		catch(std::exception& e){}
 

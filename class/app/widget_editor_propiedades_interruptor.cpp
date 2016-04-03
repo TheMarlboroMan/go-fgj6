@@ -50,7 +50,7 @@ void Widget_editor_propiedades_interruptor::input(DFramework::Input& input, floa
 
 		try
 		{
-			val=std::stoi(input.acc_input_texto());
+			val=stoi(input.acc_input_texto());
 		}
 		catch(std::exception& e){}
 

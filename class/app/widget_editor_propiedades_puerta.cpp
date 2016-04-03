@@ -49,7 +49,7 @@ void Widget_editor_propiedades_puerta::input(DFramework::Input& input, float del
 
 		try
 		{
-			val=std::stoi(input.acc_input_texto());
+			val=stoi(input.acc_input_texto());
 		}
 		catch(std::exception& e){}
 

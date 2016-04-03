@@ -54,7 +54,7 @@ void Widget_editor_decoracion::input(DFramework::Input& input, float delta)
 
 		int val=0;
 
-		try{val=std::stoi(input.acc_input_texto());}catch(std::exception& e){}
+		try{val=stoi(input.acc_input_texto());}catch(std::exception& e){}
 
 		cambiar_numero(val, min_max_por_indice(indice_actual), referencia_por_indice(indice_actual));
 		actualizar_layout();

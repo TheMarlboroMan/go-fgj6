@@ -49,7 +49,7 @@ void Widget_editor_propiedades_pieza::input(DFramework::Input& input, float delt
 
 		try
 		{
-			val=std::stoi(input.acc_input_texto());
+			val=stoi(input.acc_input_texto());
 		}
 		catch(std::exception& e){}
 
