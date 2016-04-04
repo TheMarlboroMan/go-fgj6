@@ -500,6 +500,8 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 {
 	if(i.acc_nivel() > j.acc_indice_velocidad())
 	{
+		//TODO: Sonido error.
+
 		return;
 	}
 
@@ -521,12 +523,12 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 		}
 		else
 		{
-			log<<"La puerta existe... activando..."<<std::endl;
+			//TODO: Enviar también las coordenadas del molino para que
+			//no pueda hacerse el truco de activar dos varias veces :D.
 			s.activar(i.acc_tiempo_grupo());
 	
 			if(s.es_completo())
 			{
-				log<<"Puerta "<<s.id_puerta<<" completa"<<std::endl;
 				info_persistente.abrir_puerta(s.id_puerta);
 				mapa.abrir_puerta(s.id_puerta);
 				s.finalizar();
@@ -550,7 +552,6 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 	using namespace std;
 #endif
 
-
 	const std::string nombre_fichero="data/mapas/mapa"+to_string(nivel)+".dat";
 
 	particulas.clear();
@@ -559,10 +560,9 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 	importador.importar(nombre_fichero.c_str(), mapa);
 	mapa.inicializar();
 
-	//TODO: Procesar cosas persistentes.
 	for(auto id_p : info_persistente.puertas_abiertas) mapa.abrir_puerta(id_p);
 	for(auto id_p : info_persistente.piezas_recogidas) mapa.recoger_pieza(id_p);
-	mapa.actualizar_arbol(info_persistente.piezas_recogidas);
+	mapa.actualizar_arbol(info_persistente.piezas_recogidas, jugador.acc_pieza_actual());
 
 	//Colocar a jugador en punto de inicio.
 	auto it=std::find_if(std::begin(mapa.inicios), std::end(mapa.inicios), [id_inicio](const Inicio& i){return i.acc_id()==id_inicio;});
@@ -614,6 +614,8 @@ void Controlador_principal::chocar_jugador(Jugador& j)
 	modo=modos::animacion_choque;
 	tiempo.penalizar();
 
+	jugador.reiniciar();
+
 	auto centro=j.acc_poligono().acc_centro();
 	Herramientas_proyecto::Generador_int g(0, 360), t(0, 1000);
 
@@ -660,19 +662,16 @@ void Controlador_principal::crear_brillo(Espaciable::tpunto centro)
 {
 	Herramientas_proyecto::Generador_int g(0, 100), t(0, 1000), desp(-20, 20), ang(45, 135);
 
-	{
-	float angulo=ang();
-	float tiempo=1.0f+( (float)t() / 1000.0);
-	double velocidad=40.0+((double) g() / 100.0);
-	particulas.push_back(std::move(std::unique_ptr<Particula>(new Cola_viento(centro, angulo, velocidad, tiempo) ) ) );
-	}
+	float angulo_v=ang();
+	float tiempo_v=1.0f+( float(t()) / 1000.0);
+	double velocidad_v=40.0+(double(g()) / 100.0);
+	particulas.push_back(std::move(std::unique_ptr<Particula>(new Cola_viento(centro, angulo_v, velocidad_v, tiempo_v) ) ) );
 
-	{
-	float tiempo=0.5f+( (float)t() / 1000.0);
-	double velocidad=100.0+((double) g() / 100.0);
-	centro+={(double)desp(), (double)desp()};
-	particulas.push_back(std::move(std::unique_ptr<Particula>(new Brillo(centro, 90.0, velocidad, tiempo) ) ) );
-	}
+	float tiempo_b=0.5f+( float(t()) / 1000.0);
+	double velocidad_b=100.0+(double(g()) / 100.0);
+	
+	centro+=DLibH::Punto_2d<double>(desp(), desp());
+	particulas.push_back(std::move(std::unique_ptr<Particula>(new Brillo(centro, 90.0, velocidad_b, tiempo_b) ) ) );
 }
 
 void Controlador_principal::procesar_florecimiento(float delta)

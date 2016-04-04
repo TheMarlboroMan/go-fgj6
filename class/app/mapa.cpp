@@ -54,11 +54,18 @@ bool Mapa::existe_puerta(int id_puerta) const
 	return std::any_of(std::begin(puertas), std::end(puertas), [id_puerta](const Puerta&p) {return p.acc_id()==id_puerta;});
 }
 
-void Mapa::actualizar_arbol(const std::vector<int>& v)
+void Mapa::actualizar_arbol(const std::vector<int>& v, int p_actual)
 {
 	if(arboles.size())
 	{
 		auto& arbol=arboles.front();
-		for(const auto& p : v) arbol.colocar_pieza(p);
+		for(const auto& p : v) 
+		{
+			//Pequeño fix... Si el jugador lleva una pieza y no la ha soltado aún no la colocamos en el árbol.
+			if(p!=p_actual)
+			{
+				arbol.colocar_pieza(p);
+			}
+		}
 	}
 }

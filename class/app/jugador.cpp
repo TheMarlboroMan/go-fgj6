@@ -167,4 +167,5 @@ void Jugador::reiniciar()
 {
 	indice_velocidad=0;
 	velocidad=velocidades[0];
+	velocidad_destino=velocidad;
 }

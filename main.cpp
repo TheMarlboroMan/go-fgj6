@@ -1,3 +1,10 @@
+#ifdef WINCOMPIL
+//Terrible parche para SDL2_Gfx...
+#include <SDL2_gfxPrimitives.c>
+#include <SDL2_rotozoom.c>
+#include <SDL2_imageFilter.c>
+#endif
+
 #include <libDan2.h>
 #include <defDanSDL.h>
 #include "class/framework/kernel.h"

@@ -45,7 +45,7 @@ class Mapa
 
 	void					recoger_pieza(int);
 	void					abrir_puerta(int);
-	void					actualizar_arbol(const std::vector<int>&);
+	void					actualizar_arbol(const std::vector<int>&, int);
 	bool					existe_puerta(int) const;
 
 

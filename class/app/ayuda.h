@@ -20,7 +20,7 @@ class Ayuda:
 	int				acc_indice() const {return indice;}
 	void				mut_indice(int v) {indice=v;}
 	void				turno(float);
-	void				activar() {tiempo_activo=5.0f;}
+	void				activar() {tiempo_activo=15.0f;}
 	bool				es_activable() {return !tiempo_activo;}
 	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;
 

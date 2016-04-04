@@ -59,7 +59,6 @@ void Controlador_intro::loop(DFramework::Input& input, float delta)
 
 					int ffade=ceil(fade);
 					layout.obtener_por_id("fader")->establecer_alpha(ffade);
-					if(juego_finalizado) layout.obtener_por_id("flores")->establecer_alpha(ffade);
 
 					if(fade==254.f)
 					{
