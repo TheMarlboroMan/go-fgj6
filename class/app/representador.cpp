@@ -5,6 +5,12 @@
 
 using namespace App;
 
+Representador::Representador()
+	:aviso_velocidad_minima{0, 0.0f}
+{
+
+}
+
 void Representador::dibujar_poligono(DLibV::Pantalla& pantalla, const DLibH::Poligono_2d<double>& poligono, tcolor color, const DLibV::Camara& camara)
 {
 	std::vector<DLibV::Representacion_primitiva_poligono::punto> puntos;
@@ -111,7 +117,7 @@ DLibV::Representacion_primitiva_poligono_base::punto Representador::cartesiano_a
 	return DLibV::Representacion_primitiva_poligono_base::punto{(int)floor(pt.x), (int)floor(-pt.y)};
 }
 
-void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_TTF& f, const std::string& cad_tiempo, bool aviso_tiempo, int max_vel, int act_vel)
+void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_TTF& f, const std::string& cad_tiempo, bool aviso_tiempo, int max_vel, int act_vel, int tot_vel)
 {
 
 	auto color=aviso_tiempo ? SDL_Color{255, 32, 32, 255} : SDL_Color{255, 255, 255, 255};
@@ -121,24 +127,49 @@ void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_T
 
 	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(6));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
-	sprite.establecer_alpha(128);
-	sprite.establecer_recorte(0, 0, 31, 40);
 
-	int x_vel=0;
-	while(x_vel <= max_vel)
+
+	auto fd=[&pantalla, &sprite](int& act, int max, int xrec, int alpha)
 	{
-		sprite.establecer_posicion( (x_vel * 33) + 16 , 16, 31, 40);
-		sprite.volcar(pantalla);
-		++x_vel;
-	}
+		sprite.establecer_recorte(xrec, 0, 31, 40);
+		sprite.establecer_alpha(alpha);
 
+		while(act <= max)
+		{
+			sprite.establecer_posicion( (act * 33) + 16 , 16, 31, 40);
+			sprite.volcar(pantalla);
+			++act;
+		}
+	};
+
+	//Primero la velocidad actual...
 	sprite.establecer_recorte(31, 0, 31, 40);
 	sprite.establecer_alpha(255);
-	x_vel=0;
-	while(x_vel <= act_vel)
+	int xvel=0;
+
+	fd(xvel, act_vel, 31, 255);
+
+	if(aviso_velocidad_minima.tiempo && xvel < aviso_velocidad_minima.velocidad + 1) 
 	{
-		sprite.establecer_posicion( (x_vel * 33) + 16 , 16, 31, 40);
-		sprite.volcar(pantalla);
-		++x_vel;
+		int alpha=int( (aviso_velocidad_minima.tiempo * 255) / 1.2f);
+		int cp=xvel;
+		fd(cp, aviso_velocidad_minima.velocidad, 62, alpha < 128 ? 128 : alpha);
 	}
+	if(xvel < max_vel+1) fd(xvel, max_vel, 0, 128);
+	if(xvel < tot_vel+1) fd(xvel, tot_vel, 93, 128);
+
+}
+
+void Representador::turno(float delta)
+{
+	if(aviso_velocidad_minima.tiempo)
+	{
+		aviso_velocidad_minima.tiempo-=delta;
+		if(aviso_velocidad_minima.tiempo < 0.0f) aviso_velocidad_minima.tiempo=0.0f;
+	}
+}
+
+void Representador::avisar_velocidad_minima(int vel)
+{
+	aviso_velocidad_minima={vel, 1.2f};
 }

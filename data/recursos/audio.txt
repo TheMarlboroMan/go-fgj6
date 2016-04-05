@@ -7,5 +7,6 @@
 4	data/sonidos/puerta.ogg
 5	data/sonidos/viento.ogg
 6	data/sonidos/campana.ogg
+7	data/sonidos/no_activable.ogg
 
 #Sonidos de aplicacion...

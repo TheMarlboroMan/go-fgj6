@@ -4,7 +4,6 @@
 
 #include <class/generador_numeros.h>
 
-#include "../app/representador.h"
 #include "../app/cola_viento.h"
 #include "../app/brillo.h"
 
@@ -63,7 +62,8 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 				preparar_confirmar_salida();
 				return;
 			}
-
+	
+			representador.turno(delta);
 			tiempo.turno(delta);
 			procesar_interruptores(delta);
 			procesar_ayudas(delta);
@@ -145,7 +145,7 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	DLibV::Representacion_bitmap fondo(DLibV::Gestor_texturas::obtener(id_recurso));
 	fondo.volcar(pantalla);
 
-	Representador r;
+	Representador& r=representador;
 
 	for(const auto& o : mapa.decoraciones_fondo)	o->dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.puertas)		o.dibujar(r, pantalla, camara);
@@ -177,7 +177,7 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 		case modos::ayuda:
 		case modos::confirmar_salida:
 		case modos::animacion_choque:
-			r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad());
+			r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad(), jugador.acc_tope_velocidad());
 		break;
 		case modos::florecimiento:
 		case modos::recuento_final: break;
@@ -501,6 +501,12 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 	if(i.acc_nivel() > j.acc_indice_velocidad())
 	{
 		//TODO: Sonido error.
+		sistema_audio.insertar(Info_audio_reproducir(
+			Info_audio_reproducir::t_reproduccion::simple,
+				Info_audio_reproducir::t_sonido::unico,
+				7, 127, 127));
+
+		representador.avisar_velocidad_minima(i.acc_nivel());
 
 		return;
 	}

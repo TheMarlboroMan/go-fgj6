@@ -11,6 +11,7 @@
 #include <herramientas/log_base/log_base.h>
 #include <class/valor_limitado.h>
 
+#include "../app/representador.h"
 #include "../app/localizador.h"
 #include "../app/fuentes.h"
 #include "../app/mapa.h"
@@ -78,6 +79,7 @@ class Controlador_principal:
 	const DLibV::Fuente_TTF&		fuente_hud;
 	const Localizador&			localizador;
 	Sistema_audio&				sistema_audio;
+	Representador				representador;
 
 	std::vector<Info_audio_reproducir>	reproducir;
 	std::vector<Audio_detener>		detener;
