@@ -2,6 +2,7 @@
 #define APP_CONFIGURACION_H
 
 #include "../../framework/configuracion_base.h"
+#include "../../framework/input.h"
 
 #include <iostream>
 
@@ -23,8 +24,22 @@ class App_config:
 
 	struct input_jugador
 	{
-		enum devs{teclado=0, joystick=1};
+		enum devs{teclado=0, joystick=1, raton=2, nada=3};
 		int tipo, device, codigo;
+	};
+
+	//Traduce el tipo del framework a un entero usado por la configuración de la aplicación.
+	static int input_fw_a_config(DFramework::Input::Entrada::ttipo t)
+	{
+		switch(t)
+		{
+			case DFramework::Input::Entrada::ttipo::teclado: return input_jugador::teclado; break;
+			case DFramework::Input::Entrada::ttipo::joystick: return input_jugador::joystick; break;
+			case DFramework::Input::Entrada::ttipo::raton: return input_jugador::raton; break;
+			case DFramework::Input::Entrada::ttipo::nada: return input_jugador::nada; break;
+		}
+
+		return input_jugador::teclado;
 	};
 
 	int acc_w_logica_pantalla() const {return token_por_ruta(CLAVE_W_LOGICA_PANTALLA);}

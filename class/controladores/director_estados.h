@@ -15,6 +15,7 @@
 #include "principal.h"
 #include "editor.h"
 #include "intro.h"
+#include "controles.h"
 #include "ayuda_editor.h"
 
 
@@ -34,7 +35,7 @@ class Director_estados:
 	private:
 
 	void						preparar_video(DFramework::Kernel& kernel);
-	void						registrar_controladores();
+	void						registrar_controladores(DFramework::Kernel& kernel);
 	void						registrar_fuentes();
 	void 						virtualizar_joysticks(DFramework::Input& input);
 
@@ -49,6 +50,7 @@ class Director_estados:
 	std::unique_ptr<Controlador_principal>		controlador_principal;
 	std::unique_ptr<Controlador_editor>		controlador_editor;
 	std::unique_ptr<Controlador_intro>		controlador_intro;
+	std::unique_ptr<Controlador_controles>		controlador_controles;
 	std::unique_ptr<Controlador_ayuda_editor>	controlador_ayuda_editor;
 };
 

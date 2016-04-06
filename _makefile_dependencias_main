@@ -61,6 +61,7 @@ $(DIR_O)director_estados.o \
 $(DIR_O)controlador_principal.o \
 $(DIR_O)controlador_editor.o \
 $(DIR_O)controlador_intro.o \
+$(DIR_O)controlador_controles.o \
 $(DIR_O)controlador_ayuda_editor.o \
 
 DEP_FRAMEWORK=\

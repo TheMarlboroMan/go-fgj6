@@ -12,7 +12,7 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 {
 	preparar_video(kernel);
 	registrar_fuentes();
-	registrar_controladores();
+	registrar_controladores(kernel);
 	virtualizar_joysticks(kernel.acc_input());
 	localizador.inicializar(0);
 
@@ -44,17 +44,19 @@ void Director_estados::preparar_video(DFramework::Kernel& kernel)
 	pantalla.establecer_modo_ventana(config.acc_modo_pantalla());
 }
 
-void Director_estados::registrar_controladores()
+void Director_estados::registrar_controladores(DFramework::Kernel& kernel)
 {
 	controlador_principal.reset(new Controlador_principal(log, fuentes, localizador, sistema_audio));
 	controlador_editor.reset(new Controlador_editor(log, fuentes));
 	controlador_ayuda_editor.reset(new Controlador_ayuda_editor(log, fuentes));
 	controlador_intro.reset(new Controlador_intro(log, fuentes, localizador, sistema_audio));
+	controlador_controles.reset(new Controlador_controles(log, config, fuentes, localizador, kernel.acc_input()));
 
 	registrar_controlador(t_estados::principal, *controlador_principal);
 	registrar_controlador(t_estados::editor, *controlador_editor);
 	registrar_controlador(t_estados::ayuda_editor, *controlador_ayuda_editor);
 	registrar_controlador(t_estados::intro, *controlador_intro);
+	registrar_controlador(t_estados::controles, *controlador_controles);
 }
 
 void Director_estados::preparar_cambio_estado(int deseado, int actual)
