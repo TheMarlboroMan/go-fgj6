@@ -59,6 +59,7 @@ void Controlador_intro::despertar()
 	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_salir_off"))->asignar(localizador.obtener(Localizacion::intro_salir));
 
 	fade=255.0f;
+	fade_menu=0.0f;
 	modo=modos::fadein;
 }
 

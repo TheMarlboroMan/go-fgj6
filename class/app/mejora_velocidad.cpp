@@ -6,7 +6,7 @@
 using namespace App;
 
 Mejora_velocidad::Mejora_velocidad(Espaciable::tpunto pt, int nivel)
-	:nivel(nivel)
+	:nivel(nivel), tiempo(0.0f)
 {
 	formar_poligono();
 	establecer_posicion(pt.x, pt.y);
