@@ -7,8 +7,7 @@ using namespace App;
 extern DLibH::Log_base LOG;
 
 Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& c, DLibH::Log_base& log)
-//	:Director_estados_interface(t_estados::intro, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
-	:Director_estados_interface(t_estados::controles, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
+	:Director_estados_interface(t_estados::intro, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
 	config(c), log(log), localizador("data/localizacion/loc")
 {
 	preparar_video(kernel);
@@ -17,16 +16,16 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 	virtualizar_joysticks(kernel.acc_input());
 	localizador.inicializar(0);
 
-//	int indice=kernel.acc_controlador_argumentos().buscar("file");
-//	if(indice!=-1)
-//	{
-//		estados.validar_y_cambiar_estado(editor);
-//		controlador_editor->iniciar_edicion_fichero(kernel.acc_controlador_argumentos().acc_argumento(indice+1));
-//	}
-//	else
-//	{
-//		estados.validar_y_cambiar_estado(intro);
-//	}
+	int indice=kernel.acc_controlador_argumentos().buscar("file");
+	if(indice!=-1)
+	{
+		estados.validar_y_cambiar_estado(editor);
+		controlador_editor->iniciar_edicion_fichero(kernel.acc_controlador_argumentos().acc_argumento(indice+1));
+	}
+	else
+	{
+		estados.validar_y_cambiar_estado(intro);
+	}
 
 	DFramework::Audio::reproducir_musica(DLibA::Gestor_recursos_audio::obtener_musica(1));
 }

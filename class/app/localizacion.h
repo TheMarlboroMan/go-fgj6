@@ -11,6 +11,7 @@ struct Localizacion
 intro_pulsa_algo=50,
 intro_empezar=51,
 intro_controles=52,
+intro_salir=53,
 
 confirmacion_salida=100,
 mensaje_fin=101,

@@ -17,7 +17,7 @@ Controlador_controles::Controlador_controles(DLibH::Log_base& log, App_config& c
 	fuente(f.obtener_fuente("imagination_station", 16)), 
 	localizador(loc), modo(modos::seleccion),
 	//TODO: Especificar medidas por constantes.
-	componente_menu(16, 16, 20, 200)
+	componente_menu(32, 32, 20, 200)
 {
 	layout.mapear_fuente("fuente", fuente);
 	crear_menu_opciones(i);

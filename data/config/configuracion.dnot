@@ -6,13 +6,13 @@ config:{
 			zoom_mas:0, zoom_menos:0
 		}, jugador_1:{
 			abajo:[
-				0, 0, 90
+				0, 0, 22
 			], arriba:[
-				0, 0, 96
+				0, 0, 26
 			], derecha:[
-				0, 0, 94
+				0, 0, 7
 			], izquierda:[
-				0, 0, 92
+				0, 0, 4
 			]
 		}
 	}, meta:{

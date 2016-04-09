@@ -34,7 +34,7 @@ class Controlador_intro:
 
 	private:
 
-	enum class			modos{fadein, esperando, menu, fadeout} modo;
+	enum class			modos{fadein, esperando, transicion, menu, fadeout} modo;
 
 	void				procesar_input(DFramework::Input& input);
 	void				procesar_fade(float);
@@ -46,12 +46,12 @@ class Controlador_intro:
 
 	Herramientas_proyecto::Compositor_vista		layout;
 
-	float				fade;
+	float				fade, fade_menu;
 	bool				juego_finalizado;
 	int				indice_menu;
 
 	static const int		min_menu=0,
-					max_menu=1;
+					max_menu=2;
 	
 };
 
