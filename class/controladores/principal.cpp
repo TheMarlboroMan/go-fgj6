@@ -6,6 +6,7 @@
 
 #include "../app/cola_viento.h"
 #include "../app/brillo.h"
+#include "../app/localizacion.h"
 
 #include "../app/importador.h"
 
@@ -637,7 +638,7 @@ void Controlador_principal::chocar_jugador(Jugador& j)
 void Controlador_principal::preparar_confirmar_salida()
 {
 	modo=modos::confirmar_salida;
-	asignar_mensaje(localizador.obtener(100));
+	asignar_mensaje(localizador.obtener(Localizacion::confirmacion_salida));
 }
 
 void Controlador_principal::asignar_mensaje(const std::string& m)
@@ -688,7 +689,7 @@ void Controlador_principal::procesar_florecimiento(float delta)
 
 	if(a.es_florecido())
 	{
-		asignar_mensaje(localizador.obtener(101)+tiempo.a_cadena());
+		asignar_mensaje(localizador.obtener(Localizacion::mensaje_fin)+tiempo.a_cadena());
 		modo=modos::recuento_final;
 	}
 }

@@ -1,0 +1,22 @@
+config_controles:[
+	{
+		c:"01_K_IZQUIERDA",
+		t:204,
+		m:"string"
+	},
+	{
+		c:"02_K_DERECHA",
+		t:205,
+		m:"string"
+	},
+	{
+		c:"03_K_ARRIBA",
+		t:206,
+		m:"string"
+	},
+	{
+		c:"04_K_ABAJO",
+		t:207,
+		m:"string"
+	}
+]

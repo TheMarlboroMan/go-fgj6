@@ -43,6 +43,9 @@ click_i,
 click_d,
 
 //De juego...
+menu_arriba, 
+menu_abajo,
+menu_ok,
 izquierda,
 derecha,
 arriba,

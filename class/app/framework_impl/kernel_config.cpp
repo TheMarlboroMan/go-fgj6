@@ -84,7 +84,13 @@ std::vector<DFramework::Par_input> Kernel_config::obtener_pares_input() const
 		Par_input{Par_input::tipos::teclado, Input::suprimir, SDL_SCANCODE_DELETE, 0},
 		Par_input{Par_input::tipos::teclado, Input::control_izquierdo, SDL_SCANCODE_LCTRL, 0},
 		Par_input{Par_input::tipos::raton, Input::click_i, SDL_BUTTON_LEFT, 0},
-		Par_input{Par_input::tipos::raton, Input::click_d, SDL_BUTTON_RIGHT, 0}};
+		Par_input{Par_input::tipos::raton, Input::click_d, SDL_BUTTON_RIGHT, 0},
+
+		Par_input{Par_input::tipos::teclado, Input::menu_arriba, SDL_SCANCODE_UP, 0},
+		Par_input{Par_input::tipos::teclado, Input::menu_abajo, SDL_SCANCODE_DOWN, 0},
+		Par_input{Par_input::tipos::teclado, Input::menu_ok, SDL_SCANCODE_RETURN, 0}
+};
+
 
 	auto obtener_info_jugador=[this](std::map<int, App_config::input_jugador>& res, int j, int iizq, int ider, int iarr, int iaba)
 	{

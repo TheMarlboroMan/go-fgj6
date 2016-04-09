@@ -86,7 +86,7 @@ class Input
 
 	protected:
 
-	typedef std::multimap<int, tinput> tipo_mapa;	
+	typedef std::multimap<int, tinput> tipo_mapa;
 
 	//TODO: No es esto lo mismo que Entrada???
 	struct Resultado_lookup

@@ -3,5 +3,12 @@ layout:
 	{
 		tipo:"pantalla", 
 		rgba:[255, 255, 255, 255]
+	},
+	{
+		tipo:"ttf",
+		pos:[16, 200],
+		texto:"-",
+		fuente:"fuente", rgba:[0, 0, 0, 255],
+		id:"txt_input", alpha: 255, orden: 10, visible: false
 	}
 ]

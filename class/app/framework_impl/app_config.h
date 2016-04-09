@@ -28,18 +28,20 @@ class App_config:
 		int tipo, device, codigo;
 	};
 
-	//Traduce el tipo del framework a un entero usado por la configuración de la aplicación.
-	static int input_fw_a_config(DFramework::Input::Entrada::ttipo t)
+	//Traduce el tipo del framework al de la configuración.
+	static input_jugador fw_a_config(DFramework::Input::Entrada& e)
 	{
-		switch(t)
+		int tipo=input_jugador::nada;
+
+		switch(e.tipo)
 		{
-			case DFramework::Input::Entrada::ttipo::teclado: return input_jugador::teclado; break;
-			case DFramework::Input::Entrada::ttipo::joystick: return input_jugador::joystick; break;
-			case DFramework::Input::Entrada::ttipo::raton: return input_jugador::raton; break;
-			case DFramework::Input::Entrada::ttipo::nada: return input_jugador::nada; break;
+			case DFramework::Input::Entrada::ttipo::teclado: 	tipo=input_jugador::teclado; break;
+			case DFramework::Input::Entrada::ttipo::joystick: 	tipo=input_jugador::joystick; break;
+			case DFramework::Input::Entrada::ttipo::raton: 		tipo=input_jugador::raton; break;
+			case DFramework::Input::Entrada::ttipo::nada: 		tipo=input_jugador::nada; break;
 		}
 
-		return input_jugador::teclado;
+		return input_jugador{tipo, e.dispositivo, e.codigo};
 	};
 
 	int acc_w_logica_pantalla() const {return token_por_ruta(CLAVE_W_LOGICA_PANTALLA);}
