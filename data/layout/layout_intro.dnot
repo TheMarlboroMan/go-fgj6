@@ -7,9 +7,38 @@ layout:
 	{
 		tipo:"ttf",
 		pos:[16, 16],
-		texto:"Press any key...",
+		texto:"-",
 		fuente:"fuente", rgba:[0, 0, 0, 255],
-		id:"txt_ayuda", alpha: 255, orden: 10
+		id:"txt_pulsa_tecla", alpha: 255, orden: 10, visible: false
+	},
+
+	{
+		tipo:"ttf",
+		pos:[16, 16],
+		texto:"-",
+		fuente:"fuente", rgba:[128, 128, 128, 255],
+		id:"txt_inicio_off", alpha: 255, orden: 10, visible: false
+	},
+	{
+		tipo:"ttf",
+		pos:[16, 16],
+		texto:"-",
+		fuente:"fuente", rgba:[0, 0, 0, 255],
+		id:"txt_inicio_on", alpha: 255, orden: 20, visible: false
+	},
+	{
+		tipo:"ttf",
+		pos:[16, 16],
+		texto:"-",
+		fuente:"fuente", rgba:[128, 128, 128, 255],
+		id:"txt_controles_off", alpha: 255, orden: 10, visible: false
+	},
+	{
+		tipo:"ttf",
+		pos:[16, 16],
+		texto:"-",
+		fuente:"fuente", rgba:[0, 0, 0, 255],
+		id:"txt_controles_on", alpha: 255, orden: 20, visible: false
 	},
 	{
 		tipo:"bitmap",

@@ -45,7 +45,9 @@ begins anew.
 
 Your time: 
 <#>
-
+<50$>Press any key...<#>
+<51$>Start new game<#>
+<52$>Configure controls<#>
 <200$>Keyboard key <#>
 <201$>Mouse button <#>
 <202$>Joystick number <#>

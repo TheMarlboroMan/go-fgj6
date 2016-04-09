@@ -34,9 +34,11 @@ class Controlador_intro:
 
 	private:
 
-	enum class			modos{fadein, input, fadeout} modo;
+	enum class			modos{fadein, esperando, menu, fadeout} modo;
 
 	void				procesar_input(DFramework::Input& input);
+	void				procesar_fade(float);
+	void				refrescar_menu();
 
 	DLibH::Log_base&			log;
 	const Localizador&			localizador;
@@ -46,6 +48,11 @@ class Controlador_intro:
 
 	float				fade;
 	bool				juego_finalizado;
+	int				indice_menu;
+
+	static const int		min_menu=0,
+					max_menu=1;
+	
 };
 
 }

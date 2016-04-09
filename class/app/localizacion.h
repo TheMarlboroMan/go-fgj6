@@ -8,6 +8,10 @@ struct Localizacion
 {
 
 	enum l{
+intro_pulsa_algo=50,
+intro_empezar=51,
+intro_controles=52,
+
 confirmacion_salida=100,
 mensaje_fin=101,
 
