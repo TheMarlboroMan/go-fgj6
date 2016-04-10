@@ -49,6 +49,7 @@ Your time:
 <51$>Start new game<#>
 <52$>Configure controls<#>
 <53$>Exit<#>
+<54$>Configuration<#>
 
 <200$>Keyboard key <#>
 <201$>Mouse button <#>
@@ -60,3 +61,4 @@ Your time:
 <207$>Slow down<#>
 <208$>???<#>
 <209$>Enter input for <#>
+<210$>Back<#>

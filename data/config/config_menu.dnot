@@ -18,5 +18,10 @@ config_controles:[
 		c:"04_K_ABAJO",
 		t:207,
 		m:"string"
-	}
+	},
+	{
+		c:"05_SALIR",
+		t:210,
+		m:"void"
+	},
 ]

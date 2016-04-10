@@ -15,6 +15,7 @@
 #include "../app/fuentes.h"
 #include "../app/localizador.h"
 #include "../app/componente_menu.h"
+#include "../app/fader.h"
 
 #include "estados_controladores.h"
 #include "../framework/controlador_interface.h"
@@ -40,6 +41,18 @@ class Controlador_controles:
 
 	private:
 
+	//Estructura para el componente de menú.
+	struct item_config_controles
+	{
+		typedef std::function<void(DLibV::Representacion_agrupada&, int, int, const std::string&, const std::string&, const std::string&, bool)> func;
+
+		func			f;
+		std::string 		clave, nombre, valor;
+		virtual void 		generar_representacion_listado(DLibV::Representacion_agrupada& r, int x, int y, bool actual) const {f(r, x, y, clave, nombre, valor, actual);}
+		item_config_controles(func& f, const std::string& k, const std::string& n, const std::string& t):f(f), clave(k), nombre(n), valor(t) {}
+	};
+
+
 	void				crear_menu_opciones(const DFramework::Input& input);
 	void				actualizar_configuracion(const std::string&, App_config::input_jugador);
 	void				generar_vista_menu();
@@ -48,26 +61,20 @@ class Controlador_controles:
 	int				indice_traduccion_desde_clave(const std::string&) const;
 	App_config::input_jugador	input_desde_string(const std::string&) const;
 	std::string			string_desde_input(const App_config::input_jugador&) const;
-
-	//Estructura para el componente de menú.
-	struct item_config_controles
-	{
-		typedef std::function<void(DLibV::Representacion_agrupada&, int, int, const std::string&, const std::string&, bool)> func;
-
-		func			f;
-		std::string 		clave, nombre, texto;
-		virtual void 		generar_representacion_listado(DLibV::Representacion_agrupada& r, int x, int y, bool actual) const {f(r, x, y, nombre, texto, actual);}
-		item_config_controles(func& f, const std::string& k, const std::string& n, const std::string& t):f(f), clave(k), nombre(n), texto(t) {}
-	};
+	void				salir();
+	void				activar_fadeout();
+	void				input_seleccion(DFramework::Input& input);
+	void				input_entrada(DFramework::Input& input);
 
 	DLibH::Log_base&			log;
 	App::App_config& 			config;
 	const DLibV::Fuente_TTF&		fuente;
 	const Localizador&			localizador;
 
-	enum class 				modos{seleccion, entrada}modo;
+	enum class 				modos{fadein, seleccion, entrada, fadeout}modo;
 	Componente_menu<item_config_controles, std::string>	componente_menu;
 	Herramientas_proyecto::Compositor_vista			layout;
+	Fader<float>						fader;
 };
 
 }

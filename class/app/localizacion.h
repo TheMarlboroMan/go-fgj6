@@ -12,6 +12,7 @@ intro_pulsa_algo=50,
 intro_empezar=51,
 intro_controles=52,
 intro_salir=53,
+intro_config=54,
 
 confirmacion_salida=100,
 mensaje_fin=101,
@@ -25,7 +26,8 @@ controles_derecha=205,
 controles_arriba=206,
 controles_abajo=207,
 controles_desconocido=208,
-controles_introducir=209
+controles_introducir=209,
+controles_salir=210,
 };
 
 };

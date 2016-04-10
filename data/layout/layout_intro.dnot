@@ -1,5 +1,22 @@
 layout:
-[
+[	
+	{tipo:"const", clave:"ini_fade_capa", valor:255.0f},
+	{tipo:"const", clave:"fin_fade_capa", valor:1.0f},
+	{tipo:"const", clave:"ini_fade_menu", valor:1.0f},
+	{tipo:"const", clave:"fin_fade_menu", valor:255.0f},
+	{tipo:"const", clave:"fade_salto", valor:100.0f},
+	{tipo:"const", clave:"x_listado", valor:32},
+	{tipo:"const", clave:"y_listado", valor:64},
+	{tipo:"const", clave:"h_item", valor:20},
+	{tipo:"const", clave:"h_listado", valor:200},
+	{tipo:"const", clave:"color_r_activo", valor:0},
+	{tipo:"const", clave:"color_g_activo", valor:0},
+	{tipo:"const", clave:"color_b_activo", valor:0},
+	{tipo:"const", clave:"color_a_activo", valor:255},
+	{tipo:"const", clave:"color_r_inactivo", valor:128},
+	{tipo:"const", clave:"color_g_inactivo", valor:128},
+	{tipo:"const", clave:"color_b_inactivo", valor:128},
+	{tipo:"const", clave:"color_a_inactivo", valor:255},
 	{
 		tipo:"pantalla", 
 		rgba:[255, 255, 255, 255]
@@ -11,50 +28,9 @@ layout:
 		fuente:"fuente", rgba:[0, 0, 0, 255],
 		id:"txt_pulsa_tecla", alpha: 255, orden: 10, visible: true
 	},
-
 	{
-		tipo:"ttf",
-		pos:[32, 48],
-		texto:"-",
-		fuente:"fuente", rgba:[128, 128, 128, 255],
-		id:"txt_inicio_off", alpha: 0, orden: 10, visible: false
+		tipo:"externa", ref:"menu", orden: 20
 	},
-	{
-		tipo:"ttf",
-		pos:[32, 48],
-		texto:"-",
-		fuente:"fuente", rgba:[0, 0, 0, 255],
-		id:"txt_inicio_on", alpha: 0, orden: 20, visible: false
-	},
-	{
-		tipo:"ttf",
-		pos:[32, 68],
-		texto:"-",
-		fuente:"fuente", rgba:[128, 128, 128, 255],
-		id:"txt_controles_off", alpha: 0, orden: 10, visible: false
-	},
-	{
-		tipo:"ttf",
-		pos:[32, 68],
-		texto:"-",
-		fuente:"fuente", rgba:[0, 0, 0, 255],
-		id:"txt_controles_on", alpha: 0, orden: 20, visible: false
-	},
-	{
-		tipo:"ttf",
-		pos:[32, 88],
-		texto:"-",
-		fuente:"fuente", rgba:[128, 128, 128, 255],
-		id:"txt_salir_off", alpha: 0, orden: 10, visible: false
-	},
-	{
-		tipo:"ttf",
-		pos:[32, 88],
-		texto:"-",
-		fuente:"fuente", rgba:[0, 0, 0, 255],
-		id:"txt_salir_on", alpha: 0, orden: 20, visible: false
-	},
-
 	{
 		tipo:"bitmap",
 		pos:[140, 300, 546, 376], rec:[0, 0, 546, 376],
@@ -63,7 +39,7 @@ layout:
 	{
 		tipo:"bitmap",
 		pos:[140, 300, 546, 376], rec:[0, 0, 546, 376],
-		textura:"flores", orden: 16, id:"flores", alpha:0
+		textura:"flores", orden: 16, id:"flores", visible: false
 	},
 	{tipo:"caja",pos:[0, 0, 800, 600], rgb:[255,255,255], id:"fader", alpha:255, orden: 20}
 ]

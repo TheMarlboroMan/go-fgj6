@@ -15,12 +15,12 @@ using namespace App;
 Controlador_controles::Controlador_controles(DLibH::Log_base& log, App_config& c, const Fuentes& f, const Localizador& loc, const DFramework::Input& i)
 	:log(log), config(c), 
 	fuente(f.obtener_fuente("imagination_station", 16)), 
-	localizador(loc), modo(modos::seleccion),
-	//TODO: Especificar medidas por constantes.
-	componente_menu(32, 32, 20, 200)
+	localizador(loc), modo(modos::fadein),
+	componente_menu(),
+	fader()
 {
-	layout.mapear_fuente("fuente", fuente);
 	crear_menu_opciones(i);
+	layout.mapear_fuente("fuente", fuente);
 }
 
 void  Controlador_controles::preloop(DFramework::Input& input, float delta)
@@ -38,70 +38,18 @@ void Controlador_controles::loop(DFramework::Input& input, float delta)
 
 	switch(modo)
 	{
-		case modos::seleccion:
-
-			if(input.es_input_down(Input::escape))
+		case modos::fadein:
+		case modos::fadeout: 
+			fader.turno(delta);
+			componente_menu.representacion().establecer_alpha((int)fader);
+			if(fader.es_finalizado()) 
 			{
-				config.grabar();
-				solicitar_cambio_estado(intro);
-				return;
-			}
-
-			if(input.es_input_down(Input::menu_abajo) || input.es_input_down(Input::menu_arriba))
-			{
-				//Si hay cambios volvemos a generar la vista: el item actual se marca cambiándolo de color y es necesario redibujar.
-				if(componente_menu.cambiar_item(input.es_input_down(Input::menu_arriba) ? -1 : 1))
-				{
-					componente_menu.generar_vista_listado();
-				}
-			}
-			else if(input.es_input_down(Input::menu_ok))
-			{
-				modo=modos::entrada;
-				const std::string nombre_input=localizador.obtener(indice_traduccion_desde_clave(componente_menu.item_actual().clave));
-				auto r=static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_input"));
-				r->asignar(localizador.obtener(Localizacion::controles_introducir)+nombre_input);
-				layout.obtener_por_id("txt_input")->hacer_visible();
+				if(modo==modos::fadein) modo=modos::seleccion;
+				else salir();
 			}
 		break;
-		
-		case modos::entrada:
-		{
-			if(input.es_input_down(Input::escape))
-			{
-				modo=modos::seleccion;
-				return;
-			}
-
-			auto c=input.obtener_entrada();
-			using E=DFramework::Input::Entrada;
-
-			if(c.tipo!=E::ttipo::nada)
-			{
-				const std::string& clave=componente_menu.item_actual().clave;
-
-				//Se hace el cambio en "input".
-				int k=indice_input_desde_clave(clave);
-				input.limpiar(k);
-				input.configurar(input.desde_entrada(c, k));
-
-				//Actualizamos la configuración, para que los nuevos valores se vean en el listado... Convertimos de framework a propio.
-				auto en_config=App_config::fw_a_config(c);
-				actualizar_configuracion(componente_menu.item_actual().clave, en_config);
-
-				//Actualizamos el valor interno del menú.
-				const std::string valor_menu=string_desde_input(en_config);
-				componente_menu.menu().asignar_por_valor_string(clave, valor_menu);
-
-				//Actualizamos el valor del listado...
-				componente_menu.item_actual().texto=valor_menu;	//Este no es el texto que se verá: se transformará luego.
-				componente_menu.generar_vista_listado();
-
-				//Volvemos al modo anterior.
-				modo=modos::seleccion;
-				layout.obtener_por_id("txt_input")->hacer_invisible();
-			}
-		}
+		case modos::seleccion: 	input_seleccion(input); break;
+		case modos::entrada:	input_entrada(input); break;
 	}
 }
 
@@ -113,25 +61,115 @@ void  Controlador_controles::postloop(DFramework::Input& input, float delta)
 void  Controlador_controles::dibujar(DLibV::Pantalla& pantalla)
 {
 	layout.volcar(pantalla);
-	//TODO: Medidas por constantes.
-	componente_menu.volcar(pantalla, 600, 20);
+	componente_menu.volcar(pantalla);
 }
 
 void  Controlador_controles::despertar()
 {
+	layout.registrar_externa("menu", componente_menu.representacion());
 	layout.parsear("data/layout/layout_controles.dnot", "layout");
+
+	componente_menu.mut_x_listado(layout.const_int("x_listado"));
+	componente_menu.mut_y_listado(layout.const_int("y_listado"));
+	componente_menu.configurar_listado(layout.const_int("h_item"), layout.const_int("h_listado"));
+	modo=modos::fadein;
+
+	fader.reset(1.0f, 255.0f, 200.f);
+
 	generar_vista_menu();
 }
 
 void  Controlador_controles::dormir()
 {
 	layout.vaciar_vista();
+	layout.vaciar_constantes();
 	componente_menu.desmontar();
 }
 
 bool Controlador_controles::es_posible_abandonar_estado() const
 {
 	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Controlador_controles::input_seleccion(DFramework::Input& input)
+{	
+	if(input.es_input_down(Input::escape))
+	{
+		activar_fadeout();
+		return;
+	}
+
+	if(input.es_input_down(Input::menu_abajo) || input.es_input_down(Input::menu_arriba))
+	{
+		//Si hay cambios volvemos a generar la vista: el item actual se marca cambiándolo de color y es necesario redibujar.
+		if(componente_menu.cambiar_item(input.es_input_down(Input::menu_arriba) ? -1 : 1))
+		{
+			componente_menu.generar_vista_listado();
+		}
+	}
+	else if(input.es_input_down(Input::menu_ok))
+	{				
+		modo=modos::entrada;
+		const std::string clave=componente_menu.item_actual().clave;
+		if(clave=="05_SALIR")
+		{
+			activar_fadeout();
+			return;
+		}
+		else
+		{
+			const std::string nombre_input=localizador.obtener(indice_traduccion_desde_clave(clave));
+			auto r=static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_input"));
+			r->asignar(localizador.obtener(Localizacion::controles_introducir)+nombre_input);
+			layout.obtener_por_id("txt_input")->hacer_visible();
+		}
+	}
+}
+
+void Controlador_controles::input_entrada(DFramework::Input& input)
+{
+	if(input.es_input_down(Input::escape))
+	{
+		modo=modos::seleccion;
+		return;
+	}
+
+	auto c=input.obtener_entrada();
+	using E=DFramework::Input::Entrada;
+
+	if(c.tipo!=E::ttipo::nada)
+	{
+		const std::string& clave=componente_menu.item_actual().clave;
+
+		//Se hace el cambio en "input".
+		int k=indice_input_desde_clave(clave);
+		input.limpiar(k);
+		input.configurar(input.desde_entrada(c, k));
+
+		//Actualizamos la configuración, para que los nuevos valores se vean en el listado... Convertimos de framework a propio.
+		auto en_config=App_config::fw_a_config(c);
+		actualizar_configuracion(componente_menu.item_actual().clave, en_config);
+
+		//Actualizamos el valor interno del menú.
+		const std::string valor_menu=string_desde_input(en_config);
+		componente_menu.menu().asignar_por_valor_string(clave, valor_menu);
+
+		//Actualizamos el valor del listado...
+		componente_menu.item_actual().valor=valor_menu; //Este no es el texto que se verá: se transformará luego.
+		componente_menu.generar_vista_listado();
+
+		//Volvemos al modo anterior.
+		modo=modos::seleccion;
+		layout.obtener_por_id("txt_input")->hacer_invisible();
+	}
+}
+
+void Controlador_controles::activar_fadeout()
+{
+	modo=modos::fadeout;
+	fader.reset(255.0f, 1.0f, 200.f);
 }
 
 std::string Controlador_controles::traducir_input(const App_config::input_jugador& e) const
@@ -141,7 +179,6 @@ using namespace parche_mingw;
 #else
 using namespace std;
 #endif
-
 	std::string res=localizador.obtener(Localizacion::controles_desconocido);
 
 	switch(e.tipo)
@@ -192,15 +229,17 @@ using namespace std;
 
 void Controlador_controles::generar_vista_menu()
 {
-	//Definición de función de dibujado del item del listado.
-
 	//TODO: ¿Sería posible centrarlos?.
-	item_config_controles::func frep=[this](DLibV::Representacion_agrupada& r, int x, int y, const std::string& nombre, const std::string& texto, bool actual)
+	auto ui=[this](const std::string& c){return Uint8(layout.const_int(c));};
+		SDL_Color color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")}, 
+		color_inactivo{ui("color_r_inactivo"), ui("color_g_inactivo"), ui("color_b_inactivo"), ui("color_a_inactivo")};
+
+	//Definición de función de dibujado del item del listado.
+	item_config_controles::func frep=[this, color_activo, color_inactivo](DLibV::Representacion_agrupada& r, int x, int y, const std::string& clave, const std::string& nombre, const std::string& valor, bool actual)
 	{
-		SDL_Color color=actual ? SDL_Color{0, 0, 0, 255} : SDL_Color{128, 128, 128, 255};
-		auto * txt=new DLibV::Representacion_TTF(fuente, color, texto);
+		auto * txt=new DLibV::Representacion_TTF(fuente, actual ? color_activo : color_inactivo, "");
 		txt->establecer_posicion(x, y);
-		txt->asignar(nombre+"\t\t\t"+traducir_input(input_desde_string(texto)));
+		txt->asignar(clave=="05_SALIR" ? nombre : nombre+"\t\t\t"+traducir_input(input_desde_string(valor)));
 		r.insertar_representacion(txt);
 	};
 
@@ -249,4 +288,10 @@ int Controlador_controles::indice_traduccion_desde_clave(const std::string& c) c
 	else if(c=="03_K_ARRIBA")	return Localizacion::controles_arriba;
 	else if(c=="04_K_ABAJO")	return Localizacion::controles_abajo;
 	else return 0;
+}
+
+void Controlador_controles::salir()
+{
+	config.grabar();
+	solicitar_cambio_estado(intro);
 }

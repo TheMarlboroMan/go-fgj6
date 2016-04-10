@@ -27,9 +27,23 @@ class Componente_menu
 	Componente_menu(int xl, int yl, int hi, int hl)
 		:x_listado(xl), y_listado(yl),
 		rep_listado(true),
-		listado(hl, hi)		
+		listado(hl, hi)
 	{
 		rep_listado.no_imponer_alpha();
+	}
+
+	Componente_menu()
+		:x_listado(0), y_listado(0),
+		rep_listado(true),
+		listado(1, 1)
+	{
+
+	}
+
+	void	configurar_listado(int hi, int hl)
+	{
+		listado.mut_h_item(hi);
+		listado.mut_h_disponible(hl);
 	}
 
 	void	crear_menu_opciones(const std::string& ruta, const std::string& clave, const Herramientas_proyecto::Localizador_base& localizador)
@@ -75,20 +89,24 @@ class Componente_menu
 			itemp.item.generar_representacion_listado(rep_listado, x_listado, itemp.y + y_listado, itemp.indice==listado.acc_indice_actual());
 	}
 
+	void 	mut_x_listado(int v)
+	{
+		x_listado=v;
+	}
+
+	void 	mut_y_listado(int v)
+	{
+		y_listado=v;
+	}
+
 	void	desmontar()
 	{
 		rep_listado.vaciar_grupo();
 	}
 
-	void	volcar(DLibV::Pantalla& p, int ancho_listado, int alto_item_listado)
+	void	volcar(DLibV::Pantalla& p)
 	{
 		rep_listado.volcar(p);
-/*
-		const int y=y_listado+(listado.linea_actual().y);
-		DLibV::Representacion_primitiva_caja seleccion_actual({0, y, ancho_listado, alto_item_listado}, 255, 255, 255);
-		seleccion_actual.establecer_alpha(128);
-		seleccion_actual.volcar(p);
-*/
 	}
 
 	bool	cambiar_item(int dir)
@@ -110,6 +128,12 @@ class Componente_menu
 	Herramientas_proyecto::Menu_opciones<S>&		menu()
 	{
 		return menu_opciones;
+	}
+
+	//Peor práxis, pero podemos registrarla con un layout así.
+	DLibV::Representacion_agrupada&		 		representacion()
+	{
+		return rep_listado;
 	}
 
 	private:

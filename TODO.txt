@@ -1,4 +1,5 @@
 - Constantes para sonidos.
+- Constantes para recursos.
 - Add screen resolutions.
 - Enable / disable help.
 - Add in-game map.

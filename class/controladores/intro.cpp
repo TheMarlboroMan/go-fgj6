@@ -6,10 +6,12 @@
 using namespace App;
 
 Controlador_intro::Controlador_intro(DLibH::Log_base& log, const Fuentes& fuentes, const Localizador& loc, Sistema_audio& sa)
-	:log(log), localizador(loc), sistema_audio(sa), fade(255.0f), fade_menu(0.0f), juego_finalizado(false),
-	indice_menu(0)
+	:log(log), fuente(fuentes.obtener_fuente("imagination_station", 16)), 
+	localizador(loc), sistema_audio(sa), juego_finalizado(false)
 {
-	layout.mapear_fuente("fuente", fuentes.obtener_fuente("imagination_station", 16));
+	componente_menu.crear_menu_opciones("data/config/config_intro.dnot", "config_intro", localizador);
+
+	layout.mapear_fuente("fuente", fuente);
 	layout.mapear_textura("cover", DLibV::Gestor_texturas::obtener(7));
 	layout.mapear_textura("flores", DLibV::Gestor_texturas::obtener(8));
 }
@@ -44,28 +46,32 @@ void Controlador_intro::dibujar(DLibV::Pantalla& pantalla)
 
 void Controlador_intro::despertar()
 {
+	layout.registrar_externa("menu", componente_menu.representacion());
 	layout.parsear("data/layout/layout_intro.dnot", "layout");
 
-	auto r=static_cast<DLibV::Representacion_bitmap *>(layout.obtener_por_id("flores"));
-	r->establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
-	if(juego_finalizado) layout.obtener_por_id("flores")->establecer_alpha(255);
+	if(juego_finalizado) layout.obtener_por_id("flores")->hacer_visible();
 
 	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_pulsa_tecla"))->asignar(localizador.obtener(Localizacion::intro_pulsa_algo));
-	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_inicio_on"))->asignar(localizador.obtener(Localizacion::intro_empezar));
-	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_inicio_off"))->asignar(localizador.obtener(Localizacion::intro_empezar));
-	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_controles_on"))->asignar(localizador.obtener(Localizacion::intro_controles));
-	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_controles_off"))->asignar(localizador.obtener(Localizacion::intro_controles));
-	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_salir_on"))->asignar(localizador.obtener(Localizacion::intro_salir));
-	static_cast<DLibV::Representacion_TTF *>(layout.obtener_por_id("txt_salir_off"))->asignar(localizador.obtener(Localizacion::intro_salir));
 
-	fade=255.0f;
-	fade_menu=0.0f;
+	fade.reset(layout.const_float("ini_fade_capa"), layout.const_float("fin_fade_capa"), layout.const_float("fade_salto"));
+	fade_out.reset(layout.const_float("fin_fade_capa"), layout.const_float("ini_fade_capa"), layout.const_float("fade_salto"));
+	fade_menu.reset(layout.const_float("ini_fade_menu"), layout.const_float("fin_fade_menu"), layout.const_float("fade_salto"));
+
+	componente_menu.mut_x_listado(layout.const_int("x_listado"));
+	componente_menu.mut_y_listado(layout.const_int("y_listado"));
+	componente_menu.configurar_listado(layout.const_int("h_item"), layout.const_int("h_listado"));
+
+	componente_menu.representacion().establecer_alpha(layout.const_float("ini_fade_menu"));
+
+	inicializar_menu();
 	modo=modos::fadein;
 }
 
 void Controlador_intro::dormir()
 {
 	layout.vaciar_vista();
+	layout.vaciar_constantes();
+	componente_menu.desmontar();
 }
 
 bool Controlador_intro::es_posible_abandonar_estado() const
@@ -87,20 +93,15 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 					6, 80, 127));
 
 				modo=modos::transicion;
-				refrescar_menu();
 			}
 		break;
 		case modos::menu:
-		{
-			if(input.es_input_down(Input::menu_arriba) && indice_menu > min_menu)
-			{
-				--indice_menu;
-				refrescar_menu();
-			}
-			else if(input.es_input_down(Input::menu_abajo) && indice_menu < max_menu)
-			{
-				++indice_menu;
-				refrescar_menu();
+			if(input.es_input_down(Input::menu_arriba) || input.es_input_down(Input::menu_abajo))
+			{			
+				if(componente_menu.cambiar_item(input.es_input_down(Input::menu_arriba) ? -1 : 1))
+				{
+					componente_menu.generar_vista_listado();
+				}
 			}
 			else if(input.es_input_down(Input::menu_ok))
 			{
@@ -108,9 +109,16 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 					Info_audio_reproducir::t_reproduccion::simple,
 					Info_audio_reproducir::t_sonido::repetible,
 					5, 127, 127));
-
 				modo=modos::fadeout;
 			}
+		break;
+		case modos::fade_finalizado:
+		{
+			const std::string clave=componente_menu.item_actual().clave;
+			if(clave=="10_INICIAR") 	solicitar_cambio_estado(principal); 
+			else if(clave=="20_CONTROLES")	solicitar_cambio_estado(controles);
+			else if(clave=="30_SALIR")	abandonar_aplicacion();
+			return;
 		}
 		break;
 
@@ -120,80 +128,37 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 	}
 }
 
-void Controlador_intro::refrescar_menu()
-{
-	layout.obtener_por_id("txt_inicio_on")->hacer_invisible();
-	layout.obtener_por_id("txt_controles_on")->hacer_invisible();
-	layout.obtener_por_id("txt_salir_on")->hacer_invisible();
-
-	layout.obtener_por_id("txt_inicio_off")->hacer_visible();
-	layout.obtener_por_id("txt_controles_off")->hacer_visible();
-	layout.obtener_por_id("txt_salir_off")->hacer_visible();
-
-	switch(indice_menu)
-	{
-		case 0: layout.obtener_por_id("txt_inicio_on")->hacer_visible(); break;
-		case 1: layout.obtener_por_id("txt_controles_on")->hacer_visible(); break;
-		case 2: layout.obtener_por_id("txt_salir_on")->hacer_visible(); break;
-	}
-}
-
 void Controlador_intro::procesar_fade(float delta)
 {
 	if(modo==modos::transicion)
 	{
-		if(fade_menu < 254.0f)
+		if(!fade_menu.es_finalizado())
 		{
-			fade_menu+=delta*150.0f;
-			if(fade_menu > 254.0f) fade_menu=254.f;
-
-			int ffade=ceil(fade_menu);
-
+			fade_menu.turno(delta);
+			Uint8 ffade=fade_menu;
 			layout.obtener_por_id("txt_pulsa_tecla")->establecer_alpha(255 - ffade);
-			layout.obtener_por_id("txt_inicio_on")->establecer_alpha(ffade);
-			layout.obtener_por_id("txt_inicio_off")->establecer_alpha(ffade);
-			layout.obtener_por_id("txt_controles_on")->establecer_alpha(ffade);
-			layout.obtener_por_id("txt_controles_off")->establecer_alpha(ffade);
-			layout.obtener_por_id("txt_salir_on")->establecer_alpha(ffade);
-			layout.obtener_por_id("txt_salir_off")->establecer_alpha(ffade);
+			componente_menu.representacion().establecer_alpha(ffade);
 
-			if(fade_menu==254.f)
-			{
-				modo=modos::menu;
-			}
+			if(fade_menu.es_finalizado()) modo=modos::menu;
 		}
 	}
 
 	if(modo==modos::fadeout)
 	{
-		if(fade < 254.0f)
+		if(!fade_out.es_finalizado())
 		{
-			fade+=delta*150.0f;
-			if(fade > 254.0f) fade=254.f;
-
-			int ffade=ceil(fade);
-			layout.obtener_por_id("fader")->establecer_alpha(ffade);
-
-			if(fade==254.f)
-			{
-				modo=modos::fadein;
-
-				switch(indice_menu)
-				{
-					case 0:	solicitar_cambio_estado(principal); break;
-					case 1:	solicitar_cambio_estado(controles); break;
-					case 2:	abandonar_aplicacion(); break;
-				}
-			}
+			fade_out.turno(delta);
+			layout.obtener_por_id("fader")->establecer_alpha(fade_out);
+			if(fade_out.es_finalizado())	modo=modos::fade_finalizado;
 		}
 	}
 	else
 	{
-		if(fade > 1.0f)
+		//Fade y animación de salida...
+		if(!fade.es_finalizado())
 		{
-			fade-=delta*50.0f;
-			if(fade < 1.0f) fade=1.0f;
-			int ffade=floor(fade);
+			fade.turno(delta);
+			Uint8 ffade=fade;
 			layout.obtener_por_id("fader")->establecer_alpha(ffade);
 
 			int y=ffade < 130 ? 130 : ffade;
@@ -201,4 +166,32 @@ void Controlador_intro::procesar_fade(float delta)
 			layout.obtener_por_id("flores")->ir_a(140, y);
 		}
 	}
+}
+
+//Crea la vista completa de menú. Por un lado tenemos la función que se va a usar 
+//para dibujar y también la lambda que se manda al componente de menú, para 
+//rellenar el listado del mismo.
+
+void Controlador_intro::inicializar_menu()
+{
+	using im=item_menu;
+
+	auto ui=[this](const std::string& c){return Uint8(layout.const_int(c));};
+	SDL_Color 	color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")}, 
+			color_inactivo{ui("color_r_inactivo"), ui("color_g_inactivo"), ui("color_b_inactivo"), ui("color_a_inactivo")};
+
+	//Definición de función de dibujado del item del listado.
+	im::func frep=[this, color_activo, color_inactivo](DLibV::Representacion_agrupada& r, int x, int y, const std::string& nombre, bool actual)
+	{
+		auto * txt=new DLibV::Representacion_TTF(fuente, actual ? color_activo : color_inactivo, nombre);
+		txt->establecer_posicion(x, y);
+		r.insertar_representacion(txt);
+	};
+
+	componente_menu.traducir_menu_opciones(localizador);
+
+	componente_menu.montar([this, &frep](Herramientas_proyecto::Listado_vertical<im>& l, Herramientas_proyecto::Menu_opciones<std::string>& m, const std::vector<std::string>& v)
+	{
+		for(const auto& c : v) l.insertar(im{frep, c, m.nombre_opcion(c)});
+	});
 }
