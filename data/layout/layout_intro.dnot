@@ -5,6 +5,7 @@ layout:
 	{tipo:"const", clave:"ini_fade_menu", valor:1.0f},
 	{tipo:"const", clave:"fin_fade_menu", valor:255.0f},
 	{tipo:"const", clave:"fade_salto", valor:100.0f},
+	{tipo:"const", clave:"fade_menu_salto", valor:200.0f},
 	{tipo:"const", clave:"x_listado", valor:32},
 	{tipo:"const", clave:"y_listado", valor:64},
 	{tipo:"const", clave:"h_item", valor:20},

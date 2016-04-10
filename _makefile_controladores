@@ -36,7 +36,15 @@ $(DIR_O)localizador.o\
 $(DIR_CONTROLADORES)estados_controladores.h \
 $(DIR_CONTROLADORES)controles.h \
 $(DIR_CONTROLADORES)controles.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)controles.cpp -o $(DIR_O)controlador_controles.o  
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)controles.cpp -o $(DIR_O)controlador_controles.o
+
+$(DIR_O)controlador_config.o :\
+$(DIR_O)fuentes.o\
+$(DIR_O)localizador.o\
+$(DIR_CONTROLADORES)estados_controladores.h \
+$(DIR_CONTROLADORES)config.h \
+$(DIR_CONTROLADORES)config.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)config.cpp -o $(DIR_O)controlador_config.o    
 
 $(DIR_O)controlador_intro.o :\
 $(DIR_O)fuentes.o\

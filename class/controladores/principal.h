@@ -46,6 +46,7 @@ class Controlador_principal:
 	void				iniciar_juego();
 	void				iniciar_nivel(int, int);
 	bool				es_juego_finalizado() const {return juego_finalizado;}
+	void				establecer_ayuda(bool v) {info_juego.ayuda_activa=v;}
 
 	private:
 
@@ -159,6 +160,11 @@ class Controlador_principal:
 		void				recoger_pieza(int v) {helper_int(piezas_recogidas, v);}
 
 	}info_persistente;
+
+	struct
+	{
+		bool				ayuda_activa=true;
+	}info_juego;
 };
 
 }

@@ -54,11 +54,13 @@ class App_config:
 	input_jugador acc_derecha(int j) const 	{return token_por_ruta_jugador("derecha", j);}
 	input_jugador acc_arriba(int j) const 	{return token_por_ruta_jugador("arriba", j);}
 	input_jugador acc_abajo(int j) const	{return token_por_ruta_jugador("abajo", j);}
+	bool es_ayuda_activa() const		{return token_por_ruta(CLAVE_AYUDA_ACTIVA);}
 
 	void mut_w_logica_pantalla(int p_valor) {configurar(CLAVE_W_LOGICA_PANTALLA, p_valor);}
 	void mut_h_logica_pantalla(int p_valor) {configurar(CLAVE_H_LOGICA_PANTALLA, p_valor);}
 	void mut_w_fisica_pantalla(int p_valor) {configurar(CLAVE_W_FISICA_PANTALLA, p_valor);}
 	void mut_h_fisica_pantalla(int p_valor) {configurar(CLAVE_H_FISICA_PANTALLA, p_valor);}
+	void mut_ayuda_activa(bool p_valor)	{configurar(CLAVE_AYUDA_ACTIVA, p_valor);}
 
 	void mut_izquierda(int j, input_jugador p_valor) 	{configurar_jugador(ruta_jugador("izquierda", j), p_valor);}
 	void mut_derecha(int j, input_jugador p_valor) 	 	{configurar_jugador(ruta_jugador("derecha", j), p_valor);}
@@ -101,6 +103,7 @@ class App_config:
 	static const std::string CLAVE_H_LOGICA_PANTALLA;
 	static const std::string CLAVE_W_FISICA_PANTALLA;
 	static const std::string CLAVE_H_FISICA_PANTALLA;
+	static const std::string CLAVE_AYUDA_ACTIVA;
 
 	////////////////////////////////////
 	// Implementacion...

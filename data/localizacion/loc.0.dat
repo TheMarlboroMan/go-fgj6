@@ -35,6 +35,12 @@ Flow into all three windmills before the previous
 one stops to open the door.
 <#>
 
+<50$>Press any key...<#>
+<51$>Start new game<#>
+<52$>Configure controls<#>
+<53$>Exit<#>
+<54$>Configuration<#>
+
 <100$>Are you sure you want to quit?.
 
 Escape to confirm. Other input to continue.
@@ -45,11 +51,15 @@ begins anew.
 
 Your time: 
 <#>
-<50$>Press any key...<#>
-<51$>Start new game<#>
-<52$>Configure controls<#>
-<53$>Exit<#>
-<54$>Configuration<#>
+
+<150$>Window size	<#>
+<151$>800 x 500		restart required<#>
+<152$>1200 x 750		restart required<#>
+<153$>1600 x 1000		restart required<#>
+<160$>In game help <#>
+<161$>enabled <#>
+<162$>disabled <#>
+<170$>Back<#>
 
 <200$>Keyboard key <#>
 <201$>Mouse button <#>

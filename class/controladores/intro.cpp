@@ -9,7 +9,7 @@ Controlador_intro::Controlador_intro(DLibH::Log_base& log, const Fuentes& fuente
 	:log(log), fuente(fuentes.obtener_fuente("imagination_station", 16)), 
 	localizador(loc), sistema_audio(sa), juego_finalizado(false)
 {
-	componente_menu.crear_menu_opciones("data/config/config_intro.dnot", "config_intro", localizador);
+	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_intro", localizador);
 
 	layout.mapear_fuente("fuente", fuente);
 	layout.mapear_textura("cover", DLibV::Gestor_texturas::obtener(7));
@@ -55,7 +55,7 @@ void Controlador_intro::despertar()
 
 	fade.reset(layout.const_float("ini_fade_capa"), layout.const_float("fin_fade_capa"), layout.const_float("fade_salto"));
 	fade_out.reset(layout.const_float("fin_fade_capa"), layout.const_float("ini_fade_capa"), layout.const_float("fade_salto"));
-	fade_menu.reset(layout.const_float("ini_fade_menu"), layout.const_float("fin_fade_menu"), layout.const_float("fade_salto"));
+	fade_menu.reset(layout.const_float("ini_fade_menu"), layout.const_float("fin_fade_menu"), layout.const_float("fade_menu_salto"));
 
 	componente_menu.mut_x_listado(layout.const_int("x_listado"));
 	componente_menu.mut_y_listado(layout.const_int("y_listado"));
@@ -117,6 +117,7 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 			const std::string clave=componente_menu.item_actual().clave;
 			if(clave=="10_INICIAR") 	solicitar_cambio_estado(principal); 
 			else if(clave=="20_CONTROLES")	solicitar_cambio_estado(controles);
+			else if(clave=="25_CONFIG")	solicitar_cambio_estado(config);
 			else if(clave=="30_SALIR")	abandonar_aplicacion();
 			return;
 		}

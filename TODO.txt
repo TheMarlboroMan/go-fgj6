@@ -1,7 +1,5 @@
 - Constantes para sonidos.
 - Constantes para recursos.
-- Add screen resolutions.
-- Enable / disable help.
 - Add in-game map.
 - Add real music.
 - Document level editor.
@@ -9,6 +7,11 @@
 - Parallax.
 
 DONE:
+
+- Add screen resolutions.
+- Enable / disable help.
+
+DOCUMENTED:
 
 - Fixed tree bug.
 - Fix particles.

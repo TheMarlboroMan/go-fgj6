@@ -256,7 +256,7 @@ void Controlador_controles::generar_vista_menu()
 //Se llama una única vez: crea el menú y asigna los valores.
 void Controlador_controles::crear_menu_opciones(const DFramework::Input& input)
 {
-	componente_menu.crear_menu_opciones("data/config/config_menu.dnot", "config_controles", localizador);
+	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_controles", localizador);
 
 	componente_menu.menu().asignar_por_valor_string("01_K_IZQUIERDA", string_desde_input(config.acc_izquierda(1)));
 	componente_menu.menu().asignar_por_valor_string("02_K_DERECHA", string_desde_input(config.acc_derecha(1)));

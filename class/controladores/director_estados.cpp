@@ -51,12 +51,14 @@ void Director_estados::registrar_controladores(DFramework::Kernel& kernel)
 	controlador_ayuda_editor.reset(new Controlador_ayuda_editor(log, fuentes));
 	controlador_intro.reset(new Controlador_intro(log, fuentes, localizador, sistema_audio));
 	controlador_controles.reset(new Controlador_controles(log, config, fuentes, localizador, kernel.acc_input()));
+	controlador_config.reset(new Controlador_config(log, config, fuentes, localizador));
 
 	registrar_controlador(t_estados::principal, *controlador_principal);
 	registrar_controlador(t_estados::editor, *controlador_editor);
 	registrar_controlador(t_estados::ayuda_editor, *controlador_ayuda_editor);
 	registrar_controlador(t_estados::intro, *controlador_intro);
 	registrar_controlador(t_estados::controles, *controlador_controles);
+	registrar_controlador(t_estados::config, *controlador_config);
 }
 
 void Director_estados::preparar_cambio_estado(int deseado, int actual)
@@ -71,6 +73,7 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 			}
 			else if(actual==t_estados::intro)
 			{
+				controlador_principal->establecer_ayuda(config.es_ayuda_activa());
 				controlador_principal->iniciar_juego();
 			}
 		break;
@@ -83,7 +86,7 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 			}
 		break;
 
-
+		case t_estados::config: break;
 		case t_estados::game_over: break;
 	}
 }

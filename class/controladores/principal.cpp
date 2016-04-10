@@ -153,7 +153,7 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 	for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
-	for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
+	if(info_juego.ayuda_activa) for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
 	for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
 
 	switch(modo)
@@ -408,12 +408,15 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 		}
 	}
 
-	for(auto& a : mapa.ayudas)
+	if(info_juego.ayuda_activa) 
 	{
-		if(j.en_colision_con(a))
+		for(auto& a : mapa.ayudas)
 		{
-			jugador_en_ayuda(a, j);
-			return;
+			if(j.en_colision_con(a))
+			{
+				jugador_en_ayuda(a, j);
+				return;
+			}
 		}
 	}
 }

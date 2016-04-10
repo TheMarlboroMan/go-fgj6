@@ -1,0 +1,22 @@
+layout:
+[
+	{tipo:"const", clave:"x_listado", valor:32},
+	{tipo:"const", clave:"y_listado", valor:32},
+	{tipo:"const", clave:"h_item", valor:20},
+	{tipo:"const", clave:"h_listado", valor:200},
+	{tipo:"const", clave:"color_r_activo", valor:0},
+	{tipo:"const", clave:"color_g_activo", valor:0},
+	{tipo:"const", clave:"color_b_activo", valor:0},
+	{tipo:"const", clave:"color_a_activo", valor:255},
+	{tipo:"const", clave:"color_r_inactivo", valor:128},
+	{tipo:"const", clave:"color_g_inactivo", valor:128},
+	{tipo:"const", clave:"color_b_inactivo", valor:128},
+	{tipo:"const", clave:"color_a_inactivo", valor:255},
+	{
+		tipo:"pantalla", 
+		rgba:[255, 255, 255, 255]
+	},
+	{
+		tipo:"externa", ref:"menu", orden: 20
+	}
+]
