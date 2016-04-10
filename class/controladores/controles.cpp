@@ -168,9 +168,9 @@ App_config::input_jugador Controlador_controles::input_desde_string(const std::s
 {
 	//El texto tiene este aspecto #tipo#,#device#,#codigo#
 	auto val=Herramientas_proyecto::explotar(s, ',');
-	int	tipo=std::stoi(val[0].c_str()), 
-		device=std::stoi(val[1].c_str()), 
-		codigo=std::stoi(val[2].c_str());
+	int	tipo=std::atoi(val[0].c_str()), 
+		device=std::atoi(val[1].c_str()), 
+		codigo=std::atoi(val[2].c_str());
 
 	return App_config::input_jugador{tipo, device, codigo};
 }
