@@ -93,7 +93,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 				modo=modos::juego;
 				return;
 			}
-			else if(input.hay_eventos_teclado_down())
+			else if(hay_input_jugador(input))
 			{
 				modo=modos::juego;
 			}
@@ -101,7 +101,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 		break;
 
 		case modos::ayuda:
-			if(input.hay_eventos_teclado_down())
+			if(hay_input_jugador(input))
 			{
 				modo=modos::juego;
 			}
@@ -116,7 +116,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 
 			procesar_particulas(delta);
 
-			if(input.hay_eventos_teclado_down())
+			if(hay_input_jugador(input))
 			{
 				solicitar_cambio_estado(intro);
 				modo=modos::juego;
@@ -239,15 +239,20 @@ void Controlador_principal::ajustar_camara(float delta)
 		mitad_w_pantalla=w_pantalla / 2,
 		mitad_h_pantalla=h_pantalla / 2;
 
-	double fin_zoom=1.0;
+	const double base_zoom=0.9, divisor_zoom=25.0;
+
 	auto cam=mapa.acc_info_camara();
 	auto c=jugador.acc_poligono().acc_centro();
 	int	cam_x=0, cam_y=0;
-
-	fin_zoom=(1.0 + ((double) jugador.acc_indice_velocidad() / 5));
+	double fin_zoom=(base_zoom + ((double) jugador.acc_indice_velocidad() / divisor_zoom));
 
 	int 	ancho_foco=w_pantalla * fin_zoom,
 		alto_foco=h_pantalla * fin_zoom;
+
+	double 	zoom_actual=camara.acc_zoom(),
+		zoom_aplicar=zoom_actual;
+
+	bool transicionar=true;
 
 	//El ancho o el alto de la cámara son mayores que el nivel:
 	//tenemos que reajustar el zoom.
@@ -256,22 +261,31 @@ void Controlador_principal::ajustar_camara(float delta)
 		double zoom_x=(double) cam.max_cam_x / (double) w_pantalla,
 			zoom_y=(double) cam.max_cam_y / (double) h_pantalla;
 		fin_zoom=std::min(zoom_x, zoom_y);
+	
+		//En este caso al reducir no hay que transicionar: es lo que pasa cuando
+		//cambiamos de una sala con zoom grande, por ejemplo.
+		if(zoom_actual > fin_zoom) transicionar=false;
 	}
-
 
 	//Transicionar el zoom.
-	double zoom_actual=camara.acc_zoom();
-	double zoom_aplicar=zoom_actual;
+	if(transicionar)
+	{
+		zoom_aplicar=zoom_actual;
 
-	if(zoom_actual > fin_zoom)
-	{
-		zoom_aplicar-=delta;
-		if(zoom_aplicar < fin_zoom) zoom_aplicar=fin_zoom;
+		if(zoom_actual > fin_zoom)
+		{
+			zoom_aplicar-=delta * 0.10;
+			if(zoom_aplicar < fin_zoom) zoom_aplicar=fin_zoom;
+		}
+		else if(zoom_actual < fin_zoom)
+		{
+			zoom_aplicar+=delta * 0.10;
+			if(zoom_aplicar > fin_zoom) zoom_aplicar=fin_zoom;
+		}
 	}
-	else if(zoom_actual < fin_zoom)
+	else
 	{
-		zoom_aplicar+=delta;
-		if(zoom_aplicar > fin_zoom) zoom_aplicar=fin_zoom;
+		zoom_aplicar=fin_zoom;
 	}
 
 	//Y ahora colocar la cámara...
@@ -600,7 +614,7 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 		}
 	}
 
-	camara.mut_zoom(1.0);
+	//camara.mut_zoom(1.0);
 }
 
 void Controlador_principal::iniciar_juego()
@@ -692,4 +706,12 @@ void Controlador_principal::procesar_florecimiento(float delta)
 		asignar_mensaje(localizador.obtener(Localizacion::mensaje_fin)+tiempo.a_cadena());
 		modo=modos::recuento_final;
 	}
+}
+
+bool Controlador_principal::hay_input_jugador(DFramework::Input& input) const
+{
+	return input.es_input_down(Input::arriba) ||
+		input.es_input_down(Input::abajo) ||
+		input.es_input_down(Input::izquierda) ||
+		input.es_input_down(Input::derecha);
 }

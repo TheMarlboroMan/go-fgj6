@@ -1,5 +1,18 @@
-- Max speed is not reachable in marker.
-- Add screen resolutions???.
-- Add map.
+- Constantes para sonidos.
+- Add screen resolutions.
+- Enable / disable help.
+- Add in-game map.
 - Add real music.
 - Document level editor.
+- Fix windmill bug trick.
+- Parallax.
+
+DONE:
+
+- Fixed tree bug.
+- Fix particles.
+- Add customizable controls.
+- Fix extremely difficult windmill.
+- Test gamepad.
+- Fix speed markers (top speed was not reachable).
+- Tweaked zoom parameters...

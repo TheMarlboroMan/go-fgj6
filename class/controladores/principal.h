@@ -73,6 +73,7 @@ class Controlador_principal:
 	void					asignar_mensaje(const std::string&);
 	void					centrar_mensaje();
 	void					crear_brillo(Espaciable::tpunto);
+	bool					hay_input_jugador(DFramework::Input&) const;
 
 	DLibH::Log_base&			log;
 	const DLibV::Fuente_TTF&		fuente;

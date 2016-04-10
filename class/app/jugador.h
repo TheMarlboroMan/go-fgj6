@@ -25,7 +25,7 @@ class Jugador:
 	void				cancelar_movimiento(float delta);
 	int				acc_indice_velocidad() const {return indice_velocidad;}
 	int				acc_max_velocidad() const {return max_velocidad;}
-	int				acc_tope_velocidad() const {return velocidades.size();}
+	int				acc_tope_velocidad() const {return velocidades.size()-1;}
 	int				acc_pieza_actual() const {return pieza_actual;}
 	void				mut_pieza_actual(int v) {pieza_actual=v;}
 	void				establecer_max_velocidad(int v) {if(v > max_velocidad) max_velocidad=v;}

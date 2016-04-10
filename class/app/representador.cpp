@@ -128,7 +128,6 @@ void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_T
 	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(6));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 
-
 	auto fd=[&pantalla, &sprite](int& act, int max, int xrec, int alpha)
 	{
 		sprite.establecer_recorte(xrec, 0, 31, 40);
@@ -147,17 +146,20 @@ void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_T
 	sprite.establecer_alpha(255);
 	int xvel=0;
 
+
+	//Marcando velocidad actual...
 	fd(xvel, act_vel, 31, 255);
 
-	if(aviso_velocidad_minima.tiempo && xvel < aviso_velocidad_minima.velocidad + 1) 
+	//Aviso de 
+	if(aviso_velocidad_minima.tiempo && xvel <= aviso_velocidad_minima.velocidad) 
 	{
 		int alpha=int( (aviso_velocidad_minima.tiempo * 255) / 1.2f);
 		int cp=xvel;
 		fd(cp, aviso_velocidad_minima.velocidad, 62, alpha < 128 ? 128 : alpha);
 	}
-	if(xvel < max_vel+1) fd(xvel, max_vel, 0, 128);
-	if(xvel < tot_vel+1) fd(xvel, tot_vel, 93, 128);
 
+	if(xvel <= max_vel) fd(xvel, max_vel, 0, 128);
+	if(xvel <= tot_vel) fd(xvel, tot_vel, 93, 128);
 }
 
 void Representador::turno(float delta)

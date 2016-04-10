@@ -81,6 +81,11 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 		case modos::esperando:
 			if(input.hay_eventos_teclado_down() && fade <= 200.0)
 			{
+				sistema_audio.insertar(Info_audio_reproducir(
+					Info_audio_reproducir::t_reproduccion::simple,
+					Info_audio_reproducir::t_sonido::repetible,
+					6, 80, 127));
+
 				modo=modos::transicion;
 				refrescar_menu();
 			}
