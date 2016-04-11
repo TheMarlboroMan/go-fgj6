@@ -124,7 +124,7 @@ void Automapa::visitar(int id_sala)
 
 void Automapa::reiniciar()
 {
-	salas.clear();
+	for(auto& s : salas) s.visitada=false;
 }
 
 std::vector<Automapa_sala> Automapa::obtener_visitadas() const

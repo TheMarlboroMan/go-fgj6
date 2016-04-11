@@ -595,6 +595,9 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 	for(auto id_p : info_persistente.piezas_recogidas) mapa.recoger_pieza(id_p);
 	mapa.actualizar_arbol(info_persistente.piezas_recogidas, jugador.acc_pieza_actual());
 
+	//Marcar sala como visitada...
+	info_persistente.visitar_mapa(info_mapa.id_mapa);
+
 	//Colocar a jugador en punto de inicio.
 	auto it=std::find_if(std::begin(mapa.inicios), std::end(mapa.inicios), [id_inicio](const Inicio& i){return i.acc_id()==id_inicio;});
 

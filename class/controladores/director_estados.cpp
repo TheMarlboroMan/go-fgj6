@@ -86,8 +86,7 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 		break;
 		case t_estados::editor: break;
 		case t_estados::estado_mapa: 
-			//TODO: Pasarle al mapa las salas descubiertas nuevas.
-			//Limpiar a su vez las salas descubiertas nuevas.
+			controlador_mapa->descubrir_salas(controlador_principal->obtener_salas_descubiertas());
 		break;
 		case t_estados::ayuda_editor: break;
 		case t_estados::intro: 

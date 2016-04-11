@@ -61,7 +61,7 @@ void  Controlador_controles::postloop(DFramework::Input& input, float delta)
 void  Controlador_controles::dibujar(DLibV::Pantalla& pantalla)
 {
 	layout.volcar(pantalla);
-	componente_menu.volcar(pantalla);
+//	componente_menu.volcar(pantalla);
 }
 
 void  Controlador_controles::despertar()
@@ -81,8 +81,7 @@ void  Controlador_controles::despertar()
 
 void  Controlador_controles::dormir()
 {
-	layout.vaciar_vista();
-	layout.vaciar_constantes();
+	layout.vaciar();
 	componente_menu.desmontar();
 }
 

@@ -50,6 +50,7 @@ class Automapa
 	void				cargar(const std::string&);
 	void				visitar(int);
 	void				reiniciar();
+	size_t				size() const {return salas.size();}
 
 	std::vector<Automapa_sala>	obtener_visitadas() const;
 

@@ -31,9 +31,13 @@ class Controlador_mapa:
 
 	private:
 
+	void				generar_representacion_sala(const Automapa_sala&);
+
 	DLibH::Log_base&			log;
 	Sistema_audio&				sistema_audio;
 
+	Herramientas_proyecto::Compositor_vista	layout;
+	DLibV::Representacion_agrupada		rep_mapa;
 	Automapa				automapa;
 };
 

@@ -64,6 +64,7 @@ class Controlador_principal:
 	virtual bool			es_posible_abandonar_estado() const;
 
 	Mapa&				acc_mapa() {return mapa;}
+	const std::vector<int>&		obtener_salas_descubiertas() const {return info_persistente.mapas_visitados;}
 	void				iniciar_juego();
 	void				iniciar_nivel(int, int);
 	bool				es_juego_finalizado() const {return juego_finalizado;}
@@ -164,6 +165,7 @@ class Controlador_principal:
 	{
 		std::vector<int>		puertas_abiertas;
 		std::vector<int>		piezas_recogidas;
+		std::vector<int>		mapas_visitados;
 
 		void				reiniciar()
 		{
@@ -179,6 +181,7 @@ class Controlador_principal:
 
 		void				abrir_puerta(int v) {helper_int(puertas_abiertas, v);}
 		void				recoger_pieza(int v) {helper_int(piezas_recogidas, v);}
+		void				visitar_mapa(int v) {helper_int(mapas_visitados, v);}
 
 	}info_persistente;
 

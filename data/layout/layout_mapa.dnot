@@ -1,0 +1,10 @@
+layout:
+[
+	{
+		tipo:"pantalla", 
+		rgba:[128, 128, 128, 255]
+	},
+	{
+		tipo:"externa", ref:"mapa", orden: 10
+	}
+]
