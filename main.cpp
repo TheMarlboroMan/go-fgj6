@@ -26,8 +26,8 @@ int main(int argc, char ** argv)
 
 	//Inicializar control de argumentos.
 	Herramientas_proyecto::Controlador_argumentos CARG(argc, argv);
-	bool res=iniciar_app(CARG);
 
+	bool res=iniciar_app(CARG);
 	DLibH::Log_motor::finalizar();
 	return res;
 }

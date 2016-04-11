@@ -24,6 +24,27 @@
 #include "estados_controladores.h"
 #include "../framework/controlador_interface.h"
 
+/*
+	TODO: Colocamos el automapa en el mismo controlador o en un controlador propio???.
+
+	#include "class/app/automapa.h"
+
+	using namespace App;
+	Automapa a;
+	a.cargar("data/app/mapa.dat");
+	bool res=true;
+	a.visitar(1);
+	a.visitar(2);
+	a.visitar(3);
+	a.visitar(4);
+	for(const auto& s : a.obtener_visitadas())
+	{
+		std::cout<<"ID: "<<s.id<<" EN "<<s.x<<","<<s.y<<" CON "<<s.w<<"/"<<s.h<<std::endl;		
+		std::cout<<"TIENE "<<s.salidas.size()<<" SALIDAS"<<std::endl;
+		std::cout<<"TIENE "<<s.marcadores.size()<<" MARCADORES"<<std::endl;
+	}
+*/
+
 namespace App
 {
 

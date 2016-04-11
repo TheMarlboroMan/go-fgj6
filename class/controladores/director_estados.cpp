@@ -52,6 +52,7 @@ void Director_estados::registrar_controladores(DFramework::Kernel& kernel)
 	controlador_intro.reset(new Controlador_intro(log, fuentes, localizador, sistema_audio));
 	controlador_controles.reset(new Controlador_controles(log, config, fuentes, localizador, kernel.acc_input()));
 	controlador_config.reset(new Controlador_config(log, config, fuentes, localizador));
+	controlador_mapa.reset(new Controlador_mapa(log, sistema_audio));
 
 	registrar_controlador(t_estados::principal, *controlador_principal);
 	registrar_controlador(t_estados::editor, *controlador_editor);
@@ -59,6 +60,7 @@ void Director_estados::registrar_controladores(DFramework::Kernel& kernel)
 	registrar_controlador(t_estados::intro, *controlador_intro);
 	registrar_controlador(t_estados::controles, *controlador_controles);
 	registrar_controlador(t_estados::config, *controlador_config);
+	registrar_controlador(t_estados::estado_mapa, *controlador_mapa);
 }
 
 void Director_estados::preparar_cambio_estado(int deseado, int actual)
@@ -73,11 +75,20 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 			}
 			else if(actual==t_estados::intro)
 			{
+				controlador_mapa->reiniciar();
 				controlador_principal->establecer_ayuda(config.es_ayuda_activa());
 				controlador_principal->iniciar_juego();
 			}
+			else if(actual==t_estados::estado_mapa)
+			{
+				//Do nothing...
+			}
 		break;
 		case t_estados::editor: break;
+		case t_estados::estado_mapa: 
+			//TODO: Pasarle al mapa las salas descubiertas nuevas.
+			//Limpiar a su vez las salas descubiertas nuevas.
+		break;
 		case t_estados::ayuda_editor: break;
 		case t_estados::intro: 
 			if(actual==t_estados::principal)

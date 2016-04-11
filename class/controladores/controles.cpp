@@ -113,7 +113,7 @@ void Controlador_controles::input_seleccion(DFramework::Input& input)
 	{				
 		modo=modos::entrada;
 		const std::string clave=componente_menu.item_actual().clave;
-		if(clave=="05_SALIR")
+		if(clave=="100_SALIR")
 		{
 			activar_fadeout();
 			return;
@@ -239,7 +239,7 @@ void Controlador_controles::generar_vista_menu()
 	{
 		auto * txt=new DLibV::Representacion_TTF(fuente, actual ? color_activo : color_inactivo, "");
 		txt->establecer_posicion(x, y);
-		txt->asignar(clave=="05_SALIR" ? nombre : nombre+"\t\t\t"+traducir_input(input_desde_string(valor)));
+		txt->asignar(clave=="100_SALIR" ? nombre : nombre+"\t\t\t"+traducir_input(input_desde_string(valor)));
 		r.insertar_representacion(txt);
 	};
 
@@ -258,26 +258,31 @@ void Controlador_controles::crear_menu_opciones(const DFramework::Input& input)
 {
 	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_controles", localizador);
 
-	componente_menu.menu().asignar_por_valor_string("01_K_IZQUIERDA", string_desde_input(config.acc_izquierda(1)));
-	componente_menu.menu().asignar_por_valor_string("02_K_DERECHA", string_desde_input(config.acc_derecha(1)));
-	componente_menu.menu().asignar_por_valor_string("03_K_ARRIBA", string_desde_input(config.acc_arriba(1)));
-	componente_menu.menu().asignar_por_valor_string("04_K_ABAJO", string_desde_input(config.acc_abajo(1)));
+	componente_menu.menu().asignar_por_valor_string("10_K_IZQUIERDA", string_desde_input(config.acc_izquierda(1)));
+	componente_menu.menu().asignar_por_valor_string("20_K_DERECHA", string_desde_input(config.acc_derecha(1)));
+	componente_menu.menu().asignar_por_valor_string("30_K_ARRIBA", string_desde_input(config.acc_arriba(1)));
+	componente_menu.menu().asignar_por_valor_string("40_K_ABAJO", string_desde_input(config.acc_abajo(1)));
+	componente_menu.menu().asignar_por_valor_string("50_K_MAPA", string_desde_input(config.acc_mapa(1)));
 }
+
+//TODO: Todas estas cosas las podríamos de alguna forma meter en un sólo objeto que se haga cargo??.
 
 void Controlador_controles::actualizar_configuracion(const std::string& c, App_config::input_jugador v)
 {
-	if(c=="01_K_IZQUIERDA") 	config.mut_izquierda(1, v);
-	else if(c=="02_K_DERECHA")	config.mut_derecha(1, v);
-	else if(c=="03_K_ARRIBA")	config.mut_arriba(1, v);
-	else if(c=="04_K_ABAJO")	config.mut_abajo(1, v);
+	if(c=="10_K_IZQUIERDA") 	config.mut_izquierda(1, v);
+	else if(c=="20_K_DERECHA")	config.mut_derecha(1, v);
+	else if(c=="30_K_ARRIBA")	config.mut_arriba(1, v);
+	else if(c=="40_K_ABAJO")	config.mut_abajo(1, v);
+	else if(c=="50_K_MAPA")		config.mut_mapa(1, v);
 }
 
 int Controlador_controles::indice_input_desde_clave(const std::string& c) const
 {
-	if(c=="01_K_IZQUIERDA") 	return Input::izquierda;
-	else if(c=="02_K_DERECHA")	return Input::derecha;
-	else if(c=="03_K_ARRIBA")	return Input::arriba;
-	else if(c=="04_K_ABAJO")	return Input::abajo;
+	if(c=="10_K_IZQUIERDA") 	return Input::izquierda;
+	else if(c=="20_K_DERECHA")	return Input::derecha;
+	else if(c=="30_K_ARRIBA")	return Input::arriba;
+	else if(c=="40_K_ABAJO")	return Input::abajo;
+	else if(c=="50_K_MAPA")		return Input::mapa;
 	else return 0;
 }
 
@@ -287,6 +292,7 @@ int Controlador_controles::indice_traduccion_desde_clave(const std::string& c) c
 	else if(c=="02_K_DERECHA")	return Localizacion::controles_derecha;
 	else if(c=="03_K_ARRIBA")	return Localizacion::controles_arriba;
 	else if(c=="04_K_ABAJO")	return Localizacion::controles_abajo;
+	else if(c=="50_K_MAPA")	return Localizacion::controles_mapa;
 	else return 0;
 }
 

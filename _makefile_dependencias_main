@@ -53,8 +53,8 @@ $(DIR_O)widget_editor_propiedades_mejora_velocidad.o\
 $(DIR_O)audio_reproducir.o\
 $(DIR_O)audio_detener.o\
 $(DIR_O)gestor_audio.o\
-$(DIR_O)sistema_audio.o
-
+$(DIR_O)sistema_audio.o\
+$(DIR_O)automapa.o
 
 DEP_CONTROLADORES=\
 $(DIR_O)director_estados.o \
@@ -63,6 +63,7 @@ $(DIR_O)controlador_editor.o \
 $(DIR_O)controlador_intro.o \
 $(DIR_O)controlador_controles.o \
 $(DIR_O)controlador_config.o \
+$(DIR_O)controlador_mapa.o \
 $(DIR_O)controlador_ayuda_editor.o \
 
 DEP_FRAMEWORK=\

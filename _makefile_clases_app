@@ -299,3 +299,8 @@ $(DIR_O)audio_detener.o\
 $(DIR_CLASES_APP)gestor_audio.h\
 $(DIR_CLASES_APP)gestor_audio.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)gestor_audio.cpp -o $(DIR_O)gestor_audio.o
+
+$(DIR_O)automapa.o:\
+$(DIR_CLASES_APP)automapa.h\
+$(DIR_CLASES_APP)automapa.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)automapa.cpp -o $(DIR_O)automapa.o

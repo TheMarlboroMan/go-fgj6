@@ -17,8 +17,8 @@
 #include "intro.h"
 #include "controles.h"
 #include "config.h"
+#include "mapa.h"
 #include "ayuda_editor.h"
-
 
 namespace App
 {
@@ -54,6 +54,7 @@ class Director_estados:
 	std::unique_ptr<Controlador_controles>		controlador_controles;
 	std::unique_ptr<Controlador_ayuda_editor>	controlador_ayuda_editor;
 	std::unique_ptr<Controlador_config>		controlador_config;
+	std::unique_ptr<Controlador_mapa>		controlador_mapa;
 };
 
 }

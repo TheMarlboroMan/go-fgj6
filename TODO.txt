@@ -1,8 +1,9 @@
 - Constantes para sonidos.
 - Constantes para recursos.
-- Add in-game map.
+- Add in-game map, maybe in its own controller?.
 - Add real music.
 - Document level editor.
+- Fix order of controls.
 - Fix windmill bug trick.
 - Parallax.
 

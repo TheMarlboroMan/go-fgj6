@@ -54,6 +54,7 @@ class App_config:
 	input_jugador acc_derecha(int j) const 	{return token_por_ruta_jugador("derecha", j);}
 	input_jugador acc_arriba(int j) const 	{return token_por_ruta_jugador("arriba", j);}
 	input_jugador acc_abajo(int j) const	{return token_por_ruta_jugador("abajo", j);}
+	input_jugador acc_mapa(int j) const	{return token_por_ruta_jugador("mapa", j);}
 	bool es_ayuda_activa() const		{return token_por_ruta(CLAVE_AYUDA_ACTIVA);}
 
 	void mut_w_logica_pantalla(int p_valor) {configurar(CLAVE_W_LOGICA_PANTALLA, p_valor);}
@@ -66,6 +67,7 @@ class App_config:
 	void mut_derecha(int j, input_jugador p_valor) 	 	{configurar_jugador(ruta_jugador("derecha", j), p_valor);}
 	void mut_arriba(int j, input_jugador p_valor) 	 	{configurar_jugador(ruta_jugador("arriba", j), p_valor);}
 	void mut_abajo(int j, input_jugador p_valor) 		{configurar_jugador(ruta_jugador("abajo", j), p_valor);}
+	void mut_mapa(int j, input_jugador p_valor) 		{configurar_jugador(ruta_jugador("mapa", j), p_valor);}
 
 	App_config();
 

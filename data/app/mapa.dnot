@@ -1,0 +1,20 @@
+mapa: {
+	salas: [
+{
+	id: 1, x:-2, y:-2, w:2, h:1, 
+	salidas: [{x:0, y:0, ori: 1}, {x:1, y:0, ori: 2}],
+	marker:[2]
+},{
+	id: 2, x:-2, y:-1, w:1, h:1, 
+	salidas: [{x:0, y:0, ori: 1}, {x:0, y:0, ori: 3}],
+	marker:[]
+},{
+	id: 3, x:-2, y:1, w:1, h:2, 
+	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 3}, {x:0, y:1, ori: 4}],
+	marker:[]
+},{
+	id: 4, x:-3, y:0, w:1, h:1,
+	salidas: [{x:0, y:0, ori: 2}],
+	marker:[]
+}
+]}

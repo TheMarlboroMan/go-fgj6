@@ -93,16 +93,17 @@ std::vector<DFramework::Par_input> Kernel_config::obtener_pares_input() const
 };
 
 
-	auto obtener_info_jugador=[this](std::map<int, App_config::input_jugador>& res, int j, int iizq, int ider, int iarr, int iaba)
+	auto obtener_info_jugador=[this](std::map<int, App_config::input_jugador>& res, int j, int iizq, int ider, int iarr, int iaba, int imapa)
 	{
 		res[iizq]=config.acc_izquierda(j);
 		res[ider]=config.acc_derecha(j);
 		res[iarr]=config.acc_arriba(j);
 		res[iaba]=config.acc_abajo(j);
+		res[imapa]=config.acc_mapa(j);
 	};
 
 	std::map<int, App_config::input_jugador> mapa;
-	obtener_info_jugador(mapa, 1, Input::izquierda, Input::derecha, Input::arriba, Input::abajo);
+	obtener_info_jugador(mapa, 1, Input::izquierda, Input::derecha, Input::arriba, Input::abajo, Input::mapa);
 
 	for(const auto& p : mapa)
 		res.push_back({tipo_desde_config(p.second.tipo), p.first, p.second.codigo, p.second.device});

@@ -29,30 +29,35 @@ config_app:[
 
 config_controles:[
 	{
-		c:"01_K_IZQUIERDA",
+		c:"10_K_IZQUIERDA",
 		t:204,
 		m:"string"
 	},
 	{
-		c:"02_K_DERECHA",
+		c:"20_K_DERECHA",
 		t:205,
 		m:"string"
 	},
 	{
-		c:"03_K_ARRIBA",
+		c:"30_K_ARRIBA",
 		t:206,
 		m:"string"
 	},
 	{
-		c:"04_K_ABAJO",
+		c:"40_K_ABAJO",
 		t:207,
 		m:"string"
 	},
 	{
-		c:"05_SALIR",
+		c:"50_K_MAPA",
+		t:211,
+		m:"string"
+	},
+	{
+		c:"100_SALIR",
 		t:210,
 		m:"void"
-	},
+	}
 ],
 
 config_intro:[

@@ -56,6 +56,13 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 	switch(modo)
 	{
 		case modos::juego:
+
+			if(input.es_input_down(Input::mapa))
+			{
+				solicitar_cambio_estado(estado_mapa);
+				return;
+			}
+
 		case modos::animacion_choque:
 
 			if(input.es_input_down(Input::escape))
@@ -203,13 +210,13 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 
 void  Controlador_principal::despertar()
 {
-	log<<"Inicializando mapa..."<<std::endl;
-	mapa.inicializar();
+
 }
 
 void  Controlador_principal::dormir()
 {
-	mapa.limpiar();
+	//La memoria del mapa no se libera.
+	//mapa.limpiar();
 }
 
 bool Controlador_principal::es_posible_abandonar_estado() const
