@@ -69,7 +69,7 @@ class Controlador_principal:
 	void				iniciar_juego();
 	void				iniciar_nivel(int);
 	void				cargar_nivel(int);
-	bool				es_juego_finalizado() const {return juego_finalizado;}
+	bool				es_juego_finalizado() const {return info_juego.juego_finalizado;}
 	void				establecer_ayuda(bool v) {info_juego.ayuda_activa=v;}
 	void				establecer_debug(bool v) {info_juego.debug_activo=v;}
 	void				establecer_editor(bool v) {info_juego.editor_activo=v;}
@@ -77,6 +77,7 @@ class Controlador_principal:
 	private:
 
 	void					ajustar_camara(float delta);
+	void					ajustar_parallax();
 
 	void					procesar_jugador(DFramework::Input&, float, Jugador&);
 	void					procesar_interruptores(float);
@@ -87,7 +88,7 @@ class Controlador_principal:
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 
-	void					jugador_en_salida(const Salida&, Jugador&); 
+	void					jugador_en_salida(Salida, Jugador&); 
 	void					jugador_en_interruptor(Interruptor&, Jugador&);
 	void					jugador_en_pieza(const Pieza&, Jugador&);
 	void					jugador_en_arbol(Arbol&, Jugador&);
@@ -116,12 +117,16 @@ class Controlador_principal:
 	enum class				modos{juego, ayuda, confirmar_salida, animacion_choque, florecimiento, recuento_final} modo;
 
 	DLibV::Camara				camara;
+	DLibV::Representacion_bitmap		fondo;
+	struct {
+		int				max_fondo_x=0,
+						max_fondo_y=0;
+	}info_parallax;
 	Mapa					mapa;
 	Jugador					jugador;
 	std::vector<std::unique_ptr<Particula>>	particulas;
 	Tiempo					tiempo;
 	Herramientas_proyecto::Compositor_vista		layout_mensaje;
-	bool					juego_finalizado;
 
 	struct
 	{
@@ -193,8 +198,9 @@ class Controlador_principal:
 	struct
 	{
 		bool				ayuda_activa=true,
-						debug_activo=true,
-						editor_activo=false;
+						debug_activo=false,
+						editor_activo=false,
+						juego_finalizado=false;
 	}info_juego;
 };
 

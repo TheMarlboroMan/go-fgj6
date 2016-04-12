@@ -10,7 +10,8 @@ enum r_graficos {
 	g_viento=3,
 	g_hud=4,
 	g_cover=5,
-	g_flores=6
+	g_flores=6,
+	g_fondo_defecto=100
 };
 
 enum r_sonidos{

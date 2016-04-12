@@ -27,7 +27,8 @@ Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes
 	localizador(l),
 	sistema_audio(sa),
 	modo(modos::juego),
-	camara(0, 0, 800, 500), juego_finalizado(false)
+	camara(0, 0, 800, 500), 
+	fondo(DLibV::Gestor_texturas::obtener(r_graficos::g_fondo_defecto))
 {
 	layout_mensaje.mapear_fuente("akashi", fuente);
 	layout_mensaje.parsear("data/layout/layout_mensaje.dnot", "layout");
@@ -86,6 +87,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 			{
 				procesar_jugador(input, delta, jugador);
 				ajustar_camara(delta);
+				ajustar_parallax();
 			}
 			//Se usa el avisador para saber cuando empezar otra vez.
 			else if(!tiempo.es_aviso())
@@ -131,7 +133,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 			{
 				solicitar_cambio_estado(intro);
 				modo=modos::juego;
-				juego_finalizado=true;
+				info_juego.juego_finalizado=true;
 				return;
 			}
 		break;
@@ -147,20 +149,12 @@ void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 {
 	pantalla.limpiar(0, 0, 0, 255);
 
-	int id_recurso=100+(mapa.acc_id_fondo()-1);
-	if(id_recurso < 100)
-	{
-		id_recurso=100;
-		log<<"Warning: id_recurso < 100 "<<id_recurso<<" en mapa "<<info_mapa.id_mapa<<std::endl;
-	}
-
 	if(info_juego.debug_activo)
 	{
 		dibujar_debug(pantalla);
 	}
 	else
 	{
-		DLibV::Representacion_bitmap fondo(DLibV::Gestor_texturas::obtener(id_recurso));
 		fondo.volcar(pantalla);
 
 		Representador& r=representador;
@@ -249,6 +243,19 @@ Bloque_input Controlador_principal::obtener_bloque_input(DFramework::Input& inpu
 	else if(input.es_input_pulsado(Input::derecha)) res.giro=-1;
 
 	return res;
+}
+
+void Controlador_principal::ajustar_parallax()
+{
+	//TODO: ¿Qué ocurre cuando el nivel es del mismo tamaño?. Hay que centrarlo.
+
+	//Necesitamos los ratios desde el mínimo al máximo.
+	auto cam=mapa.acc_info_camara();
+
+	int x_parallax=(camara.acc_x() * info_parallax.max_fondo_x) /cam.max_cam_x;
+	int y_parallax=(camara.acc_y() * info_parallax.max_fondo_y) /cam.max_cam_y;
+
+	fondo.establecer_recorte(x_parallax, y_parallax, 800, 500);
 }
 
 void Controlador_principal::ajustar_camara(float delta)
@@ -360,7 +367,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 			r_sonidos::s_viento, 127, 127));
 	}
 
-	for(const auto& s : mapa.salidas)
+	for(auto& s : mapa.salidas)
 	{
 		if(j.en_colision_con(s))
 		{
@@ -468,7 +475,9 @@ void Controlador_principal::procesar_ayudas(float delta)
 	for(auto& i : mapa.ayudas) i.turno(delta);
 }
 
-void Controlador_principal::jugador_en_salida(const Salida& s, Jugador&)
+//La salida no es una referencia: para cuando carguemos el nivel el objeto
+//original habrá desaparecido!.
+void Controlador_principal::jugador_en_salida(Salida s, Jugador&)
 {
 	cargar_nivel(s.acc_id_mapa());
 	iniciar_nivel(s.acc_id_inicio());
@@ -562,7 +571,7 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 
 		if(!mapa.existe_puerta(s.id_puerta))
 		{
-			log<<"Warning: no existe la puerta "<<s.id_puerta<<std::endl;
+//			log<<"Warning: no existe la puerta "<<s.id_puerta<<std::endl;
 		}
 		else
 		{
@@ -605,7 +614,22 @@ void Controlador_principal::cargar_nivel(int nivel)
 
 	for(auto id_p : info_persistente.puertas_abiertas) mapa.abrir_puerta(id_p);
 	for(auto id_p : info_persistente.piezas_recogidas) mapa.recoger_pieza(id_p);
-	mapa.actualizar_arbol(info_persistente.piezas_recogidas, jugador.acc_pieza_actual());	
+	mapa.actualizar_arbol(info_persistente.piezas_recogidas, jugador.acc_pieza_actual());
+
+	//Trabajar el fondo...
+	int id_recurso=100+(mapa.acc_id_fondo()-1);
+	if(id_recurso < 100)
+	{
+		id_recurso=100;
+		log<<"Warning: id_recurso < 100 "<<id_recurso<<" en mapa "<<info_mapa.id_mapa<<std::endl;
+	}
+
+	fondo.establecer_textura(DLibV::Gestor_texturas::obtener(id_recurso));
+	fondo.establecer_recorte(0, 0, 800, 500);
+	fondo.establecer_posicion(0, 0, 800, 500);
+
+	info_parallax.max_fondo_x=fondo.acc_w_textura()-camara.acc_pos_w();
+	info_parallax.max_fondo_y=fondo.acc_h_textura()-camara.acc_pos_h();
 }
 
 void Controlador_principal::iniciar_nivel(int id_inicio)
@@ -622,7 +646,6 @@ void Controlador_principal::iniciar_nivel(int id_inicio)
 	}
 
 	info_mapa.inicio_actual=*it;
-
 	jugador.establecer_inicio(info_mapa.inicio_actual.acc_punto());
 
 	//Preparar info interruptores...
@@ -633,12 +656,12 @@ void Controlador_principal::iniciar_nivel(int id_inicio)
 		if(!info_interruptores.count(id_grupo))
 		{
 			info_interruptores[id_grupo]=info_interruptor(1, 0, i.acc_id_puerta());
-			log<<"Nuevo grupo de puertas "<<id_grupo<<std::endl;
+//			log<<"Nuevo grupo de puertas "<<id_grupo<<std::endl;
 		}
 		else
 		{
 			++info_interruptores[id_grupo].total;
-			log<<"Grupo de puertas "<<id_grupo<<":"<<info_interruptores[id_grupo].total<<std::endl;
+//			log<<"Grupo de puertas "<<id_grupo<<":"<<info_interruptores[id_grupo].total<<std::endl;
 		}
 	}
 
