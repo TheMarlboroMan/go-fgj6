@@ -148,10 +148,8 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 
 }
 
-void Jugador::establecer_inicio(Espaciable::tpunto pt, int an)
+void Jugador::establecer_inicio(Espaciable::tpunto pt)
 {
-	angulo=an;
-
 	//reiniciar polígono para evitar problemas con rotaciones...
 	poligono=DLibH::Poligono_2d<double> {};
 	formar_poligono();
@@ -165,9 +163,10 @@ void Jugador::cancelar_movimiento(float delta)
 	desplazar_angulo_velocidad(angulo+180.0, velocidad*delta);
 }
 
-void Jugador::reiniciar()
+void Jugador::reiniciar(float ang)
 {
 	indice_velocidad=0;
 	velocidad=velocidades[0];
 	velocidad_destino=velocidad;
+	angulo=ang;
 }

@@ -56,6 +56,7 @@ class App_config:
 	input_jugador acc_abajo(int j) const	{return token_por_ruta_jugador("abajo", j);}
 	input_jugador acc_mapa(int j) const	{return token_por_ruta_jugador("mapa", j);}
 	bool es_ayuda_activa() const		{return token_por_ruta(CLAVE_AYUDA_ACTIVA);}
+	bool es_debug_activo() const		{return token_por_ruta(CLAVE_DEBUG_ACTIVO);}
 
 	void mut_w_logica_pantalla(int p_valor) {configurar(CLAVE_W_LOGICA_PANTALLA, p_valor);}
 	void mut_h_logica_pantalla(int p_valor) {configurar(CLAVE_H_LOGICA_PANTALLA, p_valor);}
@@ -106,6 +107,7 @@ class App_config:
 	static const std::string CLAVE_W_FISICA_PANTALLA;
 	static const std::string CLAVE_H_FISICA_PANTALLA;
 	static const std::string CLAVE_AYUDA_ACTIVA;
+	static const std::string CLAVE_DEBUG_ACTIVO;
 
 	////////////////////////////////////
 	// Implementacion...

@@ -1,8 +1,22 @@
 layout:
 [
+	{tipo:"const", clave:"r_muro", valor:0},
+	{tipo:"const", clave:"g_muro", valor:0},
+	{tipo:"const", clave:"b_muro", valor:0},
+	{tipo:"const", clave:"r_fondo", valor:255},
+	{tipo:"const", clave:"g_fondo", valor:255},
+	{tipo:"const", clave:"b_fondo", valor:255},
+	{tipo:"const", clave:"r_actual", valor:250},
+	{tipo:"const", clave:"g_actual", valor:198},
+	{tipo:"const", clave:"b_actual", valor:130},
 	{
 		tipo:"pantalla", 
-		rgba:[128, 128, 128, 255]
+		rgba:[255, 255, 255, 255]
+	},
+	{
+		tipo:"bitmap",
+		pos:[300, 125, 546, 376], rec:[0, 0, 546, 376],
+		textura:"arbol", orden: 5, alpha: 128
 	},
 	{
 		tipo:"externa", ref:"mapa", orden: 10

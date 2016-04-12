@@ -1,18 +1,21 @@
 - Do a small video for gamejolt.
-- Add in-game map, maybe in its own controller?.
 - Add real music.
-- Add map help hint.
 - Document level editor.
 - Fix windmill bug trick.
 - Parallax.
 
 DONE:
 
+- Add debug mode and see wat's up with room 9.
+- Add map help hint.
+- Center again all speed upgrades.
+- Preserve angle when entering new room, restore when dying.
 - Add screen resolutions.
 - Enable / disable help.
 - Add alpha to ending image... I broke it.
 - Constantes para sonidos y recursos, mejorando modding.
 - Fix order of controls.
+- Add in-game map.
 
 DOCUMENTED:
 

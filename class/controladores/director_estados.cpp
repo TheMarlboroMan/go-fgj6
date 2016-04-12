@@ -21,6 +21,7 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 	{
 		estados.validar_y_cambiar_estado(editor);
 		controlador_editor->iniciar_edicion_fichero(kernel.acc_controlador_argumentos().acc_argumento(indice+1));
+		controlador_principal->establecer_editor(true);
 	}
 	else
 	{
@@ -71,7 +72,8 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 			if(actual==t_estados::editor)
 			{
 				auto im=controlador_editor->acc_info_mapa();
-				controlador_principal->iniciar_nivel(im.id, 1);
+				controlador_principal->cargar_nivel(im.id);
+				controlador_principal->iniciar_nivel(1);
 			}
 			else if(actual==t_estados::intro)
 			{

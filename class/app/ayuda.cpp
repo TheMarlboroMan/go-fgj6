@@ -34,7 +34,7 @@ void Ayuda::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Ca
 	flare.ir_a(c.x - 25, -c.y - 25);
 	flare.volcar(pantalla, camara);
 
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_viento));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_sprites));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	sprite.establecer_alpha(128);
 	sprite.establecer_recorte(105, 30, 30, 30);

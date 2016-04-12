@@ -61,6 +61,7 @@ Automapa_sala::tmarcadores Automapa_sala::int_a_marcador(int val)
 		case 4: return tmarcadores::agua; break;
 		case 5: return tmarcadores::fuego; break;
 		case 6: return tmarcadores::tierra; break;
+		case 7: return tmarcadores::velocidad; break;
 	}
 
 	return tmarcadores::nada;
@@ -77,6 +78,7 @@ int Automapa_sala::marcador_a_int(Automapa_sala::tmarcadores val)
 		case tmarcadores::agua: 	return 4; break;
 		case tmarcadores::fuego: 	return 5; break;
 		case tmarcadores::tierra: 	return 6; break;
+		case tmarcadores::velocidad: 	return 7; break;
 	}
 
 	return 0;
@@ -109,8 +111,7 @@ void Automapa::cargar(const std::string& ruta)
 	for(const auto& ts : raiz["mapa"]["salas"].acc_lista())
 	{
 		auto s=Automapa_sala::desde_token(ts);
-//TODO.
-		salas.push_back(sala{s, true});
+		salas.push_back(sala{s, false});
 	}
 }
 
@@ -125,8 +126,7 @@ void Automapa::visitar(int id_sala)
 
 void Automapa::reiniciar()
 {
-//TODO
-	for(auto& s : salas) s.visitada=true;
+	for(auto& s : salas) s.visitada=false;
 }
 
 std::vector<Automapa_sala> Automapa::obtener_visitadas() const

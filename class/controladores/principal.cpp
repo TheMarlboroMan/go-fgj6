@@ -46,12 +46,16 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 		return;
 	}
 
-/*	if(input.es_input_down(Input::cambio_logica))
+	if(input.es_input_down(Input::cambio_logica) && info_juego.editor_activo)
 	{
 		solicitar_cambio_estado(editor);
 		return;
 	}
-*/
+
+	if(input.es_input_down(Input::intercambiar_debug) && info_juego.editor_activo)
+	{
+		info_juego.debug_activo=!info_juego.debug_activo;
+	}
 
 	switch(modo)
 	{
@@ -83,10 +87,10 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 				procesar_jugador(input, delta, jugador);
 				ajustar_camara(delta);
 			}
+			//Se usa el avisador para saber cuando empezar otra vez.
 			else if(!tiempo.es_aviso())
 			{
-				iniciar_nivel(info_mapa.id_mapa, info_mapa.inicio_actual.acc_id());
-				jugador.reiniciar();
+				iniciar_nivel(info_mapa.inicio_actual.acc_id());
 				modo=modos::juego;
 				return;
 			}
@@ -134,74 +138,87 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 	}
 }
 
-void  Controlador_principal::postloop(DFramework::Input& input, float delta)
+void Controlador_principal::postloop(DFramework::Input& input, float delta)
 {
 
 }
 
-void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
+void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 {
 	pantalla.limpiar(0, 0, 0, 255);
 
 	int id_recurso=100+(mapa.acc_id_fondo()-1);
-
-	DLibV::Representacion_bitmap fondo(DLibV::Gestor_texturas::obtener(id_recurso));
-	fondo.volcar(pantalla);
-
-	Representador& r=representador;
-
-	for(const auto& o : mapa.decoraciones_fondo)	o->dibujar(r, pantalla, camara);
-	for(const auto& o : mapa.puertas)		o.dibujar(r, pantalla, camara);
-	for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
-	for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
-	for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
-	if(info_juego.ayuda_activa) for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
-	for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
-
-	switch(modo)
+	if(id_recurso < 100)
 	{
-		case modos::juego:
-		case modos::ayuda:
-		case modos::confirmar_salida:
-			jugador.dibujar(r, pantalla, camara);
-		break;
-
-		case modos::animacion_choque:
-		case modos::florecimiento:
-		case modos::recuento_final: break;
+		id_recurso=100;
+		log<<"Warning: id_recurso < 100 "<<id_recurso<<" en mapa "<<info_mapa.id_mapa<<std::endl;
 	}
 
-	for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
-	for(const auto& o : particulas)			o->dibujar(r, pantalla, camara);
-
-	switch(modo)
+	if(info_juego.debug_activo)
 	{
-		case modos::juego:
-		case modos::ayuda:
-		case modos::confirmar_salida:
-		case modos::animacion_choque:
-			r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad(), jugador.acc_tope_velocidad());
-		break;
-		case modos::florecimiento:
-		case modos::recuento_final: break;
+		dibujar_debug(pantalla);
 	}
+	else
+	{
+		DLibV::Representacion_bitmap fondo(DLibV::Gestor_texturas::obtener(id_recurso));
+		fondo.volcar(pantalla);
 
-	switch(modo)
-	{	
-		case modos::confirmar_salida:
-		case modos::ayuda:
-		case modos::recuento_final:
+		Representador& r=representador;
+	
+		for(const auto& o : mapa.decoraciones_fondo)	o->dibujar(r, pantalla, camara);
+		for(const auto& o : mapa.puertas)		o.dibujar(r, pantalla, camara);
+		for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
+		for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
+		for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
+		for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
+		for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
+
+		switch(modo)
 		{
-			layout_mensaje.volcar(pantalla);
-			auto mensaje=layout_mensaje.obtener_por_id("txt_mensaje");
-			if(mensaje->acc_alpha()==0) centrar_mensaje();
+			case modos::juego:
+			case modos::ayuda:
+			case modos::confirmar_salida:
+				jugador.dibujar(r, pantalla, camara);
+			break;
+
+			case modos::animacion_choque:
+			case modos::florecimiento:
+			case modos::recuento_final: break;
 		}
-		break;
-		case modos::juego:
-		case modos::animacion_choque:
-		case modos::florecimiento: break;
+
+		if(!info_juego.debug_activo) for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
+		for(const auto& o : particulas)						o->dibujar(r, pantalla, camara);
+
+		switch(modo)
+		{
+			case modos::juego:
+			case modos::ayuda:
+			case modos::confirmar_salida:
+			case modos::animacion_choque:
+				r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad(), jugador.acc_tope_velocidad());
+			break;
+			case modos::florecimiento:
+			case modos::recuento_final: break;
+		}
+
+		switch(modo)
+		{	
+			case modos::confirmar_salida:
+			case modos::ayuda:
+			case modos::recuento_final:
+			{
+				layout_mensaje.volcar(pantalla);
+				auto mensaje=layout_mensaje.obtener_por_id("txt_mensaje");
+				if(mensaje->acc_alpha()==0) centrar_mensaje();
+			}
+			break;
+			case modos::juego:
+			case modos::animacion_choque:
+			case modos::florecimiento: break;
+		}
 	}
 }
+
 
 void  Controlador_principal::despertar()
 {
@@ -453,7 +470,8 @@ void Controlador_principal::procesar_ayudas(float delta)
 
 void Controlador_principal::jugador_en_salida(const Salida& s, Jugador&)
 {
-	iniciar_nivel(s.acc_id_mapa(), s.acc_id_inicio());
+	cargar_nivel(s.acc_id_mapa());
+	iniciar_nivel(s.acc_id_inicio());
 }
 
 void Controlador_principal::jugador_en_ayuda(Ayuda& a, Jugador&)
@@ -567,7 +585,7 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 	}
 }
 
-void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
+void Controlador_principal::cargar_nivel(int nivel)
 {
 	info_mapa.id_mapa=nivel;
 
@@ -587,8 +605,11 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 
 	for(auto id_p : info_persistente.puertas_abiertas) mapa.abrir_puerta(id_p);
 	for(auto id_p : info_persistente.piezas_recogidas) mapa.recoger_pieza(id_p);
-	mapa.actualizar_arbol(info_persistente.piezas_recogidas, jugador.acc_pieza_actual());
+	mapa.actualizar_arbol(info_persistente.piezas_recogidas, jugador.acc_pieza_actual());	
+}
 
+void Controlador_principal::iniciar_nivel(int id_inicio)
+{
 	//Marcar sala como visitada...
 	info_persistente.visitar_mapa(info_mapa.id_mapa);
 
@@ -602,7 +623,7 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 
 	info_mapa.inicio_actual=*it;
 
-	jugador.establecer_inicio(info_mapa.inicio_actual.acc_punto(), info_mapa.inicio_actual.acc_angulo());
+	jugador.establecer_inicio(info_mapa.inicio_actual.acc_punto());
 
 	//Preparar info interruptores...
 	info_interruptores.clear();
@@ -627,9 +648,10 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 void Controlador_principal::iniciar_juego()
 {
 	info_persistente.reiniciar();
-	jugador.reiniciar();
+	jugador.reiniciar(0.f);
 	tiempo.reiniciar();
-	iniciar_nivel(1, 1);
+	cargar_nivel(1);
+	iniciar_nivel(1);
 }
 
 void Controlador_principal::chocar_jugador(Jugador& j)
@@ -640,9 +662,9 @@ void Controlador_principal::chocar_jugador(Jugador& j)
 		r_sonidos::s_chocar, 127, 127));
 
 	modo=modos::animacion_choque;
-	tiempo.penalizar();
 
-	jugador.reiniciar();
+	tiempo.penalizar();
+	jugador.reiniciar(info_mapa.inicio_actual.acc_angulo());
 
 	auto centro=j.acc_poligono().acc_centro();
 	Herramientas_proyecto::Generador_int g(0, 360), t(0, 1000);
@@ -720,5 +742,16 @@ bool Controlador_principal::hay_input_jugador(DFramework::Input& input) const
 	return input.es_input_down(Input::arriba) ||
 		input.es_input_down(Input::abajo) ||
 		input.es_input_down(Input::izquierda) ||
-		input.es_input_down(Input::derecha);
+		input.es_input_down(Input::derecha) ||
+		input.es_input_down(Input::mapa);
+}
+
+void Controlador_principal::dibujar_debug(DLibV::Pantalla& p)
+{
+	for(const auto& o : mapa.obstaculos)
+	{
+		representador.dibujar_poligono(p, o.acc_poligono(), tcolor{255,0,0,255}, camara);
+	}
+
+	representador.dibujar_poligono(p, jugador.acc_poligono(), tcolor{255,255,255,255}, camara);
 }

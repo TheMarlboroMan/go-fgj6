@@ -10,6 +10,7 @@ Controlador_mapa::Controlador_mapa(DLibH::Log_base& l, Sistema_audio& s)
 	:log(l), sistema_audio(s), rep_mapa(true)
 {
 	automapa.cargar("data/app/mapa.dnot");
+	layout.mapear_textura("arbol", DLibV::Gestor_texturas::obtener(r_graficos::g_cover));
 	rep_mapa.establecer_posicion(400, 250);
 }
 
@@ -25,16 +26,10 @@ void Controlador_mapa::loop(DFramework::Input& input, float delta)
 		abandonar_aplicacion();
 		return;
 	}
-	else if(input.es_input_down(Input::escape))
+	else if(input.es_input_down(Input::escape) || input.es_input_down(Input::mapa))
 	{
 		solicitar_cambio_estado(principal);
 		return;
-	}
-	else if(input.es_input_down(Input::arriba))
-	{
-		automapa.cargar("data/app/mapa.dnot");
-		dormir();
-		despertar();
 	}
 }
 
@@ -50,12 +45,28 @@ void Controlador_mapa::dibujar(DLibV::Pantalla& pantalla)
 
 void Controlador_mapa::despertar()
 {
-	//Montar vista?.
-	for(const auto s : automapa.obtener_visitadas()) generar_representacion_sala(s);
-
 	//Registrar con el layout.
 	layout.registrar_externa("mapa", rep_mapa);
 	layout.parsear("data/layout/layout_mapa.dnot", "layout");
+
+	//Montar vista?.
+	for(const auto s : automapa.obtener_visitadas()) generar_representacion_sala(s);
+	auto v=rep_mapa.obtener_grupo();
+
+	//Centrar...
+	auto pos=v[0]->acc_posicion();
+	int 	minx=pos.x, miny=pos.y, maxx=minx+pos.w, maxy=miny+pos.y;
+	for(auto& r : v)
+	{
+		auto pos=r->acc_posicion();
+		int tminx=pos.x, tminy=pos.y, tmaxx=minx+pos.w, tmaxy=miny+pos.y;
+		if(tminx < minx) minx=tminx;
+		if(tminy < miny) miny=tminy;
+		if(tmaxx < maxx) maxx=tmaxx;
+		if(tmaxy < maxy) maxy=tmaxy;
+	}
+
+	rep_mapa.ir_a( (800 / 2) - (maxx - minx) / 2, (500 / 2) - (maxy - miny) / 2);
 }
 
 void Controlador_mapa::dormir()
@@ -95,12 +106,15 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 		y_sala=sala.y*h,
 		w_sala=sala.w*w,
 		h_sala=sala.h*h,
-		r=sala.id==id_sala_actual ? 250 : 255,
-		g=sala.id==id_sala_actual ? 198 : 255,
-		b=sala.id==id_sala_actual ? 130 : 255;
+		r=sala.id==id_sala_actual ? layout.const_int("r_actual") : layout.const_int("r_fondo"),
+		g=sala.id==id_sala_actual ? layout.const_int("g_actual") : layout.const_int("g_fondo"),
+		b=sala.id==id_sala_actual ? layout.const_int("b_actual") : layout.const_int("b_fondo"),
+		rm=layout.const_int("r_muro"),
+		gm=layout.const_int("g_muro"),
+		bm=layout.const_int("b_muro");
 
 	//Recuadro...
-	rep_mapa.insertar_representacion(new Representacion_primitiva_caja({x_sala, y_sala, w_sala, h_sala}, 0, 0, 0));
+	rep_mapa.insertar_representacion(new Representacion_primitiva_caja({x_sala, y_sala, w_sala, h_sala}, rm, gm, bm));
 	rep_mapa.insertar_representacion(new Representacion_primitiva_caja({x_sala+borde, y_sala+borde, w_sala-(2*borde), h_sala-(2*borde)}, r, g, b));
 
 	//Salidas...
@@ -122,11 +136,14 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 
 		if(caja.w && caja.h)
 		{
-			rep_mapa.insertar_representacion(new Representacion_primitiva_caja(caja, 255, 255, 255));
+			rep_mapa.insertar_representacion(new Representacion_primitiva_caja(caja, r, g, b));
 		}
 	}
 
 	//Marcadores...
+	size_t tot_marcadores=sala.marcadores.size();
+	int i_marcador=0;
+
 	for(const auto& m : sala.marcadores)
 	{
 		SDL_Rect caja{0,0,0,0};
@@ -140,12 +157,13 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 			case sala.tmarcadores::aire:	caja={60, 0, 30, 30};break;
 			case sala.tmarcadores::fuego:	caja={90, 0, 30, 30};break;
 			case sala.tmarcadores::tierra:	caja={120, 0, 30, 30};break;
+			case sala.tmarcadores::velocidad: caja={65, 30, 30, 30};break;
 		}
 
 		if(caja.w && caja.h)
 		{
-			int 	sx=x_sala + (w_sala / 2) - (caja.w / 2),
-				sy=y_sala + (h_sala / 2) - (caja.h / 2);
+			int 	sx=x_sala + (w_sala / (1 + tot_marcadores)) + (i_marcador * caja.w) - (caja.w / 2),
+				sy=y_sala + (h_sala / 2 ) - (caja.h / 2);
 
 			Representacion_bitmap * bmp = new Representacion_bitmap(Gestor_texturas::obtener(r_graficos::g_sprites));
 			bmp->establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
@@ -153,5 +171,7 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 			bmp->establecer_posicion(sx, sy, caja.w, caja.h);
 			rep_mapa.insertar_representacion(bmp);
 		}
+
+		++i_marcador;
 	}
 }

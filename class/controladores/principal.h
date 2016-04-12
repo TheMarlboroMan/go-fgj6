@@ -67,9 +67,12 @@ class Controlador_principal:
 	const std::vector<int>&		obtener_salas_descubiertas() const {return info_persistente.mapas_visitados;}
 	int				obtener_id_sala_actual() const {return info_mapa.id_mapa;}
 	void				iniciar_juego();
-	void				iniciar_nivel(int, int);
+	void				iniciar_nivel(int);
+	void				cargar_nivel(int);
 	bool				es_juego_finalizado() const {return juego_finalizado;}
 	void				establecer_ayuda(bool v) {info_juego.ayuda_activa=v;}
+	void				establecer_debug(bool v) {info_juego.debug_activo=v;}
+	void				establecer_editor(bool v) {info_juego.editor_activo=v;}
 
 	private:
 
@@ -98,6 +101,7 @@ class Controlador_principal:
 	void					centrar_mensaje();
 	void					crear_brillo(Espaciable::tpunto);
 	bool					hay_input_jugador(DFramework::Input&) const;
+	void					dibujar_debug(DLibV::Pantalla&);
 
 	DLibH::Log_base&			log;
 	const DLibV::Fuente_TTF&		fuente;
@@ -188,7 +192,9 @@ class Controlador_principal:
 
 	struct
 	{
-		bool				ayuda_activa=true;
+		bool				ayuda_activa=true,
+						debug_activo=true,
+						editor_activo=false;
 	}info_juego;
 };
 

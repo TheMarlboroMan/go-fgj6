@@ -18,7 +18,7 @@ class Jugador:
 
 					Jugador();
 	void				recibir_input(const Bloque_input&);
-	void				establecer_inicio(Espaciable::tpunto, int);
+	void				establecer_inicio(Espaciable::tpunto);
 	void				turno(float);
 	virtual void 			dibujar(Representador&, DLibV::Pantalla&, const DLibV::Camara&) const;
 
@@ -29,7 +29,7 @@ class Jugador:
 	int				acc_pieza_actual() const {return pieza_actual;}
 	void				mut_pieza_actual(int v) {pieza_actual=v;}
 	void				establecer_max_velocidad(int v) {if(v > max_velocidad) max_velocidad=v;}
-	void				reiniciar();
+	void				reiniciar(float);
 	bool				es_generar_cola() {return !t_cola;}
 	bool				es_sonido_velocidad() const {return sonido_velocidad;}
 

@@ -29,7 +29,7 @@ struct Automapa_salida
 //Estructura para representar una sala.
 struct Automapa_sala
 {
-	enum class tmarcadores{nada, arbol, metal, madera, agua, fuego, tierra};
+	enum class tmarcadores{nada, arbol, metal, madera, agua, fuego, tierra, velocidad};
 	int 				id, x, y, w, h;
 	std::vector<Automapa_salida>	salidas;
 	std::vector<tmarcadores>	marcadores;

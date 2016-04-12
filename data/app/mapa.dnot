@@ -3,7 +3,7 @@ mapa: {
 {
 	id: 1, x:-2, y:2, w:2, h:1, 
 	salidas: [{x:0, y:0, ori: 1}, {x:1, y:0, ori: 2}],
-	marker:[2]}
+	marker:[2, 7]}
 ,{
 	id: 2, x:-2, y:1, w:1, h:1, 
 	salidas: [{x:0, y:0, ori: 1}, {x:0, y:0, ori: 3}],
@@ -15,7 +15,7 @@ mapa: {
 ,{
 	id: 4, x:-3, y:0, w:1, h:1, 
 	salidas: [{x:0, y:0, ori: 2}],
-	marker:[]}
+	marker:[7]}
 ,{
 	id: 5, x:-2, y:-2, w:2, h:1, 
 	salidas: [{x:0, y:0, ori: 3}, {x:1, y:0, ori: 3}, {x:1, y:0, ori: 2}, {x:0, y:0, ori: 1}],
@@ -39,7 +39,7 @@ mapa: {
 ,{
 	id: 10, x:-2, y:-4, w:1, h:2, 
 	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 3}],
-	marker:[]}
+	marker:[7]}
 ,{
 	id: 11, x:-2, y:-6, w:1, h:2, 
 	salidas: [{x:0, y:1, ori: 3}, {x:0, y:1, ori: 2}, {x:0, y:1, ori: 4}],
@@ -71,7 +71,7 @@ mapa: {
 ,{
 	id: 18, x:6, y:1, w:1, h:1, 
 	salidas: [{x:0, y:0, ori: 4}],
-	marker:[]}
+	marker:[7]}
 ,{
 	id: 19, x:4, y:0, w:1, h:2, 
 	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 2}],

@@ -72,6 +72,7 @@ std::vector<DFramework::Par_input> Kernel_config::obtener_pares_input() const
 		Par_input{Par_input::tipos::teclado, Input::profundidad_menos, SDL_SCANCODE_N, 0},
 		Par_input{Par_input::tipos::teclado, Input::seleccion_color, SDL_SCANCODE_C, 0},
 		Par_input{Par_input::tipos::teclado, Input::propiedades_mapa, SDL_SCANCODE_F3, 0},
+		Par_input{Par_input::tipos::teclado, Input::intercambiar_debug, SDL_SCANCODE_F3, 0},
 		Par_input{Par_input::tipos::teclado, Input::copiar, SDL_SCANCODE_C, 0},
 		Par_input{Par_input::tipos::teclado, Input::pegar, SDL_SCANCODE_V, 0},
 		Par_input{Par_input::tipos::teclado, Input::intercambiar_decoracion, SDL_SCANCODE_F, 0},
