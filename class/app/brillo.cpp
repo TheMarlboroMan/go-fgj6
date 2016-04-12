@@ -4,6 +4,8 @@
 #include <video/gestores/gestor_texturas.h>
 #include <class/generador_numeros.h>
 
+#include "recursos.h"
+
 using namespace App;
 
 Brillo::Brillo(Espaciable::tpunto c, double ang, float vel, float t)
@@ -23,7 +25,7 @@ void Brillo::turno(float delta)
 
 void Brillo::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Camara& camara) const
 {
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(4));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_sprites));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 
 	float alpha=255.0f - ( (tiempo) / 255.f);;

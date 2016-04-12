@@ -4,6 +4,8 @@
 #include <video/gestores/gestor_texturas.h>
 #include <class/valor_limitado.h>
 
+#include "recursos.h"
+
 using namespace App;
 
 const float Jugador::factor_rotacion=280.0;
@@ -117,7 +119,7 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 	else if(tiempo <= 0.12f) x=3;
 	else if(tiempo <= 0.15f) x=4;
 
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(5));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_viento));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	sprite.establecer_alpha(255);
 	sprite.establecer_recorte(x*30, 0, 30, 30);
@@ -128,8 +130,8 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 
 	if(pieza_actual)
 	{
-		DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(1));
-		DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(4));
+		DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(r_graficos::g_lens_flare));
+		DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(r_graficos::g_sprites));
 
 		flare.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 		flare.establecer_alpha(255);

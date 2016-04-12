@@ -257,41 +257,41 @@ void Controlador_controles::crear_menu_opciones(const DFramework::Input& input)
 {
 	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_controles", localizador);
 
-	componente_menu.menu().asignar_por_valor_string("10_K_IZQUIERDA", string_desde_input(config.acc_izquierda(1)));
-	componente_menu.menu().asignar_por_valor_string("20_K_DERECHA", string_desde_input(config.acc_derecha(1)));
-	componente_menu.menu().asignar_por_valor_string("30_K_ARRIBA", string_desde_input(config.acc_arriba(1)));
-	componente_menu.menu().asignar_por_valor_string("40_K_ABAJO", string_desde_input(config.acc_abajo(1)));
-	componente_menu.menu().asignar_por_valor_string("50_K_MAPA", string_desde_input(config.acc_mapa(1)));
+	componente_menu.menu().asignar_por_valor_string("010_K_IZQUIERDA", string_desde_input(config.acc_izquierda(1)));
+	componente_menu.menu().asignar_por_valor_string("020_K_DERECHA", string_desde_input(config.acc_derecha(1)));
+	componente_menu.menu().asignar_por_valor_string("030_K_ARRIBA", string_desde_input(config.acc_arriba(1)));
+	componente_menu.menu().asignar_por_valor_string("040_K_ABAJO", string_desde_input(config.acc_abajo(1)));
+	componente_menu.menu().asignar_por_valor_string("050_K_MAPA", string_desde_input(config.acc_mapa(1)));
 }
 
 //TODO: Todas estas cosas las podríamos de alguna forma meter en un sólo objeto que se haga cargo??.
 
 void Controlador_controles::actualizar_configuracion(const std::string& c, App_config::input_jugador v)
 {
-	if(c=="10_K_IZQUIERDA") 	config.mut_izquierda(1, v);
-	else if(c=="20_K_DERECHA")	config.mut_derecha(1, v);
-	else if(c=="30_K_ARRIBA")	config.mut_arriba(1, v);
-	else if(c=="40_K_ABAJO")	config.mut_abajo(1, v);
-	else if(c=="50_K_MAPA")		config.mut_mapa(1, v);
+	if(c=="010_K_IZQUIERDA") 	config.mut_izquierda(1, v);
+	else if(c=="020_K_DERECHA")	config.mut_derecha(1, v);
+	else if(c=="030_K_ARRIBA")	config.mut_arriba(1, v);
+	else if(c=="040_K_ABAJO")	config.mut_abajo(1, v);
+	else if(c=="050_K_MAPA")		config.mut_mapa(1, v);
 }
 
 int Controlador_controles::indice_input_desde_clave(const std::string& c) const
 {
-	if(c=="10_K_IZQUIERDA") 	return Input::izquierda;
-	else if(c=="20_K_DERECHA")	return Input::derecha;
-	else if(c=="30_K_ARRIBA")	return Input::arriba;
-	else if(c=="40_K_ABAJO")	return Input::abajo;
-	else if(c=="50_K_MAPA")		return Input::mapa;
+	if(c=="010_K_IZQUIERDA") 	return Input::izquierda;
+	else if(c=="020_K_DERECHA")	return Input::derecha;
+	else if(c=="030_K_ARRIBA")	return Input::arriba;
+	else if(c=="040_K_ABAJO")	return Input::abajo;
+	else if(c=="050_K_MAPA")		return Input::mapa;
 	else return 0;
 }
 
 int Controlador_controles::indice_traduccion_desde_clave(const std::string& c) const
 {
-	if(c=="01_K_IZQUIERDA") 	return Localizacion::controles_izquierda;
-	else if(c=="02_K_DERECHA")	return Localizacion::controles_derecha;
-	else if(c=="03_K_ARRIBA")	return Localizacion::controles_arriba;
-	else if(c=="04_K_ABAJO")	return Localizacion::controles_abajo;
-	else if(c=="50_K_MAPA")	return Localizacion::controles_mapa;
+	if(c=="010_K_IZQUIERDA") 	return Localizacion::controles_izquierda;
+	else if(c=="020_K_DERECHA")	return Localizacion::controles_derecha;
+	else if(c=="030_K_ARRIBA")	return Localizacion::controles_arriba;
+	else if(c=="040_K_ABAJO")	return Localizacion::controles_abajo;
+	else if(c=="050_K_MAPA")	return Localizacion::controles_mapa;
 	else return 0;
 }
 

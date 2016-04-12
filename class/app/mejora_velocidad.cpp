@@ -3,6 +3,8 @@
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
 
+#include "recursos.h"
+
 using namespace App;
 
 Mejora_velocidad::Mejora_velocidad(Espaciable::tpunto pt, int nivel)
@@ -32,7 +34,7 @@ void Mejora_velocidad::dibujar(Representador& r, DLibV::Pantalla& pantalla, cons
 {
 	auto c=poligono.acc_centro();
 
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(4));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_sprites));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	sprite.establecer_alpha(255);
 	sprite.establecer_recorte(65, 30, 40, 40);

@@ -2,6 +2,8 @@
 
 #include "../app/framework_impl/input.h"
 
+#include "../app/recursos.h"
+
 using namespace App;
 
 Controlador_mapa::Controlador_mapa(DLibH::Log_base& l, Sistema_audio& s)
@@ -27,6 +29,12 @@ void Controlador_mapa::loop(DFramework::Input& input, float delta)
 	{
 		solicitar_cambio_estado(principal);
 		return;
+	}
+	else if(input.es_input_down(Input::arriba))
+	{
+		automapa.cargar("data/app/mapa.dnot");
+		dormir();
+		despertar();
 	}
 }
 
@@ -69,9 +77,10 @@ void Controlador_mapa::reiniciar()
 	automapa.reiniciar();
 }
 
-void Controlador_mapa::descubrir_salas(const std::vector<int>& v)
+void Controlador_mapa::descubrir_salas(const std::vector<int>& v, int ids)
 {
 	for(auto i : v) automapa.visitar(i);
+	id_sala_actual=ids;
 }
 
 void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
@@ -82,42 +91,67 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 	static const int h=25;
 	static const int borde=2;
 
+	int 	x_sala=sala.x*w, 
+		y_sala=sala.y*h,
+		w_sala=sala.w*w,
+		h_sala=sala.h*h,
+		r=sala.id==id_sala_actual ? 250 : 255,
+		g=sala.id==id_sala_actual ? 198 : 255,
+		b=sala.id==id_sala_actual ? 130 : 255;
+
 	//Recuadro...
-	rep_mapa.insertar_representacion(new Representacion_primitiva_caja({sala.x*w, sala.y*h, sala.w*w, sala.h*h}, 0, 0, 0));
-	rep_mapa.insertar_representacion(new Representacion_primitiva_caja({ (sala.x*w)+borde, (sala.y*h)+borde, (sala.w*w)-(2*borde), (sala.h*h)-(2*borde)}, 255, 255, 255));
+	rep_mapa.insertar_representacion(new Representacion_primitiva_caja({x_sala, y_sala, w_sala, h_sala}, 0, 0, 0));
+	rep_mapa.insertar_representacion(new Representacion_primitiva_caja({x_sala+borde, y_sala+borde, w_sala-(2*borde), h_sala-(2*borde)}, r, g, b));
 
 	//Salidas...
 	for(const auto& s : sala.salidas)
 	{
 		SDL_Rect caja{0,0,0,0};
 
+		int 	x_salida=s.x*w+x_sala, 
+			y_salida=s.y*h+y_sala;
+
 		switch(s.orientacion)
 		{
 			case s.torientaciones::nada: break;
-			case s.torientaciones::norte:	caja={(s.x*w)+(w/4), s.y*h, w/2, borde}; break;
-			case s.torientaciones::oeste:	caja={s.x*w, (s.y*h)+(h/4), borde, h/2}; break;
-			case s.torientaciones::sur:	caja={(s.x*w)+w-borde, (s.y*h)+(h/4), borde, h/2};
-			case s.torientaciones::este:	caja={(s.x*w)+(w/4), (s.y*h)+h-borde, w/2, borde}; break;
+			case s.torientaciones::norte:	caja={x_salida+(w/4), y_salida, w/2, borde}; break;
+			case s.torientaciones::sur:	caja={x_salida+(w/4), y_salida+h-borde, w/2, borde}; break;
+			case s.torientaciones::oeste:	caja={x_salida, y_salida+(h/4), borde, h/2}; break;
+			case s.torientaciones::este:	caja={x_salida+w-borde, y_salida+(h/4), borde, h/2}; break;
 		}
 
 		if(caja.w && caja.h)
 		{
-			rep_mapa.insertar_representacion(new Representacion_primitiva_caja(caja, 255, 0, 0));
+			rep_mapa.insertar_representacion(new Representacion_primitiva_caja(caja, 255, 255, 255));
 		}
 	}
 
 	//Marcadores...
 	for(const auto& m : sala.marcadores)
 	{
+		SDL_Rect caja{0,0,0,0};
+
 		switch(m)
 		{
 			case sala.tmarcadores::nada:	break;
-			case sala.tmarcadores::arbol:	break;
-			case sala.tmarcadores::metal:	break;
-			case sala.tmarcadores::madera:	break;
-			case sala.tmarcadores::aire:	break;
-			case sala.tmarcadores::fuego:	break;
-			case sala.tmarcadores::tierra:	break;
-		}		
+			case sala.tmarcadores::arbol:	caja={105, 60, 45, 30}; break;
+			case sala.tmarcadores::metal:	caja={0, 0, 30, 30}; break;
+			case sala.tmarcadores::madera:	caja={30, 0, 30, 30}; break;
+			case sala.tmarcadores::aire:	caja={60, 0, 30, 30};break;
+			case sala.tmarcadores::fuego:	caja={90, 0, 30, 30};break;
+			case sala.tmarcadores::tierra:	caja={120, 0, 30, 30};break;
+		}
+
+		if(caja.w && caja.h)
+		{
+			int 	sx=x_sala + (w_sala / 2) - (caja.w / 2),
+				sy=y_sala + (h_sala / 2) - (caja.h / 2);
+
+			Representacion_bitmap * bmp = new Representacion_bitmap(Gestor_texturas::obtener(r_graficos::g_sprites));
+			bmp->establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+			bmp->establecer_recorte(caja);
+			bmp->establecer_posicion(sx, sy, caja.w, caja.h);
+			rep_mapa.insertar_representacion(bmp);
+		}
 	}
 }

@@ -1,20 +1,83 @@
 mapa: {
 	salas: [
 {
-	id: 1, x:-2, y:-2, w:2, h:1, 
+	id: 1, x:-2, y:2, w:2, h:1, 
 	salidas: [{x:0, y:0, ori: 1}, {x:1, y:0, ori: 2}],
-	marker:[2]
-},{
-	id: 2, x:-2, y:-1, w:1, h:1, 
+	marker:[2]}
+,{
+	id: 2, x:-2, y:1, w:1, h:1, 
 	salidas: [{x:0, y:0, ori: 1}, {x:0, y:0, ori: 3}],
-	marker:[]
-},{
-	id: 3, x:-2, y:1, w:1, h:2, 
+	marker:[]}
+,{
+	id: 3, x:-2, y:-1, w:1, h:2, 
 	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 3}, {x:0, y:1, ori: 4}],
-	marker:[]
-},{
-	id: 4, x:-3, y:0, w:1, h:1,
+	marker:[]}
+,{
+	id: 4, x:-3, y:0, w:1, h:1, 
 	salidas: [{x:0, y:0, ori: 2}],
-	marker:[]
-}
+	marker:[]}
+,{
+	id: 5, x:-2, y:-2, w:2, h:1, 
+	salidas: [{x:0, y:0, ori: 3}, {x:1, y:0, ori: 3}, {x:1, y:0, ori: 2}, {x:0, y:0, ori: 1}],
+	marker:[]}
+,{
+	id: 6, x:-1, y:-1, w:1, h:2, 
+	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 2}],
+	marker:[]}
+,{
+	id: 7, x:0, y:-2, w:2, h:2, 
+	salidas: [{x:0, y:0, ori: 4}, {x:1, y:1, ori: 2}, {x:0, y:1, ori: 3}],
+	marker:[]}
+,{
+	id: 8, x:0, y:0, w:2, h:2, 
+	salidas: [{x:0, y:0, ori: 4}, {x:0, y:0, ori: 1}, {x:1, y:1, ori: 3}],
+	marker:[1]}
+,{
+	id: 9, x:0, y:2, w:2, h:1, 
+	salidas: [{x:0, y:0, ori: 4}, {x:1, y:0, ori: 1}],
+	marker:[]}
+,{
+	id: 10, x:-2, y:-4, w:1, h:2, 
+	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 3}],
+	marker:[]}
+,{
+	id: 11, x:-2, y:-6, w:1, h:2, 
+	salidas: [{x:0, y:1, ori: 3}, {x:0, y:1, ori: 2}, {x:0, y:1, ori: 4}],
+	marker:[]}
+,{
+	id: 12, x:-1, y:-6, w:1, h:2, 
+	salidas: [{x:0, y:1, ori: 2}, {x:0, y:1, ori: 4}],
+	marker:[]}
+,{
+	id: 13, x:0, y:-7, w:1, h:3, 
+	salidas: [{x:0, y:2, ori: 4}],
+	marker:[4]}
+,{
+	id: 14, x:-5, y:-6, w:3, h:2, 
+	salidas: [{x:2, y:1, ori: 2}, {x:0, y:1, ori: 3}],
+	marker:[]}
+,{
+	id: 15, x:-5, y:-4, w:1, h:2, 
+	salidas: [{x:0, y:0, ori: 1}],
+	marker:[3]}
+,{
+	id: 16, x:2, y:-2, w:4, h:2, 
+	salidas: [{x:0, y:1, ori: 4}, {x:3, y:0, ori: 1}, {x:3, y:1, ori: 3}, {x:2, y:1, ori: 3}],
+	marker:[5]}
+,{
+	id: 17, x:5, y:0, w:1, h:2, 
+	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 2}, {x:0, y:1, ori: 4}],
+	marker:[]}
+,{
+	id: 18, x:6, y:1, w:1, h:1, 
+	salidas: [{x:0, y:0, ori: 4}],
+	marker:[]}
+,{
+	id: 19, x:4, y:0, w:1, h:2, 
+	salidas: [{x:0, y:0, ori: 1}, {x:0, y:1, ori: 2}],
+	marker:[]}
+,{
+	id: 20, x:5, y:-3, w:3, h:1, 
+	salidas: [{x:0, y:0, ori: 3}],
+	marker:[6]}
 ]}

@@ -27,7 +27,7 @@ class Controlador_mapa:
 	virtual bool			es_posible_abandonar_estado() const;
 
 	void				reiniciar();
-	void				descubrir_salas(const std::vector<int>&);
+	void				descubrir_salas(const std::vector<int>&, int);
 
 	private:
 
@@ -39,6 +39,7 @@ class Controlador_mapa:
 	Herramientas_proyecto::Compositor_vista	layout;
 	DLibV::Representacion_agrupada		rep_mapa;
 	Automapa				automapa;
+	int					id_sala_actual;
 };
 
 }

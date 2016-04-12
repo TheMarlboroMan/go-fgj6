@@ -65,6 +65,7 @@ class Controlador_principal:
 
 	Mapa&				acc_mapa() {return mapa;}
 	const std::vector<int>&		obtener_salas_descubiertas() const {return info_persistente.mapas_visitados;}
+	int				obtener_id_sala_actual() const {return info_mapa.id_mapa;}
 	void				iniciar_juego();
 	void				iniciar_nivel(int, int);
 	bool				es_juego_finalizado() const {return juego_finalizado;}

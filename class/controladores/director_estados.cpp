@@ -86,7 +86,7 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 		break;
 		case t_estados::editor: break;
 		case t_estados::estado_mapa: 
-			controlador_mapa->descubrir_salas(controlador_principal->obtener_salas_descubiertas());
+			controlador_mapa->descubrir_salas(controlador_principal->obtener_salas_descubiertas(), controlador_principal->obtener_id_sala_actual());
 		break;
 		case t_estados::ayuda_editor: break;
 		case t_estados::intro: 

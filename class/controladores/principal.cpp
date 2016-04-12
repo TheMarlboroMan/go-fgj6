@@ -7,7 +7,7 @@
 #include "../app/cola_viento.h"
 #include "../app/brillo.h"
 #include "../app/localizacion.h"
-
+#include "../app/recursos.h"
 #include "../app/importador.h"
 
 #include "../app/framework_impl/input.h"
@@ -143,12 +143,7 @@ void  Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 {
 	pantalla.limpiar(0, 0, 0, 255);
 
-	int id_recurso=2;
-	switch(mapa.acc_id_fondo())
-	{
-		case 1: id_recurso=2; break;
-		case 2: id_recurso=3; break;
-	}
+	int id_recurso=100+(mapa.acc_id_fondo()-1);
 
 	DLibV::Representacion_bitmap fondo(DLibV::Gestor_texturas::obtener(id_recurso));
 	fondo.volcar(pantalla);
@@ -345,7 +340,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
 			Info_audio_reproducir::t_sonido::repetible,
-			5, 127, 127));
+			r_sonidos::s_viento, 127, 127));
 	}
 
 	for(const auto& s : mapa.salidas)
@@ -468,7 +463,7 @@ void Controlador_principal::jugador_en_ayuda(Ayuda& a, Jugador&)
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
 			Info_audio_reproducir::t_sonido::unico,
-			6, 127, 127));
+			r_sonidos::s_campana, 127, 127));
 
 		a.activar();
 		asignar_mensaje(localizador.obtener(a.acc_indice()));
@@ -485,7 +480,7 @@ void Controlador_principal::jugador_en_arbol(Arbol& a, Jugador& j)
 	sistema_audio.insertar(Info_audio_reproducir(
 		Info_audio_reproducir::t_reproduccion::simple,
 		Info_audio_reproducir::t_sonido::unico,
-		3, 127, 127));
+		r_sonidos::s_poner_pieza, 127, 127));
 
 	if(a.es_finalizado())
 	{
@@ -500,7 +495,7 @@ void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
 			Info_audio_reproducir::t_sonido::unico,
-			6, 127, 127));
+			r_sonidos::s_poner_pieza, 127, 127));
 		
 		mapa.recoger_pieza(p.acc_indice());
 		jugador.mut_pieza_actual(p.acc_indice());
@@ -515,7 +510,7 @@ void Controlador_principal::jugador_en_mejora_velocidad(const Mejora_velocidad& 
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
 				Info_audio_reproducir::t_sonido::unico,
-				6, 127, 127));
+				r_sonidos::s_poner_pieza, 127, 127));
 
 		j.establecer_max_velocidad(p.acc_nivel());
 	}
@@ -525,11 +520,10 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 {
 	if(i.acc_nivel() > j.acc_indice_velocidad())
 	{
-		//TODO: Sonido error.
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
 				Info_audio_reproducir::t_sonido::unico,
-				7, 127, 127));
+				r_sonidos::s_no_activable, 127, 127));
 
 		representador.avisar_velocidad_minima(i.acc_nivel());
 
@@ -543,7 +537,7 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
 			Info_audio_reproducir::t_sonido::unico,
-			2, 64, 127));
+			r_sonidos::s_molino, 64, 127));
 
 		//Comprobar que existe puerta aún...
 		auto& s=info_interruptores[i.acc_id_grupo()];
@@ -567,7 +561,7 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 				sistema_audio.insertar(Info_audio_reproducir(
 					Info_audio_reproducir::t_reproduccion::simple,
 					Info_audio_reproducir::t_sonido::unico,
-					4, 127, 127));
+					r_sonidos::s_puerta, 127, 127));
 			}
 		}
 	}
@@ -583,7 +577,7 @@ void Controlador_principal::iniciar_nivel(int nivel, int id_inicio)
 	using namespace std;
 #endif
 
-	const std::string nombre_fichero="data/mapas/mapa"+to_string(nivel)+".dat";
+	const std::string nombre_fichero="data/app/mapas/mapa"+to_string(nivel)+".dat";
 
 	particulas.clear();
 	mapa.limpiar();
@@ -643,7 +637,7 @@ void Controlador_principal::chocar_jugador(Jugador& j)
 	sistema_audio.insertar(Info_audio_reproducir(
 		Info_audio_reproducir::t_reproduccion::simple,
 		Info_audio_reproducir::t_sonido::unico,
-		1, 127, 127));
+		r_sonidos::s_chocar, 127, 127));
 
 	modo=modos::animacion_choque;
 	tiempo.penalizar();

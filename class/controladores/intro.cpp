@@ -2,6 +2,7 @@
 
 #include "../app/framework_impl/input.h"
 #include "../app/localizacion.h"
+#include "../app/recursos.h"
 
 using namespace App;
 
@@ -12,8 +13,8 @@ Controlador_intro::Controlador_intro(DLibH::Log_base& log, const Fuentes& fuente
 	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_intro", localizador);
 
 	layout.mapear_fuente("fuente", fuente);
-	layout.mapear_textura("cover", DLibV::Gestor_texturas::obtener(7));
-	layout.mapear_textura("flores", DLibV::Gestor_texturas::obtener(8));
+	layout.mapear_textura("cover", DLibV::Gestor_texturas::obtener(r_graficos::g_cover));
+	layout.mapear_textura("flores", DLibV::Gestor_texturas::obtener(r_graficos::g_flores));
 }
 
 void Controlador_intro::preloop(DFramework::Input& input, float delta)
@@ -90,7 +91,7 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 				sistema_audio.insertar(Info_audio_reproducir(
 					Info_audio_reproducir::t_reproduccion::simple,
 					Info_audio_reproducir::t_sonido::repetible,
-					6, 80, 127));
+					r_sonidos::s_campana, 80, 127));
 
 				modo=modos::transicion;
 			}
@@ -108,7 +109,7 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 				sistema_audio.insertar(Info_audio_reproducir(
 					Info_audio_reproducir::t_reproduccion::simple,
 					Info_audio_reproducir::t_sonido::repetible,
-					5, 127, 127));
+					r_sonidos::s_viento, 127, 127));
 				modo=modos::fadeout;
 			}
 		break;

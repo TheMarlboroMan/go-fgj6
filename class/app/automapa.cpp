@@ -19,9 +19,9 @@ Automapa_salida::torientaciones Automapa_salida::int_a_orientacion(int val)
 	{
 		case 0: return torientaciones::nada; break; 
 		case 1: return torientaciones::norte; break; 
-		case 2: return torientaciones::oeste; break;
+		case 2: return torientaciones::este; break;
 		case 3: return torientaciones::sur; break;
-		case 4: return torientaciones::este; break;
+		case 4: return torientaciones::oeste; break;
 	}
 
 	return torientaciones::nada;
@@ -33,9 +33,9 @@ int Automapa_salida::orientacion_a_int(Automapa_salida::torientaciones val)
 	{
 		case torientaciones::nada:	return 0; break; 
 		case torientaciones::norte:	return 1; break; 
-		case torientaciones::oeste: 	return 2; break;
+		case torientaciones::este: 	return 2; break;
 		case torientaciones::sur: 	return 3; break;
-		case torientaciones::este: 	return 4; break;
+		case torientaciones::oeste: 	return 4; break;
 	}
 
 	return 0;
@@ -58,7 +58,7 @@ Automapa_sala::tmarcadores Automapa_sala::int_a_marcador(int val)
 		case 1: return tmarcadores::arbol; break;
 		case 2: return tmarcadores::metal; break;
 		case 3: return tmarcadores::madera; break;
-		case 4: return tmarcadores::aire; break;
+		case 4: return tmarcadores::agua; break;
 		case 5: return tmarcadores::fuego; break;
 		case 6: return tmarcadores::tierra; break;
 	}
@@ -74,7 +74,7 @@ int Automapa_sala::marcador_a_int(Automapa_sala::tmarcadores val)
 		case tmarcadores::arbol: 	return 1; break;
 		case tmarcadores::metal: 	return 2; break;
 		case tmarcadores::madera: 	return 3; break;
-		case tmarcadores::aire: 	return 4; break;
+		case tmarcadores::agua: 	return 4; break;
 		case tmarcadores::fuego: 	return 5; break;
 		case tmarcadores::tierra: 	return 6; break;
 	}
@@ -109,7 +109,8 @@ void Automapa::cargar(const std::string& ruta)
 	for(const auto& ts : raiz["mapa"]["salas"].acc_lista())
 	{
 		auto s=Automapa_sala::desde_token(ts);
-		salas.push_back(sala{s, false});
+//TODO.
+		salas.push_back(sala{s, true});
 	}
 }
 
@@ -124,7 +125,8 @@ void Automapa::visitar(int id_sala)
 
 void Automapa::reiniciar()
 {
-	for(auto& s : salas) s.visitada=false;
+//TODO
+	for(auto& s : salas) s.visitada=true;
 }
 
 std::vector<Automapa_sala> Automapa::obtener_visitadas() const

@@ -4,6 +4,8 @@
 #include <video/gestores/gestor_texturas.h>
 #include <class/valor_limitado.h>
 
+#include "recursos.h"
+
 using namespace App;
 
 Interruptor::Interruptor(Espaciable::tpunto pt, int n, int idp, int idg, int t)
@@ -48,7 +50,7 @@ void Interruptor::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLi
 {
 	auto c=poligono.acc_centro();
 
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(4));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_sprites));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	sprite.establecer_alpha(255);
 	sprite.establecer_recorte(0, 30, 60, 60);

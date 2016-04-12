@@ -1,9 +1,8 @@
-- Constantes para sonidos.
-- Constantes para recursos.
+- Do a small video for gamejolt.
 - Add in-game map, maybe in its own controller?.
 - Add real music.
+- Add map help hint.
 - Document level editor.
-- Fix order of controls.
 - Fix windmill bug trick.
 - Parallax.
 
@@ -11,6 +10,9 @@ DONE:
 
 - Add screen resolutions.
 - Enable / disable help.
+- Add alpha to ending image... I broke it.
+- Constantes para sonidos y recursos, mejorando modding.
+- Fix order of controls.
 
 DOCUMENTED:
 

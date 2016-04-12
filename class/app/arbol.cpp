@@ -3,6 +3,8 @@
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
 
+#include "recursos.h"
+
 using namespace App;
 
 Arbol::Arbol(Espaciable::tpunto pt)
@@ -43,8 +45,8 @@ void Arbol::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Ca
 
 	for(const auto& p: piezas_colocadas)
 	{
-		DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(4));
-		DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(1));
+		DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(r_graficos::g_sprites));
+		DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(r_graficos::g_lens_flare));
 
 		flare.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 		flare.establecer_alpha(255);
@@ -65,7 +67,7 @@ void Arbol::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Ca
 		int alpha=(tiempo_florecimiento * 254.0) / 2.5f;
 		if(alpha > 255) alpha=255;
 
-		DLibV::Representacion_bitmap flores(DLibV::Gestor_texturas::obtener(8));
+		DLibV::Representacion_bitmap flores(DLibV::Gestor_texturas::obtener(r_graficos::g_flores));
 		flores.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 		flores.establecer_alpha(alpha);
 		flores.establecer_posicion(c.x-240, -c.y-270);

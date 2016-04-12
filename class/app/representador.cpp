@@ -3,6 +3,8 @@
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
 
+#include "recursos.h"
+
 using namespace App;
 
 Representador::Representador()
@@ -125,7 +127,7 @@ void Representador::dibujar_hud(DLibV::Pantalla& pantalla, const DLibV::Fuente_T
 	txt.ir_a(16, 70);
 	txt.volcar(pantalla);
 
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(6));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_hud));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 
 	auto fd=[&pantalla, &sprite](int& act, int max, int xrec, int alpha)

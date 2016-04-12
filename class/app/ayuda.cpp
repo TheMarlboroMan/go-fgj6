@@ -3,6 +3,8 @@
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
 
+#include "recursos.h"
+
 using namespace App;
 
 Ayuda::Ayuda(Espaciable::tpunto pt, int indice)
@@ -26,13 +28,13 @@ void Ayuda::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Ca
 {
 	auto c=poligono.acc_centro();
 
-	DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(1));
+	DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(r_graficos::g_lens_flare));
 	flare.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	flare.establecer_alpha(255);
 	flare.ir_a(c.x - 25, -c.y - 25);
 	flare.volcar(pantalla, camara);
 
-	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(4));
+	DLibV::Representacion_bitmap sprite(DLibV::Gestor_texturas::obtener(r_graficos::g_viento));
 	sprite.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
 	sprite.establecer_alpha(128);
 	sprite.establecer_recorte(105, 30, 30, 30);
