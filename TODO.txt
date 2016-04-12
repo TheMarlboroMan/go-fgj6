@@ -2,6 +2,7 @@
 - Add real music.
 - Document level editor.
 - Do a small video for gamejolt.
+- Revisar código de colisión: ¿qué pasa con los segmentos extraños?.
 
 DONE:
 
