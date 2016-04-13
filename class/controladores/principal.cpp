@@ -575,9 +575,7 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 		}
 		else
 		{
-			//TODO: Enviar también las coordenadas del molino para que
-			//no pueda hacerse el truco de activar dos varias veces :D.
-			s.activar(i.acc_tiempo_grupo());
+			s.activar(i.acc_tiempo_grupo(), i.acc_poligono().acc_centro());
 	
 			if(s.es_completo())
 			{
@@ -655,7 +653,7 @@ void Controlador_principal::iniciar_nivel(int id_inicio)
 		size_t id_grupo=i.acc_id_grupo();
 		if(!info_interruptores.count(id_grupo))
 		{
-			info_interruptores[id_grupo]=info_interruptor(1, 0, i.acc_id_puerta());
+			info_interruptores[id_grupo]=info_interruptor(1, i.acc_id_puerta());
 //			log<<"Nuevo grupo de puertas "<<id_grupo<<std::endl;
 		}
 		else

@@ -135,23 +135,38 @@ class Controlador_principal:
 
 	}info_mapa{1, Inicio(Espaciable::tpunto{0.0,0.0}, 1, 0)};
 
+/** 
+Información sobre los interruptores. Por cada grupo se creará un objeto de
+este tipo que lleva la cuenta de los interruptores activados en el grupo y de 
+la puerta que abren.
+Para que no puedas pulsar dos interruptores consecutivos sin parar, se guardan
+las coordenadas de cada uno de ellos en un vector y sólo se suma al total 
+cuando no está activado antes.	
+*/
+
 	struct info_interruptor
 	{
-		size_t				total,
-						actual;
+		size_t				total;
 		int				id_puerta;
 		Herramientas_proyecto::Valor_limitado<float>	tiempo;
+		std::vector<Espaciable::tpunto>	activados;
 
-		void 				activar(int val)
+		void 				activar(int val, Espaciable::tpunto pt)
 		{
-			++actual;
+			if(std::find(std::begin(activados), std::end(activados), pt)==std::end(activados))
+			{
+				activados.push_back(pt);
+			}
+
 			tiempo=(float)val/1000.f;
 		}
 	
-		bool 				es_completo() const {return total==actual;}
+		bool 				es_completo() const {return total==activados.size();}
+
 		void				finalizar()
 		{
 			tiempo=0.0f;
+			activados.clear();			
 		}
 
 		void 				turno(float delta)
@@ -162,14 +177,14 @@ class Controlador_principal:
 
 				if(tiempo==0.0f)
 				{
-					actual=0;
+					activados.clear();
 				}
 			}
 		}
 
-		info_interruptor(int t=0, int a=0, int id=0): total(t), actual(a), id_puerta(id), tiempo(0.0f, -100.0f, 0.0f, Herramientas_proyecto::Valor_limitado<float>::inferior) {}
+		info_interruptor(int t=0, int id=0): total(t), id_puerta(id), tiempo(0.0f, -100.0f, 0.0f, Herramientas_proyecto::Valor_limitado<float>::inferior) {}
 	};
-	std::map<int, info_interruptor>		info_interruptores;
+	std::map<int, info_interruptor>		info_interruptores; //el intero es id_grupo.
 
 	struct persistente
 	{
