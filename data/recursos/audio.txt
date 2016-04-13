@@ -8,5 +8,6 @@
 5	data/sonidos/viento.ogg
 6	data/sonidos/campana.ogg
 7	data/sonidos/no_activable.ogg
+8	data/sonidos/viento_arbol.ogg
 
 #Sonidos de aplicacion...

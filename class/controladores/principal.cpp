@@ -613,7 +613,7 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 	{
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
-				Info_audio_reproducir::t_sonido::unico,
+				Info_audio_reproducir::t_sonido::repetible,
 				r_sonidos::s_no_activable, 127, 127));
 
 		representador.avisar_velocidad_minima(i.acc_nivel());
