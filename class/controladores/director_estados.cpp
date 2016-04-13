@@ -15,20 +15,27 @@ Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& 
 	registrar_controladores(kernel);
 	virtualizar_joysticks(kernel.acc_input());
 	localizador.inicializar(0);
+}
 
-	int indice=kernel.acc_controlador_argumentos().buscar("file");
-	if(indice!=-1)
+bool Director_estados::interpretar_parametros(DFramework::Kernel& kernel)
+{
+	int indice_file=kernel.acc_controlador_argumentos().buscar("file");
+	int indice_check=kernel.acc_controlador_argumentos().buscar("map_check");
+	if(indice_file!=-1)
 	{
 		estados.validar_y_cambiar_estado(editor);
-		controlador_editor->iniciar_edicion_fichero(kernel.acc_controlador_argumentos().acc_argumento(indice+1));
+		controlador_editor->iniciar_edicion_fichero(kernel.acc_controlador_argumentos().acc_argumento(indice_file+1));
 		controlador_principal->establecer_editor(true);
+		return true;
 	}
-	else
+	else if(indice_check!=-1)
 	{
-		estados.validar_y_cambiar_estado(intro);
+		comprobar_mapas();
+		return false;
 	}
 
 	DFramework::Audio::reproducir_musica(DLibA::Gestor_recursos_audio::obtener_musica(1));
+	return true;
 }
 
 void Director_estados::preparar_video(DFramework::Kernel& kernel)
@@ -132,4 +139,57 @@ void Director_estados::registrar_fuentes()
 	fuentes.registrar_fuente("imagination_station", 16);
 	fuentes.registrar_fuente("inkburrow", 26);
 	fuentes.registrar_fuente("bulldozer", 20);
+}
+
+//Ejecuta una comprobación de los mapas, volcando los contenidos de las puertas 
+//de los mismos, para ver que no hemos repetido ninguna.
+
+void Director_estados::comprobar_mapas()
+{
+#ifdef WINCOMPIL
+	using namespace parche_mingw;
+#else
+	using namespace std;
+#endif
+
+	std::vector<int> ids;
+
+	int i=1;
+	while(i<=20)
+	{
+		const std::string nombre_fichero="data/app/mapas/mapa"+to_string(i)+".dat";
+
+		Mapa mapa;
+		Importador importador;
+		importador.importar(nombre_fichero.c_str(), mapa);
+		mapa.inicializar();
+
+		if(mapa.puertas.size()) 
+		{
+			std::vector<int> actuales;
+
+			std::cout<<"=="<<nombre_fichero<<"=="<<std::endl;
+			for(const auto& p : mapa.puertas) 
+			{
+				actuales.push_back(p.acc_id());
+
+				if(std::find(std::begin(ids), std::end(ids), p.acc_id())==std::end(ids))
+				{
+					std::cout<<"\tID: "<<p.acc_id()<<std::endl;
+				} 
+				else
+				{
+					std::cout<<"\t[Warning] ID: "<<p.acc_id()<<std::endl;
+				}
+			}
+
+			std::sort(std::begin(actuales), std::end(actuales));
+			actuales.erase(std::unique( std::begin(actuales), std::end(actuales) ), std::end(actuales));
+			ids.insert(std::end(ids), std::begin(actuales), std::end(actuales));
+		}
+
+		++i;
+	}
+
+	std::cout<<"Finalizado"<<std::endl;
 }

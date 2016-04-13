@@ -14,6 +14,7 @@
 #include "../app/representador.h"
 #include "../app/localizador.h"
 #include "../app/fuentes.h"
+#include "../app/importador.h"
 #include "../app/mapa.h"
 #include "../app/pieza_animacion.h"
 #include "../app/tiempo.h"

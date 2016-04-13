@@ -32,6 +32,7 @@ class Director_estados:
 	
 	virtual void					input_comun(DFramework::Input& input, float delta);
 	virtual void					preparar_cambio_estado(int deseado, int actual);
+	bool						interpretar_parametros(DFramework::Kernel& kernel);
 
 	private:
 
@@ -39,6 +40,7 @@ class Director_estados:
 	void						registrar_controladores(DFramework::Kernel& kernel);
 	void						registrar_fuentes();
 	void 						virtualizar_joysticks(DFramework::Input& input);
+	void						comprobar_mapas();
 
 
 	App::App_config&				config;

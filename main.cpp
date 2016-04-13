@@ -58,7 +58,11 @@ int iniciar_app(Herramientas_proyecto::Controlador_argumentos& CARG)
 		log_app<<"Inicializando kernel..."<<std::endl;
 		DFramework::Kernel kernel(CARG, kernel_config, config);
 		App::Director_estados APP(kernel, config, log_app);
-		APP.iniciar(kernel);
+
+		if(APP.interpretar_parametros(kernel))
+		{
+			APP.iniciar(kernel);
+		}
 
 		log_app<<"Finalizando proceso principal."<<std::endl;
 	}
