@@ -1,4 +1,3 @@
-- Add effect when picking up piece.
 - Add real music.
 - Document level editor.
 - Do a small video for gamejolt.
@@ -6,6 +5,7 @@
 
 DONE:
 
+- Add effect when picking up piece.
 - Fix windmill bug trick.
 - Fix room 12
 - Fix room 19

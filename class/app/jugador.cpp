@@ -127,8 +127,8 @@ void Jugador::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::
 	sprite.transformar_centro_rotacion(15 / camara.acc_zoom(), 15 / camara.acc_zoom());
 	sprite.transformar_rotar(-angulo);
 	sprite.volcar(pantalla, camara);
-
 	if(pieza_actual)
+
 	{
 		DLibV::Representacion_bitmap flare(DLibV::Gestor_texturas::obtener(r_graficos::g_lens_flare));
 		DLibV::Representacion_bitmap bmp(DLibV::Gestor_texturas::obtener(r_graficos::g_sprites));

@@ -40,7 +40,7 @@ bool Arbol::es_finalizado() const
 void Arbol::dibujar(Representador& r, DLibV::Pantalla& pantalla, const DLibV::Camara& camara) const
 {
 	auto c=poligono.acc_centro();
-	int x=c.x-80;
+	int x=c.x-130;
 	int y=-c.y+160;
 
 	for(const auto& p: piezas_colocadas)

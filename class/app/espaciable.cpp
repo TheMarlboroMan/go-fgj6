@@ -18,6 +18,11 @@ void Espaciable::establecer_posicion(double x, double y)
 	poligono.centrar_en({x, y});
 }
 
+void Espaciable::establecer_posicion(tpunto pt)
+{
+	poligono.centrar_en(pt);
+}
+
 void Espaciable::mover(double x, double y)
 {
 	auto c=poligono.acc_centro();

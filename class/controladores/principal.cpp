@@ -6,6 +6,7 @@
 
 #include "../app/cola_viento.h"
 #include "../app/brillo.h"
+#include "../app/hoja_arbol.h"
 #include "../app/localizacion.h"
 #include "../app/recursos.h"
 #include "../app/importador.h"
@@ -98,6 +99,11 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 			}
 		break;
 
+		case modos::animacion_pieza:
+			procesar_particulas(delta);
+			procesar_animacion_pieza(delta);
+		break;
+
 		case modos::confirmar_salida:
 
 			if(input.es_input_down(Input::escape))
@@ -172,6 +178,7 @@ void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 			case modos::juego:
 			case modos::ayuda:
 			case modos::confirmar_salida:
+			case modos::animacion_pieza:
 				jugador.dibujar(r, pantalla, camara);
 			break;
 
@@ -180,21 +187,25 @@ void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 			case modos::recuento_final: break;
 		}
 
+		if(pieza_animacion.es_activa())	pieza_animacion.dibujar(r, pantalla, camara);
 		if(!info_juego.debug_activo) for(const auto& o : mapa.decoraciones_frente)	o->dibujar(r, pantalla, camara);
 		for(const auto& o : particulas)						o->dibujar(r, pantalla, camara);
 
+		//Control de cuando mostrar el HUD.
 		switch(modo)
 		{
 			case modos::juego:
 			case modos::ayuda:
 			case modos::confirmar_salida:
 			case modos::animacion_choque:
+			case modos::animacion_pieza:
 				r.dibujar_hud(pantalla, fuente_hud, tiempo.a_cadena(), tiempo.es_aviso(), jugador.acc_max_velocidad(), jugador.acc_indice_velocidad(), jugador.acc_tope_velocidad());
 			break;
 			case modos::florecimiento:
 			case modos::recuento_final: break;
 		}
 
+		//Control de cuándo mostrar la caja de mensajes.
 		switch(modo)
 		{	
 			case modos::confirmar_salida:
@@ -208,6 +219,7 @@ void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 			break;
 			case modos::juego:
 			case modos::animacion_choque:
+			case modos::animacion_pieza:
 			case modos::florecimiento: break;
 		}
 	}
@@ -475,6 +487,55 @@ void Controlador_principal::procesar_ayudas(float delta)
 	for(auto& i : mapa.ayudas) i.turno(delta);
 }
 
+void Controlador_principal::procesar_animacion_pieza(float delta)
+{
+	if(!mapa.arboles.size())
+	{
+		throw std::runtime_error("Animación de pieza sin árbol detectada");
+	}
+
+	//Mover.
+	pieza_animacion.turno(delta);
+
+	Herramientas_proyecto::Generador_int ang(10, 170), tmp(1000, 4000), vel(40, 200), cen(-10, 10);
+
+	if(pieza_animacion.es_generar_hoja())
+	{
+		for(int i=0; i<6; ++i)
+		{
+			auto pt=pieza_animacion.acc_poligono().acc_centro();
+			pt+={double(cen()), double(cen())};
+			particulas.push_back(std::move(std::unique_ptr<Particula>(new Hoja_arbol(pt, ang(), vel(), tmp() / 1000.f) ) ) );
+		}
+	}
+
+	if(!pieza_animacion.es_activa())
+	{
+		auto &a=mapa.arboles[0];
+		a.colocar_pieza(pieza_animacion.acc_pieza_actual());
+		pieza_animacion.reiniciar();
+
+		if(a.es_finalizado())
+		{
+			sistema_audio.insertar(Info_audio_reproducir(
+				Info_audio_reproducir::t_reproduccion::simple,
+				Info_audio_reproducir::t_sonido::unico,
+				r_sonidos::s_campana, 127, 127));
+
+			sistema_audio.insertar(Info_audio_reproducir(
+				Info_audio_reproducir::t_reproduccion::simple,
+				Info_audio_reproducir::t_sonido::unico,
+				r_sonidos::s_viento_arbol, 127, 127));
+
+			modo=modos::florecimiento;
+		}
+		else
+		{
+			modo=modos::juego;
+		}
+	}
+}
+
 //La salida no es una referencia: para cuando carguemos el nivel el objeto
 //original habrá desaparecido!.
 void Controlador_principal::jugador_en_salida(Salida s, Jugador&)
@@ -501,18 +562,20 @@ void Controlador_principal::jugador_en_ayuda(Ayuda& a, Jugador&)
 
 void Controlador_principal::jugador_en_arbol(Arbol& a, Jugador& j)
 {
-	a.colocar_pieza(j.acc_pieza_actual());
+	pieza_animacion.activar(j.acc_pieza_actual(), a.acc_poligono().acc_centro(), j.acc_poligono().acc_centro());
 	j.mut_pieza_actual(0);
 
 	sistema_audio.insertar(Info_audio_reproducir(
 		Info_audio_reproducir::t_reproduccion::simple,
 		Info_audio_reproducir::t_sonido::unico,
-		r_sonidos::s_poner_pieza, 127, 127));
+		r_sonidos::s_poner_pieza, 128, 127));
 
-	if(a.es_finalizado())
-	{
-		modo=modos::florecimiento;
-	}
+	sistema_audio.insertar(Info_audio_reproducir(
+		Info_audio_reproducir::t_reproduccion::simple,
+		Info_audio_reproducir::t_sonido::unico,
+		r_sonidos::s_viento_arbol, 127, 127));
+
+	modo=modos::animacion_pieza;
 }
 
 void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
@@ -523,10 +586,11 @@ void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
 			Info_audio_reproducir::t_reproduccion::simple,
 			Info_audio_reproducir::t_sonido::unico,
 			r_sonidos::s_poner_pieza, 127, 127));
-		
-		mapa.recoger_pieza(p.acc_indice());
+
+		//El orden, muy importante.
 		jugador.mut_pieza_actual(p.acc_indice());
-		info_persistente.recoger_pieza(p.acc_indice());
+		info_persistente.recoger_pieza(p.acc_indice());		
+		mapa.recoger_pieza(p.acc_indice());
 	}
 }
 

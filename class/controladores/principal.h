@@ -15,6 +15,7 @@
 #include "../app/localizador.h"
 #include "../app/fuentes.h"
 #include "../app/mapa.h"
+#include "../app/pieza_animacion.h"
 #include "../app/tiempo.h"
 #include "../app/jugador.h"
 #include "../app/particula.h"
@@ -85,6 +86,7 @@ class Controlador_principal:
 	void					procesar_estructuras(float);
 	void					procesar_particulas(float);
 	void					procesar_florecimiento(float);
+	void					procesar_animacion_pieza(float);
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 
@@ -114,7 +116,7 @@ class Controlador_principal:
 	std::vector<Info_audio_reproducir>	reproducir;
 	std::vector<Audio_detener>		detener;
 
-	enum class				modos{juego, ayuda, confirmar_salida, animacion_choque, florecimiento, recuento_final} modo;
+	enum class				modos{juego, ayuda, confirmar_salida, animacion_choque, animacion_pieza, florecimiento, recuento_final} modo;
 
 	DLibV::Camara				camara;
 	DLibV::Representacion_bitmap		fondo;
@@ -124,10 +126,11 @@ class Controlador_principal:
 	}info_parallax;
 	Mapa					mapa;
 	Jugador					jugador;
+	Pieza_animacion				pieza_animacion;
 	std::vector<std::unique_ptr<Particula>>	particulas;
-	Tiempo					tiempo;
+	Tiempo					tiempo;	
 	Herramientas_proyecto::Compositor_vista		layout_mensaje;
-
+	
 	struct
 	{
 		int				id_mapa;

@@ -41,6 +41,12 @@ $(DIR_CLASES_APP)cola_viento.h \
 $(DIR_CLASES_APP)cola_viento.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)cola_viento.cpp -o $(DIR_O)cola_viento.o
 
+$(DIR_O)hoja_arbol.o:\
+$(DIR_O)particula.o\
+$(DIR_CLASES_APP)hoja_arbol.h \
+$(DIR_CLASES_APP)hoja_arbol.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)hoja_arbol.cpp -o $(DIR_O)hoja_arbol.o
+
 $(DIR_O)brillo.o:\
 $(DIR_O)particula.o\
 $(DIR_CLASES_APP)brillo.h \
@@ -150,6 +156,13 @@ $(DIR_O)espaciable.o\
 $(DIR_CLASES_APP)ayuda.h \
 $(DIR_CLASES_APP)ayuda.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)ayuda.cpp -o $(DIR_O)ayuda.o
+
+$(DIR_O)pieza_animacion.o:\
+$(DIR_O)representable.o\
+$(DIR_O)espaciable.o\
+$(DIR_CLASES_APP)pieza_animacion.h \
+$(DIR_CLASES_APP)pieza_animacion.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CLASES_APP)pieza_animacion.cpp -o $(DIR_O)pieza_animacion.o
 
 $(DIR_O)pieza.o:\
 $(DIR_O)representable.o\

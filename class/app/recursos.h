@@ -21,7 +21,8 @@ enum r_sonidos{
 	s_puerta=4,
 	s_viento=5,
 	s_campana=6,
-	s_no_activable=7
+	s_no_activable=7,
+	s_viento_arbol=8
 };
 
 }

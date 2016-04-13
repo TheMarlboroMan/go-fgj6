@@ -24,6 +24,7 @@ class Espaciable
 	
 	const tpoligono&			acc_poligono() const {return poligono;}
 	void					establecer_posicion(double, double);
+	void					establecer_posicion(tpunto);
 	void					mover(double, double);
 	bool					en_colision_con(const Espaciable& e) const;
 	void					desplazar_angulo_velocidad(double, double);

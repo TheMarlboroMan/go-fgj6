@@ -94,11 +94,13 @@ $(DIR_CONTROLADORES)editor.cpp
 $(DIR_O)controlador_principal.o :\
 $(DIR_O)fuentes.o\
 $(DIR_O)mapa.o\
+$(DIR_O)pieza_animacion.o\
 $(DIR_O)tiempo.o\
 $(DIR_O)inicio.o\
 $(DIR_O)jugador.o\
 $(DIR_O)cola_viento.o\
 $(DIR_O)brillo.o\
+$(DIR_O)hoja_arbol.o\
 $(DIR_O)representador.o\
 $(DIR_O)importador.o\
 $(DIR_HEADERS_APP)bloque_input.h\
