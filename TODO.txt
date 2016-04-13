@@ -1,3 +1,4 @@
+- Add effect when picking up piece.
 - Add real music.
 - Document level editor.
 - Do a small video for gamejolt.
