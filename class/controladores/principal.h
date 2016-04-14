@@ -131,6 +131,7 @@ class Controlador_principal:
 	std::vector<std::unique_ptr<Particula>>	particulas;
 	Tiempo					tiempo;	
 	Herramientas_proyecto::Compositor_vista		layout_mensaje;
+	float					tiempo_ayuda;
 	
 	struct
 	{

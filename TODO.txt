@@ -1,11 +1,12 @@
 - Add real music.
 - Document level editor.
-- Do a small video for gamejolt.
 - Revisar código de sonido, a veces hace cosas raras, encolando el audio...
-- No refresca ayuda al quitarla de la config.
 
 DONE:
 
+- Add a minimum time to read the help.
+- Do a small video for gamejolt.
+- No refresca ayuda al quitarla de la config.
 - Revisar código de colisión: ¿qué pasa con los segmentos extraños?.
 - Colisiones sala árbol.
 - Puerta de la torre abierta sóla.

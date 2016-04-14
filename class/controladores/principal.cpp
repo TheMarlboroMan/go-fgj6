@@ -29,7 +29,8 @@ Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes
 	sistema_audio(sa),
 	modo(modos::juego),
 	camara(0, 0, 800, 500), 
-	fondo(DLibV::Gestor_texturas::obtener(r_graficos::g_fondo_defecto))
+	fondo(DLibV::Gestor_texturas::obtener(r_graficos::g_fondo_defecto)),
+	tiempo_ayuda(0.0f)
 {
 	layout_mensaje.mapear_fuente("akashi", fuente);
 	layout_mensaje.parsear("data/layout/layout_mensaje.dnot", "layout");
@@ -120,9 +121,14 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 		break;
 
 		case modos::ayuda:
-			if(hay_input_jugador(input))
+			if(hay_input_jugador(input) && tiempo_ayuda >= 1.0f )
 			{
 				modo=modos::juego;
+				tiempo_ayuda=0.f;
+			}
+			else
+			{
+				tiempo_ayuda+=delta;
 			}
 		break;
 
@@ -170,7 +176,7 @@ void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 		for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
 		for(const auto& o : mapa.mejoras_velocidad)	o.dibujar(r, pantalla, camara);
 		for(const auto& o : mapa.arboles)		o.dibujar(r, pantalla, camara);
-		for(const auto& o : mapa.ayudas)		o.dibujar(r, pantalla, camara);
+		if(info_juego.ayuda_activa) for(const auto& o : mapa.ayudas) o.dibujar(r, pantalla, camara);
 		for(const auto& o : mapa.interruptores)		o.dibujar(r, pantalla, camara);
 
 		switch(modo)
