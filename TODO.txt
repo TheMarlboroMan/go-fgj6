@@ -3,11 +3,11 @@
 - Do a small video for gamejolt.
 - Revisar código de sonido, a veces hace cosas raras, encolando el audio...
 - No refresca ayuda al quitarla de la config.
-- Revisar código de colisión: ¿qué pasa con los segmentos extraños?.
-- Colisiones sala árbol.
 
 DONE:
 
+- Revisar código de colisión: ¿qué pasa con los segmentos extraños?.
+- Colisiones sala árbol.
 - Puerta de la torre abierta sóla.
 - Add effect when picking up piece.
 - Fix windmill bug trick.

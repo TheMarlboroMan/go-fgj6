@@ -48,6 +48,8 @@ void Importador::deserializar(const Herramientas_proyecto::Dnot_token& tok, std:
 		const auto& centro=tok["cen"].acc_lista();
 		poligono.mut_centro({centro[0], centro[1]});
 
+		poligono.cerrar();
+
 		int val_tipo=tok["pr"]["t"];
 		switch(val_tipo)
 		{
