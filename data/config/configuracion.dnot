@@ -2,7 +2,7 @@ config:{
 	app:{
 		ayuda_activa:true, debug_activo:false
 	}, audio:{
-		audio_buffers:1024, audio_canales:16, audio_ratio:44100, audio_salidas:0, volumen_audio:64, volumen_musica:64
+		audio_buffers:1024, audio_canales:16, audio_ratio:44100, audio_salidas:2, volumen_audio:64, volumen_musica:64
 	}, input:{
 		general:{
 			zoom_mas:0, zoom_menos:0

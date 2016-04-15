@@ -78,8 +78,7 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 		case t_estados::principal: 
 			if(actual==t_estados::editor)
 			{
-				auto im=controlador_editor->acc_info_mapa();
-				controlador_principal->cargar_nivel(im.id);
+				controlador_principal->cargar_nivel(controlador_editor->acc_nombre_fichero());
 				controlador_principal->iniciar_nivel(1);
 			}
 			else if(actual==t_estados::intro)

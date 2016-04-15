@@ -115,7 +115,7 @@ void Controlador_editor::loop(DFramework::Input& input, float delta)
 
 	if(input.es_input_down(Input::tab)) intercambiar_objeto_creado();
 
-	if(input.es_input_down(Input::cargar_mapa)) cargar_mapa();	
+	if(input.es_input_down(Input::cargar_mapa)) cargar_mapa();
 	else if(input.es_input_down(Input::grabar_mapa)) grabar_mapa();
 
 	if(input.es_input_pulsado(Input::control_izquierdo)) 
@@ -854,5 +854,15 @@ void Controlador_editor::reordenar_decoraciones()
 void Controlador_editor::iniciar_edicion_fichero(const std::string& s)
 {
 	nombre_fichero=s;
-	cargar_mapa();
+
+	std::ifstream f(nombre_fichero.c_str());
+
+	if(!f.is_open())
+	{
+		mensajes.insertar_mensaje("Creando nuevo mapa "+nombre_fichero, 2.0f);
+	}
+	else
+	{
+		cargar_mapa();
+	}
 }

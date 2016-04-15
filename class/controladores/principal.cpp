@@ -265,13 +265,15 @@ Bloque_input Controlador_principal::obtener_bloque_input(DFramework::Input& inpu
 
 void Controlador_principal::ajustar_parallax()
 {
-	//TODO: ¿Qué ocurre cuando el nivel es del mismo tamaño?. Hay que centrarlo.
-
 	//Necesitamos los ratios desde el mínimo al máximo.
 	auto cam=mapa.acc_info_camara();
+	int x_parallax=0, y_parallax=0;
 
-	int x_parallax=(camara.acc_x() * info_parallax.max_fondo_x) /cam.max_cam_x;
-	int y_parallax=(camara.acc_y() * info_parallax.max_fondo_y) /cam.max_cam_y;
+	if(cam.max_cam_x && cam.max_cam_y)
+	{
+		x_parallax=(camara.acc_x() * info_parallax.max_fondo_x) /cam.max_cam_x;
+		y_parallax=(camara.acc_y() * info_parallax.max_fondo_y) /cam.max_cam_y;
+	}
 
 	fondo.establecer_recorte(x_parallax, y_parallax, 800, 500);
 }
@@ -381,7 +383,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 	{
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
-			Info_audio_reproducir::t_sonido::repetible,
+			Info_audio_reproducir::t_sonido::unico,
 			r_sonidos::s_viento, 127, 127));
 	}
 
@@ -407,6 +409,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 		if(j.en_colision_con(a) && j.acc_pieza_actual())
 		{
 			jugador_en_arbol(a, j);
+			return;
 		}
 	}
 
@@ -590,7 +593,7 @@ void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
 	{
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
-			Info_audio_reproducir::t_sonido::unico,
+			Info_audio_reproducir::t_sonido::repetible,
 			r_sonidos::s_poner_pieza, 127, 127));
 
 		//El orden, muy importante.
@@ -606,7 +609,7 @@ void Controlador_principal::jugador_en_mejora_velocidad(const Mejora_velocidad& 
 	{
 		sistema_audio.insertar(Info_audio_reproducir(
 			Info_audio_reproducir::t_reproduccion::simple,
-				Info_audio_reproducir::t_sonido::unico,
+				Info_audio_reproducir::t_sonido::repetible,
 				r_sonidos::s_poner_pieza, 127, 127));
 
 		j.establecer_max_velocidad(p.acc_nivel());
@@ -673,7 +676,11 @@ void Controlador_principal::cargar_nivel(int nivel)
 #endif
 
 	const std::string nombre_fichero="data/app/mapas/mapa"+to_string(nivel)+".dat";
+	cargar_nivel(nombre_fichero);
+}
 
+void Controlador_principal::cargar_nivel(const std::string& nombre_fichero)
+{
 	particulas.clear();
 	mapa.limpiar();
 	Importador importador;

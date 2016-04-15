@@ -38,7 +38,7 @@ class Controlador_editor:
 
 	void				iniciar_edicion_fichero(const std::string& s);
 	void				aplicar_a_mapa(Mapa&);
-	Info_mapa			acc_info_mapa() const {return info_mapa;}
+	const std::string&		acc_nombre_fichero() const {return nombre_fichero;}
 
 	private:
 

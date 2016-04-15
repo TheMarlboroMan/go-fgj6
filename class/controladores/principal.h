@@ -71,6 +71,7 @@ class Controlador_principal:
 	void				iniciar_juego();
 	void				iniciar_nivel(int);
 	void				cargar_nivel(int);
+	void				cargar_nivel(const std::string&);
 	bool				es_juego_finalizado() const {return info_juego.juego_finalizado;}
 	void				establecer_ayuda(bool v) {info_juego.ayuda_activa=v;}
 	void				establecer_debug(bool v) {info_juego.debug_activo=v;}

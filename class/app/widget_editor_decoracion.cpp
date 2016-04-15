@@ -192,9 +192,8 @@ void Widget_editor_decoracion::actualizar_layout()
 void Widget_editor_decoracion::finalizar(DFramework::Input& input)
 {
 	elemento.mut_profundidad(profundidad);
-//	elemento.mut_color_linea(color_linea);
+	elemento.mut_color_linea(color_linea);
 	elemento.mut_color(color_frente);
-	elemento.mut_color_linea(color_frente);
 	elemento.mut_frente(frente);
 
 	input.vaciar_input_texto();
