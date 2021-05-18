@@ -18,13 +18,9 @@ void Kernel::inicializar(const Kernel_driver_interface& kdi, const Configuracion
 
 	//Inicializar recursos.
 	Cargador_recursos cargador_recursos;
-std::cout<<"will load textures"<<std::endl;
 	cargador_recursos.generar_recursos_texturas(kdi.obtener_entradas_texturas(), pantalla);
-std::cout<<"will load surfaces"<<std::endl;
 	cargador_recursos.generar_recursos_superficies(kdi.obtener_entradas_superficies(), pantalla);
-std::cout<<"will load audio"<<std::endl;
 	cargador_recursos.generar_recursos_audio(kdi.obtener_entradas_audio());
-std::cout<<"will load music"<<std::endl;
 	cargador_recursos.generar_recursos_musica(kdi.obtener_entradas_musica());
 
 	//Inicializar controles.
