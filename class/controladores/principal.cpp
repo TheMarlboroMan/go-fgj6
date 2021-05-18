@@ -10,6 +10,7 @@
 #include "../app/localizacion.h"
 #include "../app/recursos.h"
 #include "../app/importador.h"
+#include "../app/definiciones.h"
 
 #include "../app/framework_impl/input.h"
 #include "estados_controladores.h"
@@ -33,7 +34,7 @@ Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes
 	tiempo_ayuda(0.0f)
 {
 	layout_mensaje.mapear_fuente("akashi", fuente);
-	layout_mensaje.parsear("data/layout/layout_mensaje.dnot", "layout");
+	layout_mensaje.parsear(env::data_path+"/data/layout/layout_mensaje.dnot", "layout");
 }
 
 void Controlador_principal::preloop(DFramework::Input& input, float delta)
@@ -675,7 +676,7 @@ void Controlador_principal::cargar_nivel(int nivel)
 	using namespace std;
 #endif
 
-	const std::string nombre_fichero="data/app/mapas/mapa"+to_string(nivel)+".dat";
+	const std::string nombre_fichero=env::data_path+"/data/app/mapas/mapa"+to_string(nivel)+".dat";
 	cargar_nivel(nombre_fichero);
 }
 

@@ -1,8 +1,9 @@
 #include "ayuda_editor.h"
 
 #include <fstream>
-
 #include "../app/framework_impl/input.h"
+#include "../app/definiciones.h"
+
 
 using namespace App;
 
@@ -68,9 +69,9 @@ void Controlador_ayuda_editor::dibujar(DLibV::Pantalla& pantalla)
 
 void Controlador_ayuda_editor::despertar()
 {
-	layout.parsear("data/layout/ayuda_editor.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/ayuda_editor.dnot", "layout");
 
-	std::ifstream fichero_ayuda("data/app/ayuda.txt");
+	std::ifstream fichero_ayuda(env::data_path+"/data/app/ayuda.txt");
 	std::string l;
 
 	if(!fichero_ayuda)

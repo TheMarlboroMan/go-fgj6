@@ -3,6 +3,7 @@
 #include "framework_impl/input.h"
 
 #include <def_video.h>
+#include "definiciones.h"
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
@@ -16,11 +17,11 @@ Widget_editor_propiedades_ayuda::Widget_editor_propiedades_ayuda(const DLibV::Fu
 	indice_actual(min_indice)
 {
 	layout.mapear_fuente("akashi", fuente);
-	layout.parsear("data/layout/widget_ayuda.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/widget_ayuda.dnot", "layout");
 
 	actualizar_layout();
 }
-	
+
 void Widget_editor_propiedades_ayuda::dibujar(DLibV::Pantalla& pantalla)
 {
 	using namespace DLibH;
@@ -29,7 +30,7 @@ void Widget_editor_propiedades_ayuda::dibujar(DLibV::Pantalla& pantalla)
 
 void Widget_editor_propiedades_ayuda::input(DFramework::Input& input, float delta)
 {
-	if(input.es_input_down(Input::escape)) 
+	if(input.es_input_down(Input::escape))
 	{
 		cerrar=true;
 		return;

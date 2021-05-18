@@ -3,6 +3,7 @@
 
 #include "../../framework/configuracion_base.h"
 #include "../../framework/input.h"
+#include "../../app/definiciones.h"
 
 #include <iostream>
 
@@ -94,7 +95,7 @@ class App_config:
 	}
 
 	input_jugador token_por_ruta_jugador(const std::string& tipo, int j) const
-	{	
+	{
 		const auto& tok=token_por_ruta(ruta_jugador(tipo, j));
 		return input_jugador{tok[0], tok[1], tok[2]};
 	}
@@ -112,7 +113,7 @@ class App_config:
 	////////////////////////////////////
 	// Implementacion...
 
-	protected: 
+	protected:
 
 	std::string obtener_clave_version_archivo() const {return "config:meta:v";}
 	std::string obtener_version_archivo() const {return "1";}
@@ -132,7 +133,7 @@ class App_config:
 
 	private:
 
-	std::string obtener_ruta_archivo() const {return "data/config/configuracion.dnot";}
+	std::string obtener_ruta_archivo() const {return env::usr_path+"/data/config/configuracion.dnot";}
 };
 
 }

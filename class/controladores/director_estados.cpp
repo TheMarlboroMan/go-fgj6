@@ -1,4 +1,5 @@
 #include "director_estados.h"
+#include "../app/definiciones.h"
 
 #include <algorithm>
 
@@ -8,7 +9,7 @@ extern DLibH::Log_base LOG;
 
 Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& c, DLibH::Log_base& log)
 	:Director_estados_interface(t_estados::intro, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
-	config(c), log(log), localizador("data/localizacion/loc")
+	config(c), log(log), localizador(env::data_path+"/data/localizacion/loc")
 {
 	preparar_video(kernel);
 	registrar_fuentes();
@@ -42,7 +43,7 @@ void Director_estados::preparar_video(DFramework::Kernel& kernel)
 {
 	auto& pantalla=kernel.acc_pantalla();
 
-	int wf=config.acc_w_fisica_pantalla(), 
+	int wf=config.acc_w_fisica_pantalla(),
 		hf=config.acc_h_fisica_pantalla(),
 		wl=config.acc_w_logica_pantalla(),
 		hl=config.acc_h_logica_pantalla();
@@ -75,7 +76,7 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 {
 	switch(deseado)
 	{
-		case t_estados::principal: 
+		case t_estados::principal:
 			if(actual==t_estados::editor)
 			{
 				controlador_principal->cargar_nivel(controlador_editor->acc_nombre_fichero());
@@ -93,11 +94,11 @@ void Director_estados::preparar_cambio_estado(int deseado, int actual)
 			}
 		break;
 		case t_estados::editor: break;
-		case t_estados::estado_mapa: 
+		case t_estados::estado_mapa:
 			controlador_mapa->descubrir_salas(controlador_principal->obtener_salas_descubiertas(), controlador_principal->obtener_id_sala_actual());
 		break;
 		case t_estados::ayuda_editor: break;
-		case t_estados::intro: 
+		case t_estados::intro:
 			if(actual==t_estados::principal)
 			{
 				if(controlador_principal->es_juego_finalizado()) controlador_intro->establecer_finalizado();
@@ -140,7 +141,7 @@ void Director_estados::registrar_fuentes()
 	fuentes.registrar_fuente("bulldozer", 20);
 }
 
-//Ejecuta una comprobación de los mapas, volcando los contenidos de las puertas 
+//Ejecuta una comprobación de los mapas, volcando los contenidos de las puertas
 //de los mismos, para ver que no hemos repetido ninguna.
 
 void Director_estados::comprobar_mapas()
@@ -156,26 +157,26 @@ void Director_estados::comprobar_mapas()
 	int i=1;
 	while(i<=20)
 	{
-		const std::string nombre_fichero="data/app/mapas/mapa"+to_string(i)+".dat";
+		const std::string nombre_fichero=env::data_path+"/data/app/mapas/mapa"+to_string(i)+".dat";
 
 		Mapa mapa;
 		Importador importador;
 		importador.importar(nombre_fichero.c_str(), mapa);
 		mapa.inicializar();
 
-		if(mapa.puertas.size()) 
+		if(mapa.puertas.size())
 		{
 			std::vector<int> actuales;
 
 			std::cout<<"=="<<nombre_fichero<<"=="<<std::endl;
-			for(const auto& p : mapa.puertas) 
+			for(const auto& p : mapa.puertas)
 			{
 				actuales.push_back(p.acc_id());
 
 				if(std::find(std::begin(ids), std::end(ids), p.acc_id())==std::end(ids))
 				{
 					std::cout<<"\tID: "<<p.acc_id()<<std::endl;
-				} 
+				}
 				else
 				{
 					std::cout<<"\t[Warning] ID: "<<p.acc_id()<<std::endl;

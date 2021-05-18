@@ -3,6 +3,7 @@
 #include "framework_impl/input.h"
 
 #include <def_video.h>
+#include "definiciones.h"
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
@@ -15,21 +16,21 @@ Widget_editor_color::Widget_editor_color(const DLibV::Fuente_TTF& fuente, tcolor
 	:color_fondo(f), color_linea(l), cerrar(false), indice_actual(min_indice), t_pulsado(0.0f)
 {
 	layout.mapear_fuente("akashi", fuente);
-	layout.parsear("data/layout/widget_color.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/widget_color.dnot", "layout");
 
 	actualizar_layout();
 }
-	
+
 void Widget_editor_color::dibujar(DLibV::Pantalla& pantalla)
 {
 	using namespace DLibH;
 
-	layout.volcar(pantalla);	
+	layout.volcar(pantalla);
 }
 
 void Widget_editor_color::input(DFramework::Input& input, float delta)
 {
-	if(input.es_input_down(Input::escape)) 
+	if(input.es_input_down(Input::escape))
 	{
 		cerrar=true;
 		return;

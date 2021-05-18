@@ -3,6 +3,7 @@
 #include "input.h"
 
 #include <iostream>
+#include "../../app/definiciones.h"
 
 using namespace App;
 
@@ -14,22 +15,22 @@ Kernel_config::Kernel_config(const App_config& c)
 
 std::vector<std::string> Kernel_config::obtener_entradas_audio() const
 {
-	return obtener_entradas_desde_ruta(std::string("data/recursos/audio.txt"));
+	return obtener_entradas_desde_ruta(env::data_path+std::string("/data/recursos/audio.txt"));
 }
 
 std::vector<std::string> Kernel_config::obtener_entradas_musica() const
 {
-	return obtener_entradas_desde_ruta(std::string("data/recursos/musica.txt"));
+	return obtener_entradas_desde_ruta(env::data_path+std::string("/data/recursos/musica.txt"));
 }
 
 std::vector<std::string> Kernel_config::obtener_entradas_texturas() const
 {
-	return obtener_entradas_desde_ruta(std::string("data/recursos/texturas.txt"));
+	return obtener_entradas_desde_ruta(env::data_path+std::string("/data/recursos/texturas.txt"));
 }
 
 std::vector<std::string> Kernel_config::obtener_entradas_superficies() const
 {
-	return obtener_entradas_desde_ruta(std::string("data/recursos/superficies.txt"));
+	return obtener_entradas_desde_ruta(env::data_path+std::string("/data/recursos/superficies.txt"));
 }
 
 DFramework::Info_ventana Kernel_config::obtener_info_ventana() const
@@ -108,6 +109,6 @@ std::vector<DFramework::Par_input> Kernel_config::obtener_pares_input() const
 
 	for(const auto& p : mapa)
 		res.push_back({tipo_desde_config(p.second.tipo), p.first, p.second.codigo, p.second.device});
-	
+
 	return res;
 }

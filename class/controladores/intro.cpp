@@ -3,14 +3,15 @@
 #include "../app/framework_impl/input.h"
 #include "../app/localizacion.h"
 #include "../app/recursos.h"
+#include "../app/definiciones.h"
 
 using namespace App;
 
 Controlador_intro::Controlador_intro(DLibH::Log_base& log, const Fuentes& fuentes, const Localizador& loc, Sistema_audio& sa)
-	:log(log), fuente(fuentes.obtener_fuente("imagination_station", 16)), 
+	:log(log), fuente(fuentes.obtener_fuente("imagination_station", 16)),
 	localizador(loc), sistema_audio(sa), juego_finalizado(false)
 {
-	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_intro", localizador);
+	componente_menu.crear_menu_opciones(env::data_path+"/data/config/valores.dnot", "config_intro", localizador);
 
 	layout.mapear_fuente("fuente", fuente);
 	layout.mapear_textura("cover", DLibV::Gestor_texturas::obtener(r_graficos::g_cover));
@@ -48,7 +49,7 @@ void Controlador_intro::dibujar(DLibV::Pantalla& pantalla)
 void Controlador_intro::despertar()
 {
 	layout.registrar_externa("menu", componente_menu.representacion());
-	layout.parsear("data/layout/layout_intro.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/layout_intro.dnot", "layout");
 
 	if(juego_finalizado) layout.obtener_por_id("flores")->hacer_visible();
 
@@ -98,7 +99,7 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 		break;
 		case modos::menu:
 			if(input.es_input_down(Input::menu_arriba) || input.es_input_down(Input::menu_abajo))
-			{			
+			{
 				if(componente_menu.cambiar_item(input.es_input_down(Input::menu_arriba) ? -1 : 1))
 				{
 					componente_menu.generar_vista_listado();
@@ -116,7 +117,7 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 		case modos::fade_finalizado:
 		{
 			const std::string clave=componente_menu.item_actual().clave;
-			if(clave=="10_INICIAR") 	solicitar_cambio_estado(principal); 
+			if(clave=="10_INICIAR") 	solicitar_cambio_estado(principal);
 			else if(clave=="20_CONTROLES")	solicitar_cambio_estado(controles);
 			else if(clave=="25_CONFIG")	solicitar_cambio_estado(config);
 			else if(clave=="30_SALIR")	abandonar_aplicacion();
@@ -170,8 +171,8 @@ void Controlador_intro::procesar_fade(float delta)
 	}
 }
 
-//Crea la vista completa de menú. Por un lado tenemos la función que se va a usar 
-//para dibujar y también la lambda que se manda al componente de menú, para 
+//Crea la vista completa de menú. Por un lado tenemos la función que se va a usar
+//para dibujar y también la lambda que se manda al componente de menú, para
 //rellenar el listado del mismo.
 
 void Controlador_intro::inicializar_menu()
@@ -179,7 +180,7 @@ void Controlador_intro::inicializar_menu()
 	using im=item_menu;
 
 	auto ui=[this](const std::string& c){return Uint8(layout.const_int(c));};
-	SDL_Color 	color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")}, 
+	SDL_Color 	color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")},
 			color_inactivo{ui("color_r_inactivo"), ui("color_g_inactivo"), ui("color_b_inactivo"), ui("color_a_inactivo")};
 
 	//Definición de función de dibujado del item del listado.

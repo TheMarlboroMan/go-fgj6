@@ -3,6 +3,7 @@
 #include "framework_impl/input.h"
 
 #include <def_video.h>
+#include "definiciones.h"
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
@@ -12,16 +13,16 @@
 using namespace App;
 
 Widget_editor_propiedades_interruptor::Widget_editor_propiedades_interruptor(const DLibV::Fuente_TTF& fuente, Interruptor& i)
-	:ref(i), nivel(ref.acc_nivel()), id_puerta(ref.acc_id_puerta()), 
-	id_grupo(ref.acc_id_grupo()), tiempo_grupo(ref.acc_tiempo_grupo()), 
+	:ref(i), nivel(ref.acc_nivel()), id_puerta(ref.acc_id_puerta()),
+	id_grupo(ref.acc_id_grupo()), tiempo_grupo(ref.acc_tiempo_grupo()),
 	cerrar(false),	indice_actual(min_indice)
 {
 	layout.mapear_fuente("akashi", fuente);
-	layout.parsear("data/layout/widget_interruptor.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/widget_interruptor.dnot", "layout");
 
 	actualizar_layout();
 }
-	
+
 void Widget_editor_propiedades_interruptor::dibujar(DLibV::Pantalla& pantalla)
 {
 	using namespace DLibH;
@@ -30,7 +31,7 @@ void Widget_editor_propiedades_interruptor::dibujar(DLibV::Pantalla& pantalla)
 
 void Widget_editor_propiedades_interruptor::input(DFramework::Input& input, float delta)
 {
-	if(input.es_input_down(Input::escape)) 
+	if(input.es_input_down(Input::escape))
 	{
 		cerrar=true;
 		return;

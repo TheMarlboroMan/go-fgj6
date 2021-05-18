@@ -3,6 +3,7 @@
 #include "framework_impl/input.h"
 
 #include <def_video.h>
+#include "definiciones.h"
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
@@ -17,21 +18,21 @@ Widget_editor_decoracion::Widget_editor_decoracion(const DLibV::Fuente_TTF& fuen
 	cerrar{false}, indice_actual{min_indice}, t_pulsado{0.0f}
 {
 	layout.mapear_fuente("akashi", fuente);
-	layout.parsear("data/layout/widget_decoracion.dnot", "layout");
+	layout.parsear(env::data_path+"data/layout/widget_decoracion.dnot", "layout");
 
 	actualizar_layout();
 }
-	
+
 void Widget_editor_decoracion::dibujar(DLibV::Pantalla& pantalla)
 {
 	using namespace DLibH;
 
-	layout.volcar(pantalla);	
+	layout.volcar(pantalla);
 }
 
 void Widget_editor_decoracion::input(DFramework::Input& input, float delta)
 {
-	if(input.es_input_down(Input::escape)) 
+	if(input.es_input_down(Input::escape))
 	{
 		cerrar=true;
 		return;
@@ -85,14 +86,14 @@ Widget_editor_decoracion::min_max Widget_editor_decoracion::min_max_por_indice(i
 		case 8: return {min_profundidad, max_profundidad}; break;
 		default: return {min_color, max_color}; break;
 	}
-	
+
 	return {0,0};
 }
 
 void Widget_editor_decoracion::cambiar_valor(int dir, float delta)
 {
 	auto f=[this](int dir, int indice)
-	{		
+	{
 		switch(indice)
 		{
 			case 9: frente=!frente; break;

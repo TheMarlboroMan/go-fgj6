@@ -3,6 +3,7 @@
 #include "framework_impl/input.h"
 
 #include <def_video.h>
+#include "definiciones.h"
 
 using namespace App;
 
@@ -11,21 +12,21 @@ Widget_editor_obstaculo::Widget_editor_obstaculo(const DLibV::Fuente_TTF& fuente
 	cerrar{false}, indice_actual{min_indice}, t_pulsado{0.0f}
 {
 	layout.mapear_fuente("akashi", fuente);
-	layout.parsear("data/layout/widget_obstaculo.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/widget_obstaculo.dnot", "layout");
 
 	actualizar_layout();
 }
-	
+
 void Widget_editor_obstaculo::dibujar(DLibV::Pantalla& pantalla)
 {
 	using namespace DLibH;
 
-	layout.volcar(pantalla);	
+	layout.volcar(pantalla);
 }
 
 void Widget_editor_obstaculo::input(DFramework::Input& input, float delta)
 {
-	if(input.es_input_down(Input::escape)) 
+	if(input.es_input_down(Input::escape))
 	{
 		cerrar=true;
 		return;

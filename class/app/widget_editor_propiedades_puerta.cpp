@@ -1,6 +1,7 @@
 #include "widget_editor_propiedades_puerta.h"
 
 #include "framework_impl/input.h"
+#include "definiciones.h"
 
 #include <def_video.h>
 
@@ -16,11 +17,11 @@ Widget_editor_propiedades_puerta::Widget_editor_propiedades_puerta(const DLibV::
 	indice_actual(min_indice)
 {
 	layout.mapear_fuente("akashi", fuente);
-	layout.parsear("data/layout/widget_puerta.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/widget_puerta.dnot", "layout");
 
 	actualizar_layout();
 }
-	
+
 void Widget_editor_propiedades_puerta::dibujar(DLibV::Pantalla& pantalla)
 {
 	using namespace DLibH;
@@ -29,7 +30,7 @@ void Widget_editor_propiedades_puerta::dibujar(DLibV::Pantalla& pantalla)
 
 void Widget_editor_propiedades_puerta::input(DFramework::Input& input, float delta)
 {
-	if(input.es_input_down(Input::escape)) 
+	if(input.es_input_down(Input::escape))
 	{
 		cerrar=true;
 		return;

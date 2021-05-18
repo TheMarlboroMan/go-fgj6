@@ -1,4 +1,5 @@
 #include "fuentes.h"
+#include "definiciones.h"
 
 using namespace App;
 
@@ -16,6 +17,6 @@ void Fuentes::registrar_fuente(const std::string f, int t)
 {
 	if(!fuentes.count({f, t}))
 	{
-		fuentes.insert( std::pair<info_fuente, DLibV::Fuente_TTF>({f, t}, DLibV::Fuente_TTF("data/fuentes/"+f+".ttf", t) ) );
+		fuentes.insert( std::pair<info_fuente, DLibV::Fuente_TTF>({f, t}, DLibV::Fuente_TTF(env::data_path+"/data/fuentes/"+f+".ttf", t) ) );
 	}
 }

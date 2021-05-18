@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "estados_controladores.h"
+#include "../app/definiciones.h"
 #include "../app/localizacion.h"
 
 #ifdef WINCOMPIL
@@ -13,8 +14,8 @@
 using namespace App;
 
 Controlador_config::Controlador_config(DLibH::Log_base& log, App_config& c, const Fuentes& f, const Localizador& loc)
-	:log(log), config(c), 
-	fuente(f.obtener_fuente("imagination_station", 16)), 
+	:log(log), config(c),
+	fuente(f.obtener_fuente("imagination_station", 16)),
 	localizador(loc), modo(modos::fadein),
 	componente_menu(),
 	fader()
@@ -33,16 +34,16 @@ void Controlador_config::loop(DFramework::Input& input, float delta)
 	if(input.es_senal_salida())
 	{
 		abandonar_aplicacion();
-		return; 
+		return;
 	}
 
 	switch(modo)
 	{
 		case modos::fadein:
-		case modos::fadeout: 
+		case modos::fadeout:
 			fader.turno(delta);
 			componente_menu.representacion().establecer_alpha((int)fader);
-			if(fader.es_finalizado()) 
+			if(fader.es_finalizado())
 			{
 				if(modo==modos::fadein) modo=modos::config;
 				else salir();
@@ -64,7 +65,7 @@ void Controlador_config::loop(DFramework::Input& input, float delta)
 				}
 			}
 			else if(input.es_input_down(Input::menu_ok))
-			{				
+			{
 				activar_menu(componente_menu.item_actual());
 			}
 		break;
@@ -85,7 +86,7 @@ void  Controlador_config::dibujar(DLibV::Pantalla& pantalla)
 void  Controlador_config::despertar()
 {
 	layout.registrar_externa("menu", componente_menu.representacion());
-	layout.parsear("data/layout/layout_config.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/layout_config.dnot", "layout");
 
 	componente_menu.mut_x_listado(layout.const_int("x_listado"));
 	componente_menu.mut_y_listado(layout.const_int("y_listado"));
@@ -122,7 +123,7 @@ void Controlador_config::inicializar_menu()
 	using im=item_menu;
 
 	auto ui=[this](const std::string& c){return Uint8(layout.const_int(c));};
-		SDL_Color color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")}, 
+		SDL_Color color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")},
 		color_inactivo{ui("color_r_inactivo"), ui("color_g_inactivo"), ui("color_b_inactivo"), ui("color_a_inactivo")};
 
 	//Definición de función de dibujado del item del listado.
@@ -147,7 +148,7 @@ void Controlador_config::inicializar_menu()
 //Se llama una única vez: crea el menú y asigna los valores.
 void Controlador_config::crear_menu()
 {
-	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_app", localizador);
+	componente_menu.crear_menu_opciones(env::data_path+"/data/config/valores.dnot", "config_app", localizador);
 
 #ifdef WINCOMPIL
 using namespace parche_mingw;

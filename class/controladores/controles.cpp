@@ -4,6 +4,7 @@
 
 #include "estados_controladores.h"
 #include "../app/localizacion.h"
+#include "../app/definiciones.h"
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
@@ -13,8 +14,8 @@
 using namespace App;
 
 Controlador_controles::Controlador_controles(DLibH::Log_base& log, App_config& c, const Fuentes& f, const Localizador& loc, const DFramework::Input& i)
-	:log(log), config(c), 
-	fuente(f.obtener_fuente("imagination_station", 16)), 
+	:log(log), config(c),
+	fuente(f.obtener_fuente("imagination_station", 16)),
 	localizador(loc), modo(modos::fadein),
 	componente_menu(),
 	fader()
@@ -33,16 +34,16 @@ void Controlador_controles::loop(DFramework::Input& input, float delta)
 	if(input.es_senal_salida())
 	{
 		abandonar_aplicacion();
-		return; 
+		return;
 	}
 
 	switch(modo)
 	{
 		case modos::fadein:
-		case modos::fadeout: 
+		case modos::fadeout:
 			fader.turno(delta);
 			componente_menu.representacion().establecer_alpha((int)fader);
-			if(fader.es_finalizado()) 
+			if(fader.es_finalizado())
 			{
 				if(modo==modos::fadein) modo=modos::seleccion;
 				else salir();
@@ -67,7 +68,7 @@ void  Controlador_controles::dibujar(DLibV::Pantalla& pantalla)
 void  Controlador_controles::despertar()
 {
 	layout.registrar_externa("menu", componente_menu.representacion());
-	layout.parsear("data/layout/layout_controles.dnot", "layout");
+	layout.parsear(env::data_path+"/data/layout/layout_controles.dnot", "layout");
 
 	componente_menu.mut_x_listado(layout.const_int("x_listado"));
 	componente_menu.mut_y_listado(layout.const_int("y_listado"));
@@ -93,7 +94,7 @@ bool Controlador_controles::es_posible_abandonar_estado() const
 ////////////////////////////////////////////////////////////////////////////////
 
 void Controlador_controles::input_seleccion(DFramework::Input& input)
-{	
+{
 	if(input.es_input_down(Input::escape))
 	{
 		activar_fadeout();
@@ -109,7 +110,7 @@ void Controlador_controles::input_seleccion(DFramework::Input& input)
 		}
 	}
 	else if(input.es_input_down(Input::menu_ok))
-	{				
+	{
 		modo=modos::entrada;
 		const std::string clave=componente_menu.item_actual().clave;
 		if(clave=="100_SALIR")
@@ -184,15 +185,15 @@ using namespace std;
 	{
 		case App_config::input_jugador::nada: break;
 
-		case App_config::input_jugador::teclado: 
+		case App_config::input_jugador::teclado:
 			res=localizador.obtener(Localizacion::controles_teclado)+std::string(SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)e.codigo)));
 		break;
 
-		case App_config::input_jugador::raton: 
+		case App_config::input_jugador::raton:
 			res=localizador.obtener(Localizacion::controles_raton)+to_string(e.codigo);
 		break;
 
-		case App_config::input_jugador::joystick: 
+		case App_config::input_jugador::joystick:
 			res=localizador.obtener(Localizacion::controles_joystick_a)+to_string(e.device)+localizador.obtener(Localizacion::controles_joystick_b)+to_string(e.codigo);
 		break;
 	}
@@ -204,8 +205,8 @@ App_config::input_jugador Controlador_controles::input_desde_string(const std::s
 {
 	//El texto tiene este aspecto #tipo#,#device#,#codigo#
 	auto val=Herramientas_proyecto::explotar(s, ',');
-	int	tipo=std::atoi(val[0].c_str()), 
-		device=std::atoi(val[1].c_str()), 
+	int	tipo=std::atoi(val[0].c_str()),
+		device=std::atoi(val[1].c_str()),
 		codigo=std::atoi(val[2].c_str());
 
 	return App_config::input_jugador{tipo, device, codigo};
@@ -222,15 +223,15 @@ using namespace std;
 	return to_string(ij.tipo)+","+to_string(ij.device)+","+to_string(ij.codigo);
 }
 
-//Crea la vista completa de menú. Por un lado tenemos la función que se va a usar 
-//para dibujar y también la lambda que se manda al componente de menú, para 
+//Crea la vista completa de menú. Por un lado tenemos la función que se va a usar
+//para dibujar y también la lambda que se manda al componente de menú, para
 //rellenar el listado del mismo.
 
 void Controlador_controles::generar_vista_menu()
 {
 	//TODO: ¿Sería posible centrarlos?.
 	auto ui=[this](const std::string& c){return Uint8(layout.const_int(c));};
-		SDL_Color color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")}, 
+		SDL_Color color_activo{ui("color_r_activo"), ui("color_g_activo"), ui("color_b_activo"), ui("color_a_activo")},
 		color_inactivo{ui("color_r_inactivo"), ui("color_g_inactivo"), ui("color_b_inactivo"), ui("color_a_inactivo")};
 
 	//Definición de función de dibujado del item del listado.
@@ -255,7 +256,7 @@ void Controlador_controles::generar_vista_menu()
 //Se llama una única vez: crea el menú y asigna los valores.
 void Controlador_controles::crear_menu_opciones(const DFramework::Input& input)
 {
-	componente_menu.crear_menu_opciones("data/config/valores.dnot", "config_controles", localizador);
+	componente_menu.crear_menu_opciones(env::data_path+"/data/config/valores.dnot", "config_controles", localizador);
 
 	componente_menu.menu().asignar_por_valor_string("010_K_IZQUIERDA", string_desde_input(config.acc_izquierda(1)));
 	componente_menu.menu().asignar_por_valor_string("020_K_DERECHA", string_desde_input(config.acc_derecha(1)));
