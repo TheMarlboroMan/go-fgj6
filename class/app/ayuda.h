@@ -1,7 +1,7 @@
 #ifndef AYUDA_H
 #define AYUDA_H
 
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 #include "espaciable.h"
 #include "representable.h"
@@ -27,7 +27,7 @@ class Ayuda:
 	private:
 
 	void				formar_poligono();
-	
+
 	int				indice;
 	Herramientas_proyecto::Valor_limitado<float>	tiempo_activo;
 };

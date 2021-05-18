@@ -1,7 +1,7 @@
 #ifndef INTERRUPTOR_H
 #define INTERRUPTOR_H
 
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 #include "espaciable.h"
 #include "representable.h"

@@ -1,10 +1,11 @@
 #include "kernel.h"
 #include <cstdlib>
+#include <iostream>
 
 using namespace DFramework;
 
 Kernel::Kernel(Herramientas_proyecto::Controlador_argumentos& carg, Kernel_driver_interface& kdi, Configuracion_base& config)
-	:paso_delta(0.01), controlador_argumentos(carg), 
+	:paso_delta(0.01), controlador_argumentos(carg),
 	controlador_fps(), pantalla()
 {
 	inicializar(kdi, config);
@@ -17,13 +18,17 @@ void Kernel::inicializar(const Kernel_driver_interface& kdi, const Configuracion
 
 	//Inicializar recursos.
 	Cargador_recursos cargador_recursos;
+std::cout<<"will load textures"<<std::endl;
 	cargador_recursos.generar_recursos_texturas(kdi.obtener_entradas_texturas(), pantalla);
+std::cout<<"will load surfaces"<<std::endl;
 	cargador_recursos.generar_recursos_superficies(kdi.obtener_entradas_superficies(), pantalla);
+std::cout<<"will load audio"<<std::endl;
 	cargador_recursos.generar_recursos_audio(kdi.obtener_entradas_audio());
+std::cout<<"will load music"<<std::endl;
 	cargador_recursos.generar_recursos_musica(kdi.obtener_entradas_musica());
-	
+
 	//Inicializar controles.
-	input.configurar(kdi.obtener_pares_input()); 
+	input.configurar(kdi.obtener_pares_input());
 
 	//Inicialización controlador tiempo.
 	controlador_fps.inicializar();
@@ -55,7 +60,7 @@ void Kernel::ciclar_modo_pantalla()
 void Kernel::inicializar_entorno_audio(const Configuracion_base& config)
 {
 	Audio::inicializar_entorno_audio(
-		config.acc_audio_ratio(), 
+		config.acc_audio_ratio(),
 		config.acc_audio_salidas(),
 		config.acc_audio_buffers(),
 		config.acc_audio_canales());

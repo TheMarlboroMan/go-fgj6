@@ -1,7 +1,7 @@
 #ifndef COLA_VIENTO_H
 #define COLA_VIENTO_H
 
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 #include "particula.h"
 

@@ -2,7 +2,7 @@
 
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 #include "recursos.h"
 
@@ -13,7 +13,7 @@ const float Jugador::factor_min_rotacion=60.0;
 const float Jugador::factor_aceleracion=100.0f;
 
 Jugador::Jugador()
-	:angulo(0.0), velocidad(0.0f), velocidad_destino(0.0f), indice_velocidad(0), 
+	:angulo(0.0), velocidad(0.0f), velocidad_destino(0.0f), indice_velocidad(0),
 	pieza_actual(0), max_velocidad(3), tiempo(0.0f), t_cola(0.0f),
 	velocidades{80.0, 120.0, 160.0, 200.0, 240.0, 280.0, 320.0, 360.0, 400.0, 420.0, 460.0, 500.0, 540.0, 580.0, 620.0, 660.0}, sonido_velocidad(false)
 {
@@ -60,7 +60,7 @@ void Jugador::turno(float delta)
 
 void Jugador::girar(int dir, float delta)
 {
-	//La velocidad afecta a la capacidad de giro. No afecta parado o marcha atrás.	
+	//La velocidad afecta a la capacidad de giro. No afecta parado o marcha atrás.
 	double factor=velocidad <= 0.0 ? factor_rotacion : factor_rotacion - (velocidad / 3.0);
 	if(factor < factor_min_rotacion) factor=factor_min_rotacion;
 
@@ -78,7 +78,7 @@ void Jugador::cambiar_velocidad(int dir)
 
 	//Limite de velocidades...
 	if(indice > max_velocidad) indice=max_velocidad;
-		
+
 	indice_velocidad=indice;
 	velocidad_destino=velocidades[indice_velocidad];
 }
@@ -156,7 +156,7 @@ void Jugador::establecer_inicio(Espaciable::tpunto pt)
 	poligono.rotar(angulo);
 
 	establecer_posicion(pt.x, pt.y);
-} 
+}
 
 void Jugador::cancelar_movimiento(float delta)
 {

@@ -102,7 +102,7 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 	static const int h=25;
 	static const int borde=2;
 
-	int 	x_sala=sala.x*w, 
+	int 	x_sala=sala.x*w,
 		y_sala=sala.y*h,
 		w_sala=sala.w*w,
 		h_sala=sala.h*h,
@@ -122,7 +122,7 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 	{
 		SDL_Rect caja{0,0,0,0};
 
-		int 	x_salida=s.x*w+x_sala, 
+		int 	x_salida=s.x*w+x_sala,
 			y_salida=s.y*h+y_sala;
 
 		switch(s.orientacion)
@@ -154,7 +154,7 @@ void Controlador_mapa::generar_representacion_sala(const Automapa_sala& sala)
 			case sala.tmarcadores::arbol:	caja={105, 60, 45, 30}; break;
 			case sala.tmarcadores::metal:	caja={0, 0, 30, 30}; break;
 			case sala.tmarcadores::madera:	caja={30, 0, 30, 30}; break;
-			case sala.tmarcadores::aire:	caja={60, 0, 30, 30};break;
+			case sala.tmarcadores::agua:	caja={60, 0, 30, 30};break;
 			case sala.tmarcadores::fuego:	caja={90, 0, 30, 30};break;
 			case sala.tmarcadores::tierra:	caja={120, 0, 30, 30};break;
 			case sala.tmarcadores::velocidad: caja={65, 30, 30, 30};break;

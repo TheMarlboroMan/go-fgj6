@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include <class/generador_numeros.h>
+#include <templates/generador_numeros.h>
 
 #include "../app/cola_viento.h"
 #include "../app/brillo.h"
@@ -28,7 +28,7 @@ Controlador_principal::Controlador_principal(DLibH::Log_base& log, const Fuentes
 	localizador(l),
 	sistema_audio(sa),
 	modo(modos::juego),
-	camara(0, 0, 800, 500), 
+	camara(0, 0, 800, 500),
 	fondo(DLibV::Gestor_texturas::obtener(r_graficos::g_fondo_defecto)),
 	tiempo_ayuda(0.0f)
 {
@@ -77,7 +77,7 @@ void Controlador_principal::loop(DFramework::Input& input, float delta)
 				preparar_confirmar_salida();
 				return;
 			}
-	
+
 			representador.turno(delta);
 			tiempo.turno(delta);
 			procesar_interruptores(delta);
@@ -170,7 +170,7 @@ void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 		fondo.volcar(pantalla);
 
 		Representador& r=representador;
-	
+
 		for(const auto& o : mapa.decoraciones_fondo)	o->dibujar(r, pantalla, camara);
 		for(const auto& o : mapa.puertas)		o.dibujar(r, pantalla, camara);
 		for(const auto& o : mapa.piezas)		o.dibujar(r, pantalla, camara);
@@ -213,7 +213,7 @@ void Controlador_principal::dibujar(DLibV::Pantalla& pantalla)
 
 		//Control de cuándo mostrar la caja de mensajes.
 		switch(modo)
-		{	
+		{
 			case modos::confirmar_salida:
 			case modos::ayuda:
 			case modos::recuento_final:
@@ -280,7 +280,7 @@ void Controlador_principal::ajustar_parallax()
 
 void Controlador_principal::ajustar_camara(float delta)
 {
-	const int w_pantalla=camara.acc_pos_w(), 
+	const int w_pantalla=camara.acc_pos_w(),
 		h_pantalla=camara.acc_pos_h(),
 		mitad_w_pantalla=w_pantalla / 2,
 		mitad_h_pantalla=h_pantalla / 2;
@@ -307,7 +307,7 @@ void Controlador_principal::ajustar_camara(float delta)
 		double zoom_x=(double) cam.max_cam_x / (double) w_pantalla,
 			zoom_y=(double) cam.max_cam_y / (double) h_pantalla;
 		fin_zoom=std::min(zoom_x, zoom_y);
-	
+
 		//En este caso al reducir no hay que transicionar: es lo que pasa cuando
 		//cambiamos de una sala con zoom grande, por ejemplo.
 		if(zoom_actual > fin_zoom) transicionar=false;
@@ -340,13 +340,13 @@ void Controlador_principal::ajustar_camara(float delta)
 	cam_x=c.x - (mitad_w_pantalla * zoom_aplicar);
 	cam_y=-(c.y + (mitad_h_pantalla * zoom_aplicar));
 
-	if(cam_x < cam.min_cam_x) 
+	if(cam_x < cam.min_cam_x)
 	{
 		cam_x=cam.min_cam_x;
 	}
 
-	if(cam_y < cam.min_cam_y) 
-	{		
+	if(cam_y < cam.min_cam_y)
+	{
 		cam_y=cam.min_cam_y;
 	}
 
@@ -358,7 +358,7 @@ void Controlador_principal::ajustar_camara(float delta)
 		cam_x=cam.max_cam_x-(w_pantalla * zoom_aplicar);
 	}
 
-	if(alto + cam_y > cam.max_cam_y) 
+	if(alto + cam_y > cam.max_cam_y)
 	{
 		cam_y=cam.max_cam_y-(h_pantalla * zoom_aplicar);
 	}
@@ -440,7 +440,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 					chocar_jugador(j);
 					return;
 				break;
-				case Obstaculo::ttipos::inocuo: 
+				case Obstaculo::ttipos::inocuo:
 					jugador.cancelar_movimiento(delta);
 				break;
 			}
@@ -455,7 +455,7 @@ void Controlador_principal::procesar_jugador(DFramework::Input& input, float del
 		}
 	}
 
-	if(info_juego.ayuda_activa) 
+	if(info_juego.ayuda_activa)
 	{
 		for(auto& a : mapa.ayudas)
 		{
@@ -598,7 +598,7 @@ void Controlador_principal::jugador_en_pieza(const Pieza& p, Jugador&)
 
 		//El orden, muy importante.
 		jugador.mut_pieza_actual(p.acc_indice());
-		info_persistente.recoger_pieza(p.acc_indice());		
+		info_persistente.recoger_pieza(p.acc_indice());
 		mapa.recoger_pieza(p.acc_indice());
 	}
 }
@@ -649,13 +649,13 @@ void Controlador_principal::jugador_en_interruptor(Interruptor& i, Jugador& j)
 		else
 		{
 			s.activar(i.acc_tiempo_grupo(), i.acc_poligono().acc_centro());
-	
+
 			if(s.es_completo())
 			{
 				info_persistente.abrir_puerta(s.id_puerta);
 				mapa.abrir_puerta(s.id_puerta);
 				s.finalizar();
-				
+
 				sistema_audio.insertar(Info_audio_reproducir(
 					Info_audio_reproducir::t_reproduccion::simple,
 					Info_audio_reproducir::t_sonido::unico,
@@ -817,7 +817,7 @@ void Controlador_principal::crear_brillo(Espaciable::tpunto centro)
 
 	float tiempo_b=0.5f+( float(t()) / 1000.0);
 	double velocidad_b=100.0+(double(g()) / 100.0);
-	
+
 	centro+=DLibH::Punto_2d<double>(desp(), desp());
 	particulas.push_back(std::move(std::unique_ptr<Particula>(new Brillo(centro, 90.0, velocidad_b, tiempo_b) ) ) );
 }

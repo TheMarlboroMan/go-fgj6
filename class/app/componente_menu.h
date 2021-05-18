@@ -4,8 +4,8 @@
 #include <video/representacion/representacion_agrupada/representacion_agrupada.h>
 #include <video/representacion/representacion_primitiva/representacion_primitiva_caja/representacion_primitiva_caja.h>
 #include <video/pantalla/pantalla.h>
-#include <class/listado_vertical.h>
-#include <class/menu_opciones.h>
+#include <templates/listado_vertical.h>
+#include <templates/menu_opciones.h>
 #include <base/localizador_base.h>
 
 #include <functional>
@@ -85,7 +85,7 @@ class Componente_menu
 	{
 		rep_listado.vaciar_grupo();
 		const auto pagina=listado.obtener_pagina();
-		for(const auto& itemp : pagina) 
+		for(const auto& itemp : pagina)
 			itemp.item.generar_representacion_listado(rep_listado, x_listado, itemp.y + y_listado, itemp.indice==listado.acc_indice_actual());
 	}
 

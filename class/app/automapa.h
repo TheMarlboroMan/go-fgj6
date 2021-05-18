@@ -14,10 +14,10 @@ namespace App
 //Las coordenadas están expresadas en formato de pantalla (w es hacia la derecha
 //mientras que h es hacia abajo. 0,0 es la esquina superior izquierda.
 
-//Estructura para representar una salida. 
+//Estructura para representar una salida.
 struct Automapa_salida
 {
-	
+
 	int		x, y;
 	enum class torientaciones{nada, norte, oeste, sur, este} orientacion;
 
@@ -40,7 +40,7 @@ struct Automapa_sala
 };
 
 //Clase de control de las salas. No tiene nada que ver con la representación:
-//sólo contiene el mapa del mundo y se encarga de marcar las salas como 
+//sólo contiene el mapa del mundo y se encarga de marcar las salas como
 //visitadas o no.
 
 class Automapa

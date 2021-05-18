@@ -9,15 +9,18 @@ std::vector<std::string> Kernel_driver_interface::obtener_entradas_desde_ruta(co
 	Herramientas_proyecto::Lector_txt L(ruta, '#');
 	std::vector<std::string> resultado;
 
-	if(!L)
-	{
+
+	if(!L) {
 		throw Excepcion_carga_recursos("Imposible cargar fichero de recursos en "+ruta);
 	}
 
-	while(true)
-	{
+	while(true) {
+
 		std::string linea=L.leer_linea();
-		if(!L) break;
+		if(L.es_eof()) {
+			break;
+		}
+
 		resultado.push_back(linea);
 	}
 

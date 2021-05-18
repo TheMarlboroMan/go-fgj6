@@ -1,7 +1,7 @@
 #ifndef BRILLO_H
 #define BRILLO_H
 
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 #include "particula.h"
 

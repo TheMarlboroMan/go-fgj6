@@ -2,7 +2,7 @@
 
 #include <video/representacion/representacion_grafica/representacion_bitmap/representacion_bitmap.h>
 #include <video/gestores/gestor_texturas.h>
-#include <class/generador_numeros.h>
+#include <templates/generador_numeros.h>
 
 #include "recursos.h"
 

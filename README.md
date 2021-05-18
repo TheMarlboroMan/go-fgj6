@@ -4,8 +4,8 @@ Small game for the Familiar Game Jam 6, made with C++ and SDL2.
 
 Code available at https://github.com/TheMarlboroMan/go-fgj6. If you want to build it, be sure to tinkle with the makefile routes and build these before:
 
-	https://github.com/TheMarlboroMan/libdansdl2
-	https://github.com/TheMarlboroMan/herramientas_proyecto
+	https://github.com/TheMarlboroMan/libdansdl2 (classic branch)
+	https://github.com/TheMarlboroMan/herramientas_proyecto (classic branch)
 
 Go contains code from "Vs shooter" (https://github.com/TheMarlboroMan/vs_shooter). You could say that I lifted part of my own "engine" (mainly the level editor and part of the entities). Lots of new coding tough.
 

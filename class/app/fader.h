@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 namespace App
 {
@@ -38,11 +38,11 @@ class Fader
 	void 		turno(float delta)
 	{
 		T sal=delta * salto;
-		if(val > destino) 
+		if(val > destino)
 		{
 			val-=sal;
 		}
-		else if(val < destino) 
+		else if(val < destino)
 		{
 			val+=sal;
 		}

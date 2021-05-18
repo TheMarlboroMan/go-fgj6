@@ -9,7 +9,7 @@
 
 #include <class/compositor_vista.h>
 #include <herramientas/log_base/log_base.h>
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 #include "../app/representador.h"
 #include "../app/localizador.h"
@@ -41,7 +41,7 @@
 	a.visitar(4);
 	for(const auto& s : a.obtener_visitadas())
 	{
-		std::cout<<"ID: "<<s.id<<" EN "<<s.x<<","<<s.y<<" CON "<<s.w<<"/"<<s.h<<std::endl;		
+		std::cout<<"ID: "<<s.id<<" EN "<<s.x<<","<<s.y<<" CON "<<s.w<<"/"<<s.h<<std::endl;
 		std::cout<<"TIENE "<<s.salidas.size()<<" SALIDAS"<<std::endl;
 		std::cout<<"TIENE "<<s.marcadores.size()<<" MARCADORES"<<std::endl;
 	}
@@ -92,7 +92,7 @@ class Controlador_principal:
 
 	Bloque_input				obtener_bloque_input(DFramework::Input& input) const;
 
-	void					jugador_en_salida(Salida, Jugador&); 
+	void					jugador_en_salida(Salida, Jugador&);
 	void					jugador_en_interruptor(Interruptor&, Jugador&);
 	void					jugador_en_pieza(const Pieza&, Jugador&);
 	void					jugador_en_arbol(Arbol&, Jugador&);
@@ -130,10 +130,10 @@ class Controlador_principal:
 	Jugador					jugador;
 	Pieza_animacion				pieza_animacion;
 	std::vector<std::unique_ptr<Particula>>	particulas;
-	Tiempo					tiempo;	
+	Tiempo					tiempo;
 	Herramientas_proyecto::Compositor_vista		layout_mensaje;
 	float					tiempo_ayuda;
-	
+
 	struct
 	{
 		int				id_mapa;
@@ -141,13 +141,13 @@ class Controlador_principal:
 
 	}info_mapa{1, Inicio(Espaciable::tpunto{0.0,0.0}, 1, 0)};
 
-/** 
+/**
 Información sobre los interruptores. Por cada grupo se creará un objeto de
-este tipo que lleva la cuenta de los interruptores activados en el grupo y de 
+este tipo que lleva la cuenta de los interruptores activados en el grupo y de
 la puerta que abren.
 Para que no puedas pulsar dos interruptores consecutivos sin parar, se guardan
-las coordenadas de cada uno de ellos en un vector y sólo se suma al total 
-cuando no está activado antes.	
+las coordenadas de cada uno de ellos en un vector y sólo se suma al total
+cuando no está activado antes.
 */
 
 	struct info_interruptor
@@ -166,13 +166,13 @@ cuando no está activado antes.
 
 			tiempo=(float)val/1000.f;
 		}
-	
+
 		bool 				es_completo() const {return total==activados.size();}
 
 		void				finalizar()
 		{
 			tiempo=0.0f;
-			activados.clear();			
+			activados.clear();
 		}
 
 		void 				turno(float delta)

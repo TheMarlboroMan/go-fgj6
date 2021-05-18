@@ -9,7 +9,7 @@
 #include <herramientas/log_base/log_base.h>
 
 #include <class/compositor_vista.h>
-#include <class/menu_opciones.h>
+#include <templates/menu_opciones.h>
 
 #include "../app/framework_impl/app_config.h"
 #include "../app/fuentes.h"

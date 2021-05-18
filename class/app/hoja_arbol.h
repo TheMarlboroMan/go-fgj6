@@ -1,7 +1,7 @@
 #ifndef HOJA_ARBOL_H
 #define HOJA_ARBOL_H
 
-#include <class/valor_limitado.h>
+#include <templates/valor_limitado.h>
 
 #include "particula.h"
 
