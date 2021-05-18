@@ -88,7 +88,10 @@ int iniciar_app(Herramientas_proyecto::Controlador_argumentos& CARG)
 
 	std::string app_log_path=App::env::usr_path+"/logs/app_log.log";
 	DLibH::Log_base log_app(app_log_path.c_str());
+	
 	log_app<<"Iniciando proceso principal..."<<std::endl;
+	log_app<<"data path as "<<App::env::data_path<<std::endl;
+	log_app<<"usr path as "<<App::env::usr_path<<std::endl;
 
 	//Intentar inicializar sin cargar aún la SDL...
 	try

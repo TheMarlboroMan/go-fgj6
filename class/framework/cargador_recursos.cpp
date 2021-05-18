@@ -1,5 +1,6 @@
 #include "cargador_recursos.h"
 #include "kernel_driver_interface.h"
+#include "../app/definiciones.h"
 
 using namespace DFramework;
 
@@ -74,7 +75,7 @@ void Cargador_recursos::procesar_entrada_textura(const std::vector<std::string>&
 	else
 	{
 		unsigned int indice=std::atoi(valores[0].c_str());
-		std::string ruta=valores[1];
+		std::string ruta=App::env::data_path+"/"+valores[1];
 		unsigned int transparencia=std::atoi(valores[2].c_str());
 		SDL_Surface * superficie=DLibV::Utilidades_graficas_SDL::cargar_imagen(ruta.c_str(), pantalla->acc_ventana());
 
@@ -108,7 +109,7 @@ void Cargador_recursos::procesar_entrada_superficie(const std::vector<std::strin
 	else
 	{
 		unsigned int indice=std::atoi(valores[0].c_str());
-		std::string ruta=valores[1];
+		std::string ruta=App::env::data_path+"/"+valores[1];
 		unsigned int transparencia=std::atoi(valores[2].c_str());
 
 		SDL_Surface * superficie=DLibV::Utilidades_graficas_SDL::cargar_imagen(ruta.c_str(), pantalla->acc_ventana());
@@ -146,7 +147,7 @@ void Cargador_recursos::procesar_entrada_audio(const std::vector<std::string>& v
 	else
 	{
 		unsigned int indice=std::atoi(valores[0].c_str());
-		std::string ruta=valores[1];
+		std::string ruta=App::env::data_path+"/"+valores[1];
 
 		if(DLibA::Gestor_recursos_audio::insertar_sonido(indice, ruta.c_str())==-1)
 		{
@@ -161,7 +162,7 @@ void Cargador_recursos::procesar_entrada_musica(const std::vector<std::string>& 
 	else
 	{
 		unsigned int indice=std::atoi(valores[0].c_str());
-		std::string ruta=valores[1];
+		std::string ruta=App::env::data_path+"/"+valores[1];
 
 		if(DLibA::Gestor_recursos_audio::insertar_musica(indice, ruta.c_str())==-1)
 		{
