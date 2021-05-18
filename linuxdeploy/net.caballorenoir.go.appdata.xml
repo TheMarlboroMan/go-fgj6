@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.caballorenoir.go</id>
+
+  <name>Go</name>
+  <summary>An dexterity game with focus on navigation</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>Beerware</project_license>
+
+  <description>
+    <p>
+      Be the wind.
+    </p>
+    <p>
+      Winner of "Best game" for the Familiar Game Jam 6.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">go.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>http://caballorenoir.net/hosted/games/images/go-title.png</image>
+    </screenshot>
+    <screenshot>
+      <image>http://caballorenoir.net/hosted/games/images/go-gameplay1.png</image>
+    </screenshot>
+    <screenshot>
+      <image>http://caballorenoir.net/hosted/games/images/go-gameplay2.png</image>
+    </screenshot>
+  </screenshots>
+</component>

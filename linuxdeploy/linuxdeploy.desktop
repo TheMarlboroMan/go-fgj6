@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Game;
+Icon=go
+Name=Go
+Type=Application
+Exec=go
+
+Name[en_US]=go.desktop

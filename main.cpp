@@ -47,6 +47,13 @@ int main(int argc, char ** argv)
 		App::env::data_path=executable_dir+"/";
 		App::env::usr_path=std::string{getenv("HOME")}+"/.go-fgj6/";
 
+#ifdef AS_APPIMAGE
+#pragma message ("Building as AppImage!!")
+		App::env::data_path=App::env::data_path+"../share/";
+#endif
+
+std::cout<<App::env::data_path<<std::endl;
+
 		struct stat st={0};
 		if(stat(App::env::usr_path.c_str(), &st) == -1) {
 
