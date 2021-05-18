@@ -3,13 +3,14 @@
 #include "../app/framework_impl/input.h"
 
 #include "../app/recursos.h"
+#include "../app/definiciones.h"
 
 using namespace App;
 
 Controlador_mapa::Controlador_mapa(DLibH::Log_base& l, Sistema_audio& s)
 	:log(l), sistema_audio(s), rep_mapa(true)
 {
-	automapa.cargar("data/app/mapa.dnot");
+	automapa.cargar(App::env::data_path+"/data/app/mapa.dnot");
 	layout.mapear_textura("arbol", DLibV::Gestor_texturas::obtener(r_graficos::g_cover));
 	rep_mapa.establecer_posicion(400, 250);
 }
@@ -47,7 +48,7 @@ void Controlador_mapa::despertar()
 {
 	//Registrar con el layout.
 	layout.registrar_externa("mapa", rep_mapa);
-	layout.parsear("data/layout/layout_mapa.dnot", "layout");
+	layout.parsear(App::env::data_path+"/data/layout/layout_mapa.dnot", "layout");
 
 	//Montar vista?.
 	for(const auto s : automapa.obtener_visitadas()) generar_representacion_sala(s);
