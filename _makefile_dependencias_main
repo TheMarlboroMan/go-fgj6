@@ -8,7 +8,6 @@ $(DIR_O_HERRAMIENTAS_PROYECTO)dnot_parser.o \
 $(DIR_O_HERRAMIENTAS_PROYECTO)dnot_token.o \
 $(DIR_O_HERRAMIENTAS_PROYECTO)localizador_base.o \
 $(DIR_O_HERRAMIENTAS_PROYECTO)compositor_vista.o \
-$(DIR_O_HERRAMIENTAS_PROYECTO)listado_vertical.o\
 $(DIR_O_HERRAMIENTAS_PROYECTO)estructura_paginacion.o\
 #$(DIR_O_HERRAMIENTAS_PROYECTO)generador_numeros.o \
 
