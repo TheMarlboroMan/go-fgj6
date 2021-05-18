@@ -32,7 +32,7 @@ void Kernel::inicializar(const Kernel_driver_interface& kdi, const Configuracion
 
 void Kernel::inicializar_entorno_grafico(const Info_ventana& iv)
 {
-	pantalla.inicializar(iv.w_fisica, iv.h_fisica);
+	pantalla.inicializar(iv.w_fisica, iv.h_fisica, SDL_WINDOW_OPENGL);
 	pantalla.establecer_medidas_logicas(iv.w_logica, iv.h_logica);
 	pantalla.establecer_modo_ventana(DLibV::Pantalla::M_VENTANA);
 	pantalla.establecer_titulo(iv.nombre.c_str());

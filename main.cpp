@@ -8,7 +8,11 @@
 #include <libDan2.h>
 #include <string>
 #include <unistd.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <fstream>
 #include <defDanSDL.h>
+#include <source/ficheros_utilidades.h>
 #include "class/framework/kernel.h"
 #include "class/app/framework_impl/kernel_config.h"
 #include "class/app/framework_impl/app_config.h"
@@ -41,13 +45,29 @@ int main(int argc, char ** argv)
 		executable_dir=executable_path.substr(0, last_slash)+"/";
 
 		App::env::data_path=executable_dir+"/";
-		App::env::usr_path=executable_dir+"/";
+		App::env::usr_path=std::string{getenv("HOME")}+"/.go-fgj6/";
+
+		struct stat st={0};
+		if(stat(App::env::usr_path.c_str(), &st) == -1) {
+
+			mkdir(App::env::usr_path.c_str(), 0700);
+
+			std::string logs_path=App::env::usr_path+"logs";
+			mkdir(logs_path.c_str(), 0700);
+
+			std::string default_config_str=Herramientas_proyecto::volcar_fichero(App::env::data_path+"data/config/configuracion.dnot");
+			std::ofstream config_file{App::env::usr_path+"/configuracion.dnot"};
+			config_file<<default_config_str;
+		}
 	}
 
 	//Inicializar control de logs.
-	LOG.inicializar("logs/info.log");
+	std::string info_log_path=App::env::usr_path+"/logs/info.log",
+		lib_log_path=App::env::usr_path+"/logs/motor_log.log";
+
+	LOG.inicializar(info_log_path.c_str());
 	LOG.activar();
-	DLibH::Log_motor::arrancar("logs/motor_log.log");
+	DLibH::Log_motor::arrancar(lib_log_path.c_str());
 
 	//Inicializar control de argumentos.
 	Herramientas_proyecto::Controlador_argumentos CARG(argc, argv);
@@ -61,7 +81,8 @@ int iniciar_app(Herramientas_proyecto::Controlador_argumentos& CARG)
 {
 	using namespace App;
 
-	DLibH::Log_base log_app("logs/app_log.log");
+	std::string app_log_path=App::env::usr_path+"/logs/app_log.log";
+	DLibH::Log_base log_app(app_log_path.c_str());
 	log_app<<"Iniciando proceso principal..."<<std::endl;
 
 	//Intentar inicializar sin cargar aún la SDL...

@@ -133,7 +133,7 @@ class App_config:
 
 	private:
 
-	std::string obtener_ruta_archivo() const {return env::usr_path+"/data/config/configuracion.dnot";}
+	std::string obtener_ruta_archivo() const {return env::usr_path+"/configuracion.dnot";}
 };
 
 }
