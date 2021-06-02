@@ -143,7 +143,7 @@ void ready_system() {
 	
 	std::string logs_path=App::env::usr_path+"\\logs\\";
 	CreateDirectoryA(logs_path.c_str(), nullptr);
-	CreateDirectoryA(env::usr_path.c_str(), nullptr);
+	CreateDirectoryA(App::env::usr_path.c_str(), nullptr);
 	
 	setup_file(App::env::data_path+"data/config/configuracion.dnot", App::env::usr_path+"/configuracion.dnot");
 }
