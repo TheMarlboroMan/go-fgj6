@@ -10,10 +10,10 @@ CC=g++
 EJECUTABLE=go
 LIMPIAR=rm objects/*; rmdir objects; rm $(EJECUTABLE);
 
-DIR_HOME=/home/dani/programacion/c++/
-DIR_LIBDAN2=$(DIR_HOME)libdansdl2
-DIR_HERRAMIENTAS_PROYECTO=$(DIR_HOME)herramientas_proyecto/
-DIR_O_HERRAMIENTAS_PROYECTO=$(DIR_HOME)herramientas_proyecto/objects/
+DIR_HOME=/mnt/dev/c++/mine/
+DIR_LIBDAN2=$(DIR_HOME)libdansdl2-es
+DIR_HERRAMIENTAS_PROYECTO=$(DIR_HOME)herramientas_proyectos/
+DIR_O_HERRAMIENTAS_PROYECTO=$(DIR_HOME)herramientas_proyectos/objects/
 PREPARAR_DIR_OBJECTS=mkdir -p objects; touch objects/dummy
 
 LINKER=-L$(DIR_LIBDAN2) -lDanSDL2 -L. -lSDL2 -lSDL2_ttf -lSDL2_gfx -lSDL2_mixer -lSDL2_image

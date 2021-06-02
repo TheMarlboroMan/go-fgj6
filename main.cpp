@@ -1,15 +1,21 @@
 #ifdef WINCOMPIL
-//Terrible parche para SDL2_Gfx...
-#include <SDL2_gfxPrimitives.c>
-#include <SDL2_rotozoom.c>
-#include <SDL2_imageFilter.c>
+	//Terrible parche para SDL2_Gfx...
+	#include <SDL2_gfxPrimitives.c>
+	#include <SDL2_rotozoom.c>
+	#include <SDL2_imageFilter.c>
+	#include <libloaderapi.h>
+	#include <fileapi.h>
+
+#else 
+
+	#include <unistd.h>
+	#include <stdlib.h>
+	#include <sys/stat.h>
+
 #endif
 
 #include <libDan2.h>
 #include <string>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/stat.h>
 #include <fstream>
 #include <defDanSDL.h>
 #include <source/ficheros_utilidades.h>
@@ -21,50 +27,16 @@
 
 //Declaración del log de aplicación en espacio global.
 DLibH::Log_base LOG;
-
-int iniciar_app(Herramientas_proyecto::Controlador_argumentos&);
-
 std::string App::env::data_path="";
 std::string App::env::usr_path="";
 
+int iniciar_app(Herramientas_proyecto::Controlador_argumentos&);
+void ready_system();
+void setup_file(const std::string& _in, const std::string& _out);
+
 int main(int argc, char ** argv)
 {
-	{
-		std::string executable_path, executable_dir;
-		std::array<char, 1024> buff;
-
-		int bytes=readlink("/proc/self/exe", buff.data(), 1024);
-		if(-1==bytes) {
-
-			std::cerr<<"could not locate proc/self/exe, error "<<errno<<std::endl;
-			return 1;
-		}
-
-		executable_path=std::string{std::begin(buff), std::begin(buff)+bytes};
-		auto last_slash=executable_path.find_last_of("/");
-		executable_dir=executable_path.substr(0, last_slash)+"/";
-
-		App::env::data_path=executable_dir+"/";
-		App::env::usr_path=std::string{getenv("HOME")}+"/.go-fgj6/";
-
-#ifdef AS_APPIMAGE
-#pragma message ("Building as AppImage!!")
-		App::env::data_path=App::env::data_path+"../share/";
-#endif
-
-		struct stat st={0};
-		if(stat(App::env::usr_path.c_str(), &st) == -1) {
-
-			mkdir(App::env::usr_path.c_str(), 0700);
-
-			std::string logs_path=App::env::usr_path+"logs";
-			mkdir(logs_path.c_str(), 0700);
-
-			std::string default_config_str=Herramientas_proyecto::volcar_fichero(App::env::data_path+"data/config/configuracion.dnot");
-			std::ofstream config_file{App::env::usr_path+"/configuracion.dnot"};
-			config_file<<default_config_str;
-		}
-	}
+	ready_system();
 
 	//Inicializar control de logs.
 	std::string info_log_path=App::env::usr_path+"/logs/info.log",
@@ -88,7 +60,7 @@ int iniciar_app(Herramientas_proyecto::Controlador_argumentos& CARG)
 
 	std::string app_log_path=App::env::usr_path+"/logs/app_log.log";
 	DLibH::Log_base log_app(app_log_path.c_str());
-	
+
 	log_app<<"Iniciando proceso principal..."<<std::endl;
 	log_app<<"data path as "<<App::env::data_path<<std::endl;
 	log_app<<"usr path as "<<App::env::usr_path<<std::endl;
@@ -135,3 +107,67 @@ int iniciar_app(Herramientas_proyecto::Controlador_argumentos& CARG)
 	DLibH::Herramientas_SDL::apagar_SDL();
 	return 0;
 }
+
+void setup_file(
+	const std::string& _in, 
+	const std::string& _out
+) {
+
+	std::string res, lin;
+	std::ifstream f{_in};
+	std::ofstream out{_out};
+
+	while(true) {
+		std::getline(f, lin);
+		if(f.eof()) {
+			break;
+		}
+		out<<lin<<std::endl;
+	}
+}
+
+#ifdef WINCOMPIL
+
+void ready_system() {
+
+
+}
+
+#else 
+
+void ready_system() {
+		
+	std::string executable_path, executable_dir;
+	std::array<char, 1024> buff;
+
+	int bytes=readlink("/proc/self/exe", buff.data(), 1024);
+	if(-1==bytes) {
+
+		throw std::runtime_error("could not locate proc/self/exe");
+	}
+
+	executable_path=std::string{std::begin(buff), std::begin(buff)+bytes};
+	auto last_slash=executable_path.find_last_of("/");
+	executable_dir=executable_path.substr(0, last_slash)+"/";
+
+	App::env::data_path=executable_dir+"/";
+	App::env::usr_path=std::string{getenv("HOME")}+"/.go-fgj6/";
+
+#ifdef AS_APPIMAGE
+#pragma message ("Building as AppImage!!")
+		App::env::data_path=App::env::data_path+"../share/";
+#endif
+
+	struct stat st={0};
+	if(stat(App::env::usr_path.c_str(), &st) == -1) {
+
+		mkdir(App::env::usr_path.c_str(), 0700);
+
+		std::string logs_path=App::env::usr_path+"logs";
+		mkdir(logs_path.c_str(), 0700);
+
+		setup_file(App::env::data_path+"data/config/configuracion.dnot", App::env::usr_path+"/configuracion.dnot");
+	}
+}
+
+#endif

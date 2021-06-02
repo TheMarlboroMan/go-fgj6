@@ -2,3 +2,6 @@ a.out
 *.o
 log/*
 AppDir
+*.AppImage
+logs/*
+go

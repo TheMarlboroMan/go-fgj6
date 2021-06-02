@@ -120,7 +120,9 @@ void Controlador_intro::procesar_input(DFramework::Input& input)
 			if(clave=="10_INICIAR") 	solicitar_cambio_estado(principal);
 			else if(clave=="20_CONTROLES")	solicitar_cambio_estado(controles);
 			else if(clave=="25_CONFIG")	solicitar_cambio_estado(config);
+			else if(clave=="27_CREDITS") solicitar_cambio_estado(credits);
 			else if(clave=="30_SALIR")	abandonar_aplicacion();
+			
 			return;
 		}
 		break;

@@ -64,6 +64,14 @@ $(DIR_CONTROLADORES)estados_controladores.h \
 $(DIR_CONTROLADORES)intro.h \
 $(DIR_CONTROLADORES)intro.cpp
 	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)intro.cpp -o $(DIR_O)controlador_intro.o  
+	
+$(DIR_O)controlador_credits.o :\
+$(DIR_O)fuentes.o\
+$(DIR_O)localizador.o\
+$(DIR_CONTROLADORES)estados_controladores.h \
+$(DIR_CONTROLADORES)credits.h \
+$(DIR_CONTROLADORES)credits.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) $(DIR_CONTROLADORES)credits.cpp -o $(DIR_O)controlador_credits.o  
 
 $(DIR_O)controlador_editor.o :\
 $(DIR_O)exportador.o\

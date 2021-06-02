@@ -64,5 +64,6 @@ config_intro:[
 	{c:"10_INICIAR", t:51, m:"void"},
 	{c:"20_CONTROLES", t:52, m:"void"},
 	{c:"25_CONFIG", t:54, m:"void"},
+	{c:"27_CREDITS", t:55, m:"void"},
 	{c:"30_SALIR", t:53, m:"void"}
 ]

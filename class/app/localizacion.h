@@ -37,7 +37,10 @@ controles_abajo=207,
 controles_desconocido=208,
 controles_introducir=209,
 controles_salir=210,
-controles_mapa=211
+controles_mapa=21,
+
+credits=300,
+version=301
 };
 
 };

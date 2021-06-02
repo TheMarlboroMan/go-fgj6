@@ -65,6 +65,7 @@ $(DIR_O)controlador_intro.o \
 $(DIR_O)controlador_controles.o \
 $(DIR_O)controlador_config.o \
 $(DIR_O)controlador_mapa.o \
+$(DIR_O)controlador_credits.o \
 $(DIR_O)controlador_ayuda_editor.o \
 
 DEP_FRAMEWORK=\

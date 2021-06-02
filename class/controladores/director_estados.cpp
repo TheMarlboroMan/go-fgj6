@@ -62,6 +62,7 @@ void Director_estados::registrar_controladores(DFramework::Kernel& kernel)
 	controlador_controles.reset(new Controlador_controles(log, config, fuentes, localizador, kernel.acc_input()));
 	controlador_config.reset(new Controlador_config(log, config, fuentes, localizador));
 	controlador_mapa.reset(new Controlador_mapa(log, sistema_audio));
+	controlador_credits.reset(new Controlador_credits(log, fuentes, localizador, sistema_audio));
 
 	registrar_controlador(t_estados::principal, *controlador_principal);
 	registrar_controlador(t_estados::editor, *controlador_editor);
@@ -70,6 +71,7 @@ void Director_estados::registrar_controladores(DFramework::Kernel& kernel)
 	registrar_controlador(t_estados::controles, *controlador_controles);
 	registrar_controlador(t_estados::config, *controlador_config);
 	registrar_controlador(t_estados::estado_mapa, *controlador_mapa);
+	registrar_controlador(t_estados::credits, *controlador_credits);
 }
 
 void Director_estados::preparar_cambio_estado(int deseado, int actual)

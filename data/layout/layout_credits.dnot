@@ -1,0 +1,21 @@
+layout:
+[	
+	{
+		tipo:"pantalla", 
+		rgba:[255, 255, 255, 255]
+	},
+	{
+		tipo:"ttf",
+		pos:[16, 16],
+		texto:"-",
+		fuente:"fuente", rgba:[0, 0, 0, 255],
+		id:"credits", alpha: 255, orden: 10, visible: true
+	},
+	{
+		tipo:"ttf",
+		pos:[620, 480],
+		texto:"-",
+		fuente:"fuente", rgba:[0, 0, 0, 255],
+		id:"version", alpha: 255, orden: 10, visible: true
+	}
+]

@@ -48,6 +48,7 @@ The map indicates important discovered locations.
 <52$>Configure controls<#>
 <53$>Exit<#>
 <54$>Configuration<#>
+<55$>Credits<#>
 
 <100$>Are you sure you want to quit?.
 
@@ -81,3 +82,31 @@ Your time:
 <209$>Enter input for <#>
 <210$>Back<#>
 <211$>Map<#>
+
+<300$>
+Credits
+
+	Music
+	
+		Gymnopedie 1. Written by Eric Satie
+		Performed by Peter Johnston. Courtesy of musopen.org
+	
+	Sounds
+	
+		Various free sounds found in flashkit.com
+	
+	Fonts
+	
+		Akashi by Ed Merritt
+		Bulldozer by Dcoxy
+		Imagination Station by Jonathan S. Harris
+		InkBurrow by Uddi Uddi
+	
+	Graphics
+	
+		Original background images by lauramusikanski and kconnors
+	
+
+	Go. A game by The Marlboro Man. April 2016.
+<#>
+<301$>software version <#>

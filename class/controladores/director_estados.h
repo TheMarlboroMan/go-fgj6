@@ -19,6 +19,7 @@
 #include "config.h"
 #include "mapa.h"
 #include "ayuda_editor.h"
+#include "credits.h"
 
 namespace App
 {
@@ -57,6 +58,7 @@ class Director_estados:
 	std::unique_ptr<Controlador_ayuda_editor>	controlador_ayuda_editor;
 	std::unique_ptr<Controlador_config>		controlador_config;
 	std::unique_ptr<Controlador_mapa>		controlador_mapa;
+	std::unique_ptr<Controlador_credits>    controlador_credits;
 };
 
 }

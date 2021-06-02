@@ -1,5 +1,4 @@
-#ifndef DEFINICIONES_H
-#define DEFINICIONES_H
+#pragma once
 
 namespace App
 {
@@ -10,6 +9,11 @@ struct env {
 	static std::string  usr_path;
 };
 
-}
+struct version {
 
-#endif
+	static const int major{1},
+					minor{1},
+					patch{1};
+};
+
+}
