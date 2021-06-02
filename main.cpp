@@ -141,7 +141,7 @@ void ready_system() {
 	App::env::data_path=executable_dir+"/";
 	App::env::usr_path=executable_dir+"user\\";
 	
-	std::string logs_path=env::usr_path+"\\logs\\";
+	std::string logs_path=App::env::usr_path+"\\logs\\";
 	CreateDirectoryA(logs_path.c_str(), nullptr);
 	CreateDirectoryA(env::usr_path.c_str(), nullptr);
 	
