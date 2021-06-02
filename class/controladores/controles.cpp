@@ -8,7 +8,7 @@
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
-#include <herramientas/herramientas/herramientas.h>
+#include <templates/parches_compat.h>
 #endif
 
 using namespace App;
@@ -175,7 +175,7 @@ void Controlador_controles::activar_fadeout()
 std::string Controlador_controles::traducir_input(const App_config::input_jugador& e) const
 {
 #ifdef WINCOMPIL
-using namespace parche_mingw;
+using namespace compat;
 #else
 using namespace std;
 #endif
@@ -215,7 +215,7 @@ App_config::input_jugador Controlador_controles::input_desde_string(const std::s
 std::string Controlador_controles::string_desde_input(const App_config::input_jugador& ij) const
 {
 #ifdef WINCOMPIL
-using namespace parche_mingw;
+using namespace compat;
 #else
 using namespace std;
 #endif

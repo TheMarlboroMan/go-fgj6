@@ -17,7 +17,7 @@
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
-#include <herramientas/herramientas/herramientas.h>
+#include <templates/parches_compat.h>
 #endif
 
 using namespace App;
@@ -671,7 +671,7 @@ void Controlador_principal::cargar_nivel(int nivel)
 	info_mapa.id_mapa=nivel;
 
 #ifdef WINCOMPIL
-	using namespace parche_mingw;
+	using namespace compat;
 #else
 	using namespace std;
 #endif

@@ -9,7 +9,7 @@
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
-#include <herramientas/herramientas/herramientas.h>
+#include <templates/parches_compat.h>
 #endif
 
 namespace App
@@ -87,7 +87,7 @@ class App_config:
 	std::string ruta_jugador(const std::string& tipo, int j) const
 	{
 #ifdef WINCOMPIL
-		using namespace parche_mingw;
+		using namespace compat;
 #else
 		using namespace std;
 #endif

@@ -3,7 +3,7 @@
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
-#include <herramientas/herramientas/herramientas.h>
+#include <templates/parches_compat.h>
 #endif
 
 /*

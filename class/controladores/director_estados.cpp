@@ -149,7 +149,7 @@ void Director_estados::registrar_fuentes()
 void Director_estados::comprobar_mapas()
 {
 #ifdef WINCOMPIL
-	using namespace parche_mingw;
+	using namespace compat;
 #else
 	using namespace std;
 #endif

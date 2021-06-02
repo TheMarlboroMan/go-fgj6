@@ -8,7 +8,7 @@
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
-#include <herramientas/herramientas/herramientas.h>
+#include <templates/parches_compat.h>
 #endif
 
 using namespace App;
@@ -151,7 +151,7 @@ void Controlador_config::crear_menu()
 	componente_menu.crear_menu_opciones(env::data_path+"/data/config/valores.dnot", "config_app", localizador);
 
 #ifdef WINCOMPIL
-using namespace parche_mingw;
+using namespace compat;
 #else
 using namespace std;
 #endif

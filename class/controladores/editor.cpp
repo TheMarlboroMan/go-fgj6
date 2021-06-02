@@ -22,7 +22,7 @@
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
-#include <herramientas/herramientas/herramientas.h>
+#include <templates/parches_compat.h>
 #endif
 
 using namespace App;
@@ -225,7 +225,7 @@ void Controlador_editor::dibujar(DLibV::Pantalla& pantalla)
 	}
 
 #ifdef WINCOMPIL
-	using namespace parche_mingw;
+	using namespace compat;
 #else
 	using namespace std;
 #endif
@@ -832,7 +832,7 @@ void Controlador_editor::cambiar_profundidad(int dir)
 		else v[0]->elemento.bajar_profundidad();
 
 #ifdef WINCOMPIL
-	using namespace parche_mingw;
+	using namespace compat;
 #else
 	using namespace std;
 #endif

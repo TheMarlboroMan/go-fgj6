@@ -7,7 +7,7 @@
 
 #ifdef WINCOMPIL
 /* Localización del parche mingw32... Esto debería estar en otro lado, supongo. */
-#include <herramientas/herramientas/herramientas.h>
+#include <templates/parches_compat.h>
 #endif
 
 using namespace App;
@@ -112,7 +112,7 @@ void Widget_editor_propiedades_interruptor::cambiar_seleccion(int dir)
 void Widget_editor_propiedades_interruptor::cambiar(int val, int& ref, const std::string& id)
 {
 #ifdef WINCOMPIL
-	using namespace parche_mingw;
+	using namespace compat;
 #else
 	using namespace std;
 #endif
