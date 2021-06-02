@@ -9,7 +9,12 @@ extern DLibH::Log_base LOG;
 
 Director_estados::Director_estados(DFramework::Kernel& kernel, App::App_config& c, DLibH::Log_base& log)
 	:Director_estados_interface(t_estados::intro, std::function<bool(int)>([](int v){return v > estado_min && v < estado_max;})),
-	config(c), log(log), localizador(env::data_path+"/data/localizacion/loc")
+	config(c), log(log), 
+#ifdef WINCOMPIL
+	localizador(env::data_path+"/data/localizacion_win/loc")
+#else
+	localizador(env::data_path+"/data/localizacion/loc")
+#endif
 {
 	preparar_video(kernel);
 	registrar_fuentes();
