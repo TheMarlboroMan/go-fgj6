@@ -130,7 +130,22 @@ void setup_file(
 
 void ready_system() {
 
+	std::array<char, 1024> buff;
+	int bytes=GetModuleFileNameA(nullptr, buff.data(), 1024);
 
+	std::string executable_path=std::string{std::begin(buff), std::begin(buff)+bytes};
+	
+	auto last_slash=executable_path.find_last_of("\\");
+	std::string executable_dir=executable_path.substr(0, last_slash)+"\\";
+	
+	App::env::data_path=executable_dir+"/";
+	App::env::usr_path=executable_dir+"user\\";
+	
+	std::string logs_path=env::usr_path+"\\logs\\";
+	CreateDirectoryA(logs_path.c_str(), nullptr);
+	CreateDirectoryA(env::usr_path.c_str(), nullptr);
+	
+	setup_file(App::env::data_path+"data/config/configuracion.dnot", App::env::usr_path+"/configuracion.dnot");
 }
 
 #else 
